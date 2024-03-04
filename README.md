@@ -46,12 +46,13 @@
 > * Laboratório de Desenvolvimento em Banco de Dados II - *Prof.ª Dr.ª Adriana da Silva Jacinto*
 
 ### Prazos
-> - [ ] 00/00 a 00/00 - *Kick-off*
-> - [ ] 00/00 a 00/00 - *Primeira Sprint*
-> - [ ] 00/00 a 00/00 - *Segunda Sprint*
-> - [ ] 00/00 a 00/00 - *Terceira Sprint*
-> - [ ] 00/00 a 00/00 - *Quarta Sprint*
-> - [ ] 00/00 - *Feira de Soluções e Apresentação Final API*
+> - [ ] 04/03 a 08/03 - *Kick-off*
+> - [ ] 11/03 a 15/03 - *Kick-off*
+> - [ ] 25/03 a 14/04 - *Primeira Sprint*
+> - [ ] 15/04 a 05/05 - *Segunda Sprint*
+> - [ ] 06/05 a 26/05 - *Terceira Sprint*
+> - [ ] 27/05 a 16/06 - *Quarta Sprint*
+> - [ ] 27/06 - *Feira de Soluções e Apresentação Final API*
 
 *****
 
