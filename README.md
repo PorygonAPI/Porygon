@@ -29,6 +29,8 @@
 |[João Arruda - Developer](https://github.com/joaoarruda-dev)| <a href="https://www.linkedin.com/in/joaoarruda0/" target="_blank"><img src="https://img.shields.io/badge/-LinkedIn-%230077B5?style=for-the-badge&logo=linkedin&logoColor=white" target="_blank"></a> <a href="https://github.com/joaoarruda-dev" target="_blank"><img src="https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white"></a> |
 |[Naira Maximo - Developer](http://github.com/naira-maximo) | <a href="https://www.linkedin.com/in/naira-maximo/" target="_blank"><img src="https://img.shields.io/badge/-LinkedIn-%230077B5?style=for-the-badge&logo=linkedin&logoColor=white" target="_blank"></a> <a href="http://github.com/naira-maximo" target="_blank"><img src="https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white"></a> |
 |[Renato Mendes - Developer](https://github.com/RenatoCMMendes) | <a href="https://www.linkedin.com/in/renato-mendes-61a6481a4" target="_blank"><img src="https://img.shields.io/badge/-LinkedIn-%230077B5?style=for-the-badge&logo=linkedin&logoColor=white" target="_blank"></a> <a href="https://github.com/RenatoCMMendes" target="_blank"><img src="https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white"></a> |
+|[Carla Daiane - Developer](https://github.com/carladaiane) | <a href="https://www.linkedin.com/in/carla-daiane/" target="_blank"><img src="https://img.shields.io/badge/-LinkedIn-%230077B5?style=for-the-badge&logo=linkedin&logoColor=white" target="_blank"></a> <a href="https://github.com/carladaiane" target="_blank"><img src="https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white"></a> |
+|[Gleialison Rezende - Developer](https://github.com/Gleialison) | <a href="https://www.linkedin.com/in/gleialison-rezende-835453b0?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank"><img src="https://img.shields.io/badge/-LinkedIn-%230077B5?style=for-the-badge&logo=linkedin&logoColor=white" target="_blank"></a> <a href="https://github.com/Gleialison" target="_blank"><img src="https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white"></a> |
 
 ### Tema 
 * Desenvolvimento de uma solução computacional que viabilize a aplicação... **AGUARDAR DESCRIÇÃO DO KICK OFF** (*Resumir a necessidade da aplicação*)
@@ -46,12 +48,13 @@
 > * Laboratório de Desenvolvimento em Banco de Dados II - *Prof.ª Dr.ª Adriana da Silva Jacinto*
 
 ### Prazos
-> - [ ] 00/00 a 00/00 - *Kick-off*
-> - [ ] 00/00 a 00/00 - *Primeira Sprint*
-> - [ ] 00/00 a 00/00 - *Segunda Sprint*
-> - [ ] 00/00 a 00/00 - *Terceira Sprint*
-> - [ ] 00/00 a 00/00 - *Quarta Sprint*
-> - [ ] 00/00 - *Feira de Soluções e Apresentação Final API*
+> - [ ] 04/03 a 08/03 - *Kick-off*
+> - [ ] 11/03 a 15/03 - *Kick-off*
+> - [ ] 25/03 a 14/04 - *Primeira Sprint*
+> - [ ] 15/04 a 05/05 - *Segunda Sprint*
+> - [ ] 06/05 a 26/05 - *Terceira Sprint*
+> - [ ] 27/05 a 16/06 - *Quarta Sprint*
+> - [ ] 27/06 - *Feira de Soluções e Apresentação Final API*
 
 *****
 
