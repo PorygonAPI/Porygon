@@ -103,10 +103,7 @@ instalação.
   | Como pesquisador, desejo poder excluir elementos do sistema que não sejam mais relevantes para minha pesquisa. |Essencial|2|
   | Como pesquisador, desejo poder visualizar uma lista de todas as cidades cadastradas no sistema, junto a suas estações meteorológicas associadas. |Essencial|2|
   | Como pesquisador, desejo ter a capacidade de gerenciar os dados de forma precisa e confiável em minha pesquisa ao realizar alterações, restaurações e exclusões conforme necessário. |Essencial|2|
-  | Como Líder do Grupo, avaliarei os Líderes Técnicos do meu grupo conforme requisito funcional | Essencial |
-  | Como Fake Client, avaliarei os POs do meu grupo conforme requisito funcional | Essencial |
-  | Como PO, avaliarei o Líder Técnico, estudantes do meu time e a mim mesmo como requisito funcional | Essencial|
-  | Como estudante, avaliarei todos os outros itegrantes do meu time e a mim mesmo como requisito funcional | Essencial |
+  
   
 
 ## Backlog das Sprints
