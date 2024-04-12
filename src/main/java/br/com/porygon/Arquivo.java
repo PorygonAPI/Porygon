@@ -110,15 +110,14 @@ public class Arquivo {
 
                         }
 
-//                        RegistroAutomatico regAutomatico = new RegistroAutomatico(data, hora,
-//                                velVento, dirVento, tempIns, tempMax, tempMin, umiIns, umiMax, umiMin,
-//                                ptoOrvalhoIns, ptoOrvalhoMax, ptoOrvalhoMin, pressaoIns, pressaoMax,
-//                                pressaoMin, rajVento, radiacao, chuva);
-//                        registros.add(regAutomatico);
+                        RegistroAutomatico regAutomatico = new RegistroAutomatico(data, hora,
+                                velVento, dirVento, tempIns, tempMax, tempMin, umiIns, umiMax, umiMin,
+                                ptoOrvalhoIns, ptoOrvalhoMax, ptoOrvalhoMin, pressaoIns, pressaoMax,
+                                pressaoMin, rajVento, radiacao, chuva);
+                        registros.add(regAutomatico);
                         line = br.readLine();
                     }
                 } catch (NumberFormatException e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
             } catch (FileNotFoundException e) {
@@ -194,13 +193,13 @@ public class Arquivo {
 
                         }
 
-//                        RegistroManual regManual = new RegistroManual(data, hora, velVento, dirVento, temp, umi, pressao,
-//                                nebulosidade, insolacao, tempMax, tempMin, chuva);
-//                        registros.add(regManual);
+                        RegistroManual regManual = new RegistroManual(data, hora, velVento, dirVento, temp, umi,
+                                pressao,
+                                nebulosidade, insolacao, tempMax, tempMin, chuva);
+                        registros.add(regManual);
                         line = br.readLine();
                     }
                 } catch (NumberFormatException e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
             } catch (FileNotFoundException e) {
