@@ -94,15 +94,15 @@ instalação.
 
 ## Backlog do Produto
 
-  | USER STORY | PRIORIDADE |
-  |------------|------------|
-  | Como Administrador da instituição, preciso cadastrar os Líderes dos Grupos para que façam login |Essencial|
-  | Como Administrador da instituição, preciso cadastrar os Fake Clients para que façam login |Essencial|
-  | Como Líder do Grupo, preciso criar Times para realizar o cadastro de usuários |Essencial|
-  | Como Líder do Grupo, preciso cadastrar usuários dentro de um Time para que façam login |Essencial
-  | Como Líder do Grupo, preciso definir a função dos usuário dentro de um Time, que será utilizada como base para suas respectivas permissões |Essencial|
-  | Como Líder do Grupo, preciso criar um cronograma de Sprints dentro do meu grupo, que será a base para os prazos das avaliações |Essencial|
-  | Como Líder do Grupo, terei a funcionalidade de desativar usuários e times para possíveis desligamentos ou finalização do projeto |Desejável|
+  | USER STORY | PRIORIDADE | SPRINT |
+  |------------|------------|--------|
+  | Como pesquisador, quero poder carregar meus arquivos contendo variáveis climáticas para que possam ser manipulados e submetidos à análise para minha pesquisa.  |Essencial|1|
+  | Como pesquisador, quero que cada arquivo carregado, referente a uma estação específica, tenha seus registros armazenados separadamente por variável climática, para uma melhor organização e análise dos dados.  |Essencial|1|
+  | Como pesquisador, desejo que registros suspeitos nos arquivos sejam identificados durante o processo de carregamento e sejam armazenados separadamente dos registros regulares.  |Essencial|1|
+  | Como pesquisador, desejo poder realizar alterações em tempo real nos elementos contidos no sistema, conforme necessário, para garantir a precisão e a relevância dos dados para minha pesquisa. |Essencial |2|
+  | Como pesquisador, desejo poder excluir elementos do sistema que não sejam mais relevantes para minha pesquisa. |Essencial|2|
+  | Como pesquisador, desejo poder visualizar uma lista de todas as cidades cadastradas no sistema, junto a suas estações meteorológicas associadas. |Essencial|2|
+  | Como pesquisador, desejo ter a capacidade de gerenciar os dados de forma precisa e confiável em minha pesquisa ao realizar alterações, restaurações e exclusões conforme necessário. |Essencial|2|
   | Como Líder do Grupo, avaliarei os Líderes Técnicos do meu grupo conforme requisito funcional | Essencial |
   | Como Fake Client, avaliarei os POs do meu grupo conforme requisito funcional | Essencial |
   | Como PO, avaliarei o Líder Técnico, estudantes do meu time e a mim mesmo como requisito funcional | Essencial|
