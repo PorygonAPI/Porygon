@@ -5,6 +5,8 @@ public class Registro {
     private String hora;
     private double velVento;
     private  double temperatura;
+    
+
 
     public double getTemperatura(){
         return temperatura;
