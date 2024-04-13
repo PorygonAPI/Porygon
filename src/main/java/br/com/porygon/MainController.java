@@ -7,9 +7,11 @@ import javafx.scene.control.Label;
 import javafx.stage.FileChooser;
 import javafx.stage.Window;
 import javafx.scene.control.ListView;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
 import javafx.scene.control.TextField;
 
 public class MainController {
@@ -20,7 +22,7 @@ public class MainController {
 
     @FXML
     private Label tempLabel; // Mensagem da temperatura máxima e mínima printada na tela após o input do
-                             // pesquisador
+    // pesquisador
 
     @FXML
     private TextField tempMaxField; // Campo de input da temperatura máxima
@@ -39,11 +41,11 @@ public class MainController {
 
     // Listas
     List<Registro> registros = new ArrayList<Registro>(); // Lista de registros geral, gerada a partir do upload do
-                                                          // arquivo .csv
+    // arquivo .csv
     List<Registro> dadoSuspeito = new ArrayList<Registro>(); // Lista de registros suspeitos, gerada após a execução do
-                                                             // método verificarRegistros
+    // método verificarRegistros
     List<Registro> dadoApurado = new ArrayList<Registro>(); // Lista de registros apurados, gerada a execução do método
-                                                            // verificarRegistros
+    // verificarRegistros
 
     // Métodos de acesso
     public double getTempMaxima() {
@@ -54,26 +56,26 @@ public class MainController {
         return tempMinima;
     }
 
+    public String stringify(Double dado){
+        if(dado == null){
+            return null;
+        }
+        return String.format("%.2f", dado);
+    }
+
     // Método para colher informações das listas geradas no método
     // verificarRegistros e vincular com o fxml
     public void visualizarListas() {
         listViewApurado.getItems().clear();
         for (Registro registro : dadoApurado) {
             String listViewText;
-            if (registro instanceof RegistroAutomatico) {
-                RegistroAutomatico regAut = (RegistroAutomatico) registro;
+            if (registro instanceof RegistroAutomatico regAut) {
                 // Alterar visualização de lista
-                listViewText = "Automático: " + regAut.getData() + " | " + regAut.getHora() + " | "
-                        + regAut.getTemperatura() + " | ";
+                listViewText = "Automático: " + regAut.getData() + " | " + regAut.getHora() + " | " + stringify(regAut.getTemperatura()) + " | " + stringify(regAut.getUmiIns()) + " | " + stringify(regAut.getPtoOrvalhoIns()) + " | " + stringify(regAut.getPressaoIns()) + " | " + stringify(regAut.getVelVento()) + " | " + stringify(regAut.getDirVento()) + " | " + stringify(regAut.getRajVento()) + " | " + stringify(regAut.getRadiacao()) + " | " + stringify(regAut.getChuva());
             } else {
                 // Alterar visualização de lista
                 RegistroManual regManual = (RegistroManual) registro;
-                listViewText = "Manual: " + regManual.getData() + " | " + regManual.getHora() + " | "
-                        + regManual.getTemperatura() + " | " + regManual.getUmi() + " | " + regManual.getPressao()
-                        + " | " + regManual.getVelVento() + " | " + regManual.getDirVento() + " | "
-                        + regManual.getNebulosidade() + " | " + regManual.getInsolacao() + " | "
-                        + regManual.getTempMax() + " | " + regManual.getTempMin() + " | " + regManual.getChuva();
-
+                listViewText = "Manual: " + regManual.getData() + " | " + regManual.getHora() + " | " + stringify(regManual.getTemperatura()) + " | " + stringify(regManual.getUmi()) + " | " + stringify(regManual.getPressao()) + " | " + stringify(regManual.getVelVento()) + " | " + stringify(regManual.getDirVento()) + " | " + stringify(regManual.getNebulosidade()) + " | " + stringify(regManual.getInsolacao()) + " | " + stringify(regManual.getTempMax()) + " | " + stringify(regManual.getTempMin()) + " | " + stringify(regManual.getChuva());
             }
             listViewApurado.getItems().add(listViewText);
         }
@@ -81,20 +83,14 @@ public class MainController {
         for (Registro registro : dadoSuspeito) {
             String listViewText;
 
-            if (registro instanceof RegistroAutomatico) {
+            if (registro instanceof RegistroAutomatico regAut) {
                 // Alterar visualização de lista
-                RegistroAutomatico regAut = (RegistroAutomatico) registro;
-                listViewText = "Automático: " + regAut.getData() + " | " + regAut.getHora() + " | "
-                        + regAut.getTemperatura() + " | ";
+                listViewText = "Automático: " + regAut.getData() + " | " + regAut.getHora() + " | " + stringify(regAut.getTemperatura()) + " | " + stringify(regAut.getUmiIns()) + " | " + stringify(regAut.getPtoOrvalhoIns()) + " | " + stringify(regAut.getPressaoIns()) + " | " + stringify(regAut.getVelVento()) + " | " + stringify(regAut.getDirVento()) + " | " + stringify(regAut.getRajVento()) + " | " + stringify(regAut.getRadiacao()) + " | " + stringify(regAut.getChuva());
             } else {
                 // Alterar visualização de lista
                 RegistroManual regManual = (RegistroManual) registro;
-                listViewText = "Manual: " + regManual.getData() + " | " + regManual.getHora() + " | "
-                        + regManual.getTemperatura() + " | " + regManual.getUmi() + " | " + regManual.getPressao()
-                        + " | " + regManual.getVelVento() + " | " + regManual.getDirVento() + " | "
-                        + regManual.getNebulosidade() + " | " + regManual.getInsolacao() + " | "
-                        + regManual.getTempMax() + " | " + regManual.getTempMin() + " | " + regManual.getChuva();
 
+                listViewText = "Manual: " + regManual.getData() + " | " + regManual.getHora() + " | " + stringify(regManual.getTemperatura()) + " | " + stringify(regManual.getUmi()) + " | " + stringify(regManual.getPressao()) + " | " + stringify(regManual.getVelVento()) + " | " + stringify(regManual.getDirVento()) + " | " + stringify(regManual.getNebulosidade()) + " | " + stringify(regManual.getInsolacao()) + " | " + stringify(regManual.getTempMax()) + " | " + stringify(regManual.getTempMin()) + " | " + stringify(regManual.getChuva());
             }
             listViewSuspeito.getItems().add(listViewText);
         }
@@ -155,8 +151,7 @@ public class MainController {
 
     private void verificarRegistros() {
         for (Registro registro : registros) {
-            if (registro.getTemperatura() == null || registro.getTemperatura() >= tempMaxima
-                    || registro.getTemperatura() <= tempMinima) {
+            if (registro.getTemperatura() == null || registro.getTemperatura() >= tempMaxima || registro.getTemperatura() <= tempMinima) {
                 dadoSuspeito.add(registro);
                 System.out.println("Dado incorreto");
             } else {

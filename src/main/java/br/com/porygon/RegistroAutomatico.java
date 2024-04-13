@@ -17,16 +17,6 @@ public class RegistroAutomatico extends Registro {
     private Double radiacao;
     private Double chuva;
 
-    // public static void main(String[] args) {
-    // // Criar uma instância da classe RegistroAutomatico
-    // RegistroAutomatico registroAuto = new RegistroAutomatico("01/01/2024",
-    // "12:00", 10.5, 293.75);
-    //
-    // // Chamar o método converterEscala
-    // double temperaturaConvertida = registroAuto.converterEscala();
-    //
-    // }
-
     public Double getTempIns() {
         return tempIns;
     }
@@ -51,7 +41,7 @@ public class RegistroAutomatico extends Registro {
         this.tempMin = tempMin;
     }
 
-    public double getUmiIns() {
+    public Double getUmiIns() {
         return umiIns;
     }
 
