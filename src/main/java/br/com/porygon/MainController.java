@@ -146,6 +146,7 @@ public class MainController {
         } catch (NumberFormatException e) {
             // Se a entrada do usuário não puder ser convertida para double
             System.err.println("Por favor, insira valores válidos para as temperaturas.");
+            tempLabel.setText("Por favor, insira valores válidos para as temperaturas.");
         }
     }
 
