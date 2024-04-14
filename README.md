@@ -91,12 +91,11 @@ instalação.
   |------------|------------|--------|
   | Como pesquisador, quero poder carregar meus arquivos contendo variáveis climáticas para que possam ser manipulados e submetidos à análise para minha pesquisa.  |Essencial|1|
   | Como pesquisador, quero que cada arquivo carregado, referente a uma estação específica, tenha seus registros armazenados separadamente por variável climática, para uma melhor organização e análise dos dados.  |Essencial|1|
-  | Como pesquisador, desejo que registros suspeitos nos arquivos sejam identificados durante o processo de carregamento e sejam armazenados separadamente dos registros regulares.  |Essencial|1|
-  | Como pesquisador, desejo poder realizar alterações em tempo real nos elementos contidos no sistema, conforme necessário, para garantir a precisão e a relevância dos dados para minha pesquisa. |Essencial |2|
-  | Como pesquisador, desejo poder excluir elementos do sistema que não sejam mais relevantes para minha pesquisa. |Essencial|2|
-  | Como pesquisador, desejo poder visualizar uma lista de todas as cidades cadastradas no sistema, junto a suas estações meteorológicas associadas. |Essencial|2|
-  | Como pesquisador, desejo ter a capacidade de gerenciar os dados de forma precisa e confiável em minha pesquisa ao realizar alterações, restaurações e exclusões conforme necessário. |Essencial|2|
-  
+  | Como pesquisador, desejo que registros suspeitos nos arquivos sejam identificados durante o processo de carregamento e sejam armazenados separadamente dos registros regulares para facilitar a detecção e análise de anomalias nos dados durante o processo de carregamento.  |Essencial|1|
+  | Como pesquisador, desejo poder alterar, restaurar e excluir dados irregulares quando necessário, garantindo a precisão, integridade e confiabilidade dos dados para minha pesquisa e assegurando a rastreabilidade dos registros no sistema. |Essencial |2|
+  | Como pesquisador, desejo poder escolher um período específico para a geração do relatório de valor médio das variáveis climáticas por cidade, possibilitando uma análise detalhada das condições climáticas ao longo de um período determinado.  |Essencial|2|
+  | Como pesquisador, desejo um relatório de situação que exiba os últimos valores de temperatura, umidade e outras variáveis climáticas relevantes para cada cidade, possibilitando uma compreensão abrangente das condições climáticas. |Essencial|2|
+
   
 
 ## Backlog das Sprints
