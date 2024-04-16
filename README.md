@@ -40,11 +40,9 @@
 ### Objetivos
 > * Projetar um Banco de Dados relacional com múltiplas entidades e relacionamentos;
 > * Organizar Equipes por Competências; 
-> * Levantar e Registrar Requisitos Funcionais e Não Funcionais usando técnicas de 
-Métodos Ágeis e Tradicionais;
+> * Levantar e Registrar Requisitos Funcionais e Não Funcionais usando técnicas de Métodos Ágeis e Tradicionais;
 > * Projetar Arquitetura Lógica do Sistema; 
-> * Implementar Aplicação (com persistência) usando Linguagem de Programação 
-Java Desktop.
+> * Implementar Aplicação (com persistência) usando Linguagem de Programação Java Desktop.
 
 ### Tríade da API
 > * Arquitetura e Modelagem de Banco de Dados - *Prof. Emanuel Mineda Carneiro*
@@ -52,8 +50,8 @@ Java Desktop.
 > * Laboratório de Desenvolvimento em Banco de Dados II - *Prof.ª Dr.ª Adriana da Silva Jacinto*
 
 ### Prazos
-> - [ ] 04/03 a 08/03 - *Kick-off*
-> - [ ] 25/03 a 14/04 - *Primeira Sprint*
+> - [x] 04/03 a 08/03 - *Kick-off*
+> - [x] 25/03 a 14/04 - *Primeira Sprint*
 > - [ ] 15/04 a 05/05 - *Segunda Sprint*
 > - [ ] 06/05 a 26/05 - *Terceira Sprint*
 > - [ ] 27/05 a 16/06 - *Quarta Sprint*
@@ -94,19 +92,15 @@ instalação.
 
 ## Backlog do Produto
 
-  | USER STORY | PRIORIDADE |
-  |------------|------------|
-  | Como Administrador da instituição, preciso cadastrar os Líderes dos Grupos para que façam login |Essencial|
-  | Como Administrador da instituição, preciso cadastrar os Fake Clients para que façam login |Essencial|
-  | Como Líder do Grupo, preciso criar Times para realizar o cadastro de usuários |Essencial|
-  | Como Líder do Grupo, preciso cadastrar usuários dentro de um Time para que façam login |Essencial
-  | Como Líder do Grupo, preciso definir a função dos usuário dentro de um Time, que será utilizada como base para suas respectivas permissões |Essencial|
-  | Como Líder do Grupo, preciso criar um cronograma de Sprints dentro do meu grupo, que será a base para os prazos das avaliações |Essencial|
-  | Como Líder do Grupo, terei a funcionalidade de desativar usuários e times para possíveis desligamentos ou finalização do projeto |Desejável|
-  | Como Líder do Grupo, avaliarei os Líderes Técnicos do meu grupo conforme requisito funcional | Essencial |
-  | Como Fake Client, avaliarei os POs do meu grupo conforme requisito funcional | Essencial |
-  | Como PO, avaliarei o Líder Técnico, estudantes do meu time e a mim mesmo como requisito funcional | Essencial|
-  | Como estudante, avaliarei todos os outros itegrantes do meu time e a mim mesmo como requisito funcional | Essencial |
+  | USER STORY | PRIORIDADE | SPRINT |
+  |------------|------------|--------|
+  | Como pesquisador, quero poder carregar meus arquivos contendo variáveis climáticas para que possam ser manipulados e submetidos à análise para minha pesquisa.  |Essencial|1|
+  | Como pesquisador, quero que cada arquivo carregado, referente a uma estação específica, tenha seus registros armazenados separadamente por variável climática, para uma melhor organização e análise dos dados.  |Essencial|1|
+  | Como pesquisador, desejo que registros suspeitos nos arquivos sejam identificados durante o processo de carregamento e sejam armazenados separadamente dos registros regulares para facilitar a detecção e análise de anomalias nos dados durante o processo de carregamento.  |Essencial|1|
+  | Como pesquisador, desejo poder alterar, restaurar e excluir dados irregulares quando necessário, garantindo a precisão, integridade e confiabilidade dos dados para minha pesquisa e assegurando a rastreabilidade dos registros no sistema. |Essencial |2|
+  | Como pesquisador, desejo poder escolher um período específico para a geração do relatório de valor médio das variáveis climáticas por cidade, possibilitando uma análise detalhada das condições climáticas ao longo de um período determinado.  |Essencial|2|
+  | Como pesquisador, desejo um relatório de situação que exiba os últimos valores de temperatura, umidade e outras variáveis climáticas relevantes para cada cidade, possibilitando uma compreensão abrangente das condições climáticas. |Essencial|2|
+
   
 
 ## Backlog das Sprints
@@ -114,58 +108,32 @@ instalação.
 <details>
 <summary> SPRINT 1 </summary>
 
- 
-* Criação do usuario *Administrador*
-* Sistema de cadastramento de grupos e usuários (Líder do Grupo e Fake Client) por parte do *Administrador* 
-* Sistema de cadastramento e configuração de Sprints pelo *Líder do Grupo*
-* Sistema de cadastramento e configuração de Times pelo *Líder do Grupo*
-* Sistema de cadastramento de usuários pelo *Líder do Grupo*
-* Criação da funcionalidade de Login
-* Retorno para os usuários das Sprints e usuários que ele deve avaliar
+
+* Criação de interface para utilização do pesquisador;
+* Carregamento de arquivos CSV;
+* Organização de dados por estação climática e tipo de registro (automático ou manual);
+* Separação de dados por variáveis climáticas;
+* Criação de input para receber do pesquisador as temperaturas máxima e mínima consideradas válidas;
+* Verificação de dados e identificação de registros suspeitos;
+* Validação de registros que se enquadram na temperatura esperada;
+* Separação de registros considerados suspeitos;
+
+![Porygon](https://github.com/Porygonn/Porygon/assets/111442399/0f90ad58-3cdf-4cdc-bf8f-a5ce625386cf)
+
  </details>
 
 <details>
 <summary> SPRINT 2 </summary>
 
-
-* Cumprir as pendências da sprint 1
-* Criação da funcionalidade de avaliação
-* Criação da funcionalidade feedback
-* Integração do sistema de avaliação ao perfil dos usuários com o retorno das sprints e integrantes que ele deve avaliar
-* Criação da funcionalidade de Logout
  </details>
  
  <details>
 <summary> SPRINT 3 </summary>
 
-
-* Criação dos dashboards individuais dos estudantes
-* Criação dos dashboard de acompanhamento do grupo
-* Retorno da funcionalidade de dashboard na tela home
  </details>
  
   <details>
 <summary> SPRINT 4 </summary>
 
-
-* Criação dos dashboards individuais dos estudantes
-* Criação dos dashboard de acompanhamento do grupo
-* Retorno da funcionalidade de dashboard na tela home
  </details>
-    
-
-## Acordos do time
-
   
-
-1. Vamos trabalhar com **GitFlow** (mais informações leia o CONTRIBUTING.md);
-
-2. Vamos utilizar o GitHub como ferramenta Git;
-
-3. Vamos utilizar **issues** como **tarefas** do *User Stories* para um maior controle das atividades e rastreabilidade;
-
-4. Para gestão de projetos como um todo, vamos utilizar o Projects do GitHub.
-
-5. O documento deve sempre estar atualizado
-
-6. Todo e qualquer atividade criada, deve haver testes (exceto documentação)
