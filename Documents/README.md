@@ -1,3 +1,8 @@
+![API 2º SEMESTRE EM BANCO DE DADOS (2)](https://github.com/Porygonn/Porygon/assets/111442399/ad146d27-11e7-493d-bc00-03763d2e5f52)
+
+| [Sprint 1](#sprint-1) |  [Sprint 2](#sprint-2) |
+
+
 ## Sprint 1
 
 * Como pesquisador, quero poder carregar meus arquivos contendo variáveis climáticas para que possam ser manipulados e submetidos à análise para minha pesquisa.  
@@ -18,6 +23,18 @@
         - Marcação e Separação dos Registros Suspeitos: Os registros identificados como suspeitos devem ser marcados e separados dos registros regulares, para que possam ser tratados de forma adequada durante a análise posterior. Isso pode ser feito atribuindo um marcador especial aos registros suspeitos ou armazenando-os em um local específico no sistema;
         - Registro da Razão da Suspeita: É importante que o sistema registre a razão pela qual um registro foi considerado suspeito. 
 
+* Critérios de Aceitação:
+    - Carregaramento de arquivos csv contendo dados de variáveis, utilizando uma interface intuitiva e amigável;
+    - Os registros de dados devem ser separados por variável climática;
+    - Cada registro de dados deve conter informações de identificação, incluindo data e hora da medição;
+    - O sistema deve ser capaz de identificar e marcar registros suspeitos;
+    - Os registros identificados como suspeitos devem ser separados dos registros regulares.
+
+### Gráfico de BurnDown
+
+![IMG-20240425-WA0024 (1)](https://github.com/Porygonn/Porygon/assets/142633184/dda168d4-afc8-440f-a6a7-32eff9e83118)
+
+### WireFrames
 ![image](https://github.com/Porygonn/Porygon/assets/142633184/daa55d71-990a-4b02-b795-5cfa634921a2)
 
 ![image](https://github.com/Porygonn/Porygon/assets/142633184/72f8286b-a31e-4b4b-b19d-29fd7792e513)
@@ -27,12 +44,12 @@
 ![image](https://github.com/Porygonn/Porygon/assets/142633184/44ed82fb-37d8-4df1-8fed-3c60ecd9dd8c)
 
 ## Sprint 2
-* Como pesquisador, desejo poder alterar, restaurar e excluir dados irregulares quando necessário, garantindo a precisão, integridade e confiabilidade dos dados para minha pesquisa e assegurando a rastreabilidade dos registros no sistema. 
+* Como pesquisador, desejo um relatório que me permita calcular os elementos necessários para plotar um gráfico boxplot com base nos dados de uma estação em uma data específica. Isso me proporcionará uma visualização clara da distribuição e variabilidade dos dados climáticos, facilitando análises detalhadas em minha pesquisa.
 
-    - Essa user story visa fornecer ao pesquisador as ferramentas necessárias para manter a precisão, integridade e confiabilidade dos dados utilizados em suas pesquisas, ao mesmo tempo em que garante a conformidade com os requisitos. 
-        - Alterar Dados Irregulares: O pesquisador devem ter a capacidade de modificar dados que foram identificados como irregulares;
-        - Restaurar Dados: Pode ser necessário restaurar dados alterados ou dados que se mostrarem 'coesos' para a planilha de dados "normais";
-        - Excluir Dados Irregulares: Quando os dados forem considerados irreparáveis ou não confiáveis, o pesquisador deve ter a capacidade de excluí-los do sistema. Isso garante que apenas dados precisos e confiáveis sejam utilizados na pesquisa.
+    - Essa user story visa fornecer ao pesquisador uma ferramenta poderosa para explorar e compreender a distribuição dos dados climáticos de uma estação específica em uma data determinada.
+        - Seleção Data: O pesquisador deve poder especificar a data para a qual deseja analisar os dados e gerar o gráfico boxplot.
+        - Cálculo dos Elementos do Boxplot: Com base nos dados coletados, o sistema deve calcular os elementos necessários para construir o gráfico boxplot, como mínimo, primeiro quartil, mediana, terceiro quartil e máximo, proporcionando uma representação visual da distribuição dos dados.
+        - Após o cálculo dos elementos do boxplot, o sistema deve gerar um relatório detalhado que apresente os resultados de forma clara e organizada, facilitando a interpretação e análise pelo pesquisador.
 
 * Como pesquisador, desejo um relatório de situação que exiba as médias dos últimos valores das variáveis climáticas relevantes para cada cidade, possibilitando uma compreensão abrangente das condições climáticas. 
 
@@ -46,6 +63,13 @@
         - Flexibilidade de Intervalos: A funcionalidade deve oferecer flexibilidade na escolha do intervalo de tempo, permitindo ao pesquisador selecionar períodos de tempo curtos (ex, uma semana) ou mais longos (ex, um mês ou um ano), conforme necessário para a pesquisa em questão;
         - Cálculo das Médias Personalizado: O relatório deve calcular as médias das variáveis climáticas relevantes dentro do período especificado pelo pesquisador para cada cidade incluída no relatório.
 
+* Critérios de Aceitação:
+    - Cálculo dos Elementos do Boxplot: O sistema deve calcular os elementos necessários para o gráfico boxplot, incluindo mínimo, primeiro quartil, mediana, terceiro quartil e máximo;
+    - Cálculo das Médias: O relatório deve calcular as médias dos últimos valores das variáveis climáticas relevantes para cada cidade;
+    - Seleção de Período Específico: O pesquisador deve poder escolher um período de tempo para a geração do relatório;
+    - Seleção de Data: O sistema deve permitir que o pesquisador especifique a data para análise dos dados climáticos.
+
+### WireFrames
 ![image](https://github.com/Porygonn/Porygon/assets/142633184/f770607b-7a2b-47e5-a36a-28c1c132db09)
 
 ![image](https://github.com/Porygonn/Porygon/assets/142633184/e064c3e7-82cb-4a66-9a1e-5835459c2b3f)
