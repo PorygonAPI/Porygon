@@ -1,7 +1,7 @@
 package br.com.porygon;
 
 public class RegistroAutomatico extends Registro {
-    private Double tempIns;
+    private Double temp;
     private Double tempMax;
     private Double tempMin;
     private Double umiIns;
@@ -10,7 +10,7 @@ public class RegistroAutomatico extends Registro {
     private Double ptoOrvalhoIns;
     private Double ptoOrvalhoMax;
     private Double ptoOrvalhoMin;
-    private Double pressaoIns;
+    private Double pressao;
     private Double pressaoMax;
     private Double pressaoMin;
     private Double rajVento;
@@ -18,11 +18,11 @@ public class RegistroAutomatico extends Registro {
     private Double chuva;
 
     public Double getTempIns() {
-        return tempIns;
+        return temp;
     }
 
-    public void setTempIns(Double tempIns) {
-        this.tempIns = tempIns;
+    public void setTempIns(Double temp) {
+        this.temp = temp;
     }
 
     public Double getTempMax() {
@@ -90,11 +90,11 @@ public class RegistroAutomatico extends Registro {
     }
 
     public Double getPressaoIns() {
-        return pressaoIns;
+        return pressao;
     }
 
-    public void setPressaoIns(Double pressaoIns) {
-        this.pressaoIns = pressaoIns;
+    public void setPressaoIns(Double pressao) {
+        this.pressao = pressao;
     }
 
     public Double getPressaoMax() {
@@ -137,12 +137,12 @@ public class RegistroAutomatico extends Registro {
         this.chuva = chuva;
     }
 
-    public RegistroAutomatico(String data, String hora, Double velVento, Double dirVento, Double tempIns,
+    public RegistroAutomatico(String data, String hora, Double velVento, Double dirVento, Double temp,
             Double tempMax, Double tempMin, Double umiIns, Double umiMax, Double umiMin, Double ptoOrvalhoIns,
-            Double ptoOrvalhoMax, Double ptoOrvalhoMin, Double pressaoIns, Double pressaoMax, Double pressaoMin,
+            Double ptoOrvalhoMax, Double ptoOrvalhoMin, Double pressao, Double pressaoMax, Double pressaoMin,
             Double rajVento, Double radiacao, Double chuva) {
         super(data, hora, velVento, dirVento);
-        this.tempIns = tempIns;
+        this.temp = temp;
         this.tempMax = tempMax;
         this.tempMin = tempMin;
         this.umiIns = umiIns;
@@ -151,13 +151,13 @@ public class RegistroAutomatico extends Registro {
         this.ptoOrvalhoIns = ptoOrvalhoIns;
         this.ptoOrvalhoMax = ptoOrvalhoMax;
         this.ptoOrvalhoMin = ptoOrvalhoMin;
-        this.pressaoIns = pressaoIns;
+        this.pressao = pressao;
         this.pressaoMax = pressaoMax;
         this.pressaoMin = pressaoMin;
         this.rajVento = rajVento;
         this.radiacao = radiacao;
         this.chuva = chuva;
-        setTemperatura(tempIns);
+        setTemperatura(temp);
     }
 
 }

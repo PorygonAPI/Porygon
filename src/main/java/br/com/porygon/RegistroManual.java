@@ -10,10 +10,10 @@ public class RegistroManual extends Registro {
     private Double tempMin = null;
     private Double chuva = null;
 
-    public Double converterEscala(Double tempInst) {
+    public Double converterEscala(Double temp) {
         // Obtém a temperatura da instância atual de RegistroAutomatico
-        if(tempInst != null){
-            double temperaturaCelsius = tempInst - 273.15;
+        if(temp != null){
+            double temperaturaCelsius = temp - 273.15;
             return temperaturaCelsius;
         }
         return null;

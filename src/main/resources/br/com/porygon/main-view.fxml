@@ -4,18 +4,38 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox spacing="20.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.porygon.MainController">
+<VBox spacing="10.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.porygon.MainController">
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>
     <HBox spacing="10.0">
         <Button onAction="#selectFilesClick" text="Insira um arquivo" />
     </HBox>
-    <HBox spacing="10.0">
-        <TextField fx:id="tempMaxField" promptText="Temperatura Máxima"/>
-        <TextField fx:id="tempMinField" promptText="Temperatura Mínima"/>
-        <Button onAction="#verificar" text="Verificar" />
-    </HBox>
+    <VBox spacing="10.0">
+        <HBox spacing="10.0">
+            <TextField fx:id="tempMaxField" promptText="Temperatura Máxima"/>
+            <TextField fx:id="tempMinField" promptText="Temperatura Mínima"/>
+            <TextField fx:id="umiMaxField" promptText="Umidade Máxima"/>
+            <TextField fx:id="umiMinField" promptText="Umidade Mínima"/>
+        </HBox>
+        <HBox spacing="10.0">
+            <TextField fx:id="presMaxField" promptText="Pressão Máxima"/>
+            <TextField fx:id="presMinField" promptText="Pressão Mínima"/>
+            <TextField fx:id="nebuMaxField" promptText="Nebulosidade Máxima"/>
+            <TextField fx:id="nebuMinField" promptText="Nebulosidade Mínima"/>
+        </HBox>
+        <HBox spacing="10.0">
+            <TextField fx:id="ventoMaxField" promptText="Pressão Máxima"/>
+            <TextField fx:id="ventoMinField" promptText="Pressão Mínima"/>
+            <TextField fx:id="insoMaxField" promptText="Pressão Máxima"/>
+            <TextField fx:id="insoMinField" promptText="Pressão Mínima"/>
+        </HBox>
+        <HBox spacing="10.0">
+            <TextField fx:id="chuMaxField" promptText="Nebulosidade Máxima"/>
+            <TextField fx:id="chuMinField" promptText="Nebulosidade Mínima"/>
+        </HBox>
+    </VBox>
+    <Button onAction="#verificar" text="Verificar" />
     <Label fx:id="selectedFilesLabel" />
     <Label fx:id="tempLabel" />
     <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE">
