@@ -21,6 +21,8 @@
 
 ### Integrantes da Equipe
 
+![integrantes](https://github.com/Porygonn/Porygon/assets/142633184/284ba78e-98cd-4dbf-83a2-e024f7e90570)
+
 |Integrantes|Redes Sociais|
 |-------|--------|
 |[João Pedro - Product Owner](https://github.com/BispoJPM)| <a href="https://www.linkedin.com/in/jo%C3%A3o-pedro-marcondes-563369181/" target="_blank"><img src="https://img.shields.io/badge/-LinkedIn-%230077B5?style=for-the-badge&logo=linkedin&logoColor=white" target="_blank"></a> <a href="https://github.com/BispoJPM" target="_blank"><img src="https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white"></a> |
@@ -97,7 +99,7 @@ instalação.
   | Como pesquisador, quero poder carregar meus arquivos contendo variáveis climáticas para que possam ser manipulados e submetidos à análise para minha pesquisa.  |Essencial|1|
   | Como pesquisador, quero que cada arquivo carregado, referente a uma estação específica, tenha seus registros armazenados separadamente por variável climática, para uma melhor organização e análise dos dados.  |Essencial|1|
   | Como pesquisador, desejo que registros suspeitos nos arquivos sejam identificados durante o processo de carregamento e sejam armazenados separadamente dos registros regulares para facilitar a detecção e análise de anomalias nos dados durante o processo de carregamento.  |Essencial|1|
-  | Como pesquisador, desejo poder alterar, restaurar e excluir dados irregulares quando necessário, garantindo a precisão, integridade e confiabilidade dos dados para minha pesquisa e assegurando a rastreabilidade dos registros no sistema. |Essencial |2|
+  | Como pesquisador, desejo calcular os elementos necessários para plotar um gráfico boxplot com base nos dados de uma estação em uma data específica. Isso me proporcionará uma visualização clara da distribuição e variabilidade dos dados climáticos, facilitando análises detalhadas em minha pesquisa. |Essencial |2|
   | Como pesquisador, desejo poder escolher um período específico para a geração do relatório de valor médio das variáveis climáticas por cidade, possibilitando uma análise detalhada das condições climáticas ao longo de um período determinado.  |Essencial|2|
   | Como pesquisador, desejo um relatório de situação que exiba os últimos valores de temperatura, umidade e outras variáveis climáticas relevantes para cada cidade, possibilitando uma compreensão abrangente das condições climáticas. |Essencial|2|
 
