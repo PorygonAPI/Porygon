@@ -4,6 +4,8 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
 <VBox spacing="20.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.porygon.MainController">
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
@@ -16,20 +18,14 @@
         <TextField fx:id="tempMinField" promptText="Temperatura Mínima"/>
         <Button onAction="#verificar" text="Verificar" />
     </HBox>
-    <HBox spacing="10.0">
-        <!--<Label text="Data inicial: "/>-->
-        <DatePicker fx:id="startDatePicker" prefWidth="200" prefHeight="40" />
-        <!--<Label text="Data final: "/>-->
-        <DatePicker fx:id="endDatePicker" prefWidth="200" prefHeight="40" />
-    </HBox>
     <Label fx:id="selectedFilesLabel" />
     <Label fx:id="tempLabel" />
-    <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE">
+    <TabPane prefHeight="400.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
             <Tab text="Climas com dados apurados">
                 <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-                    <VBox spacing="10.0" alignment="CENTER">
+                    <VBox spacing="15.0" alignment="CENTER">
                         <ListView fx:id="listViewApurado" />
                     </VBox>
                 </content>
@@ -37,8 +33,57 @@
             <Tab text="Climas com dados suspeitos">
                 <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-                    <VBox spacing="10.0" alignment="CENTER">
+                    <VBox spacing="15.0" alignment="CENTER">
                         <ListView fx:id="listViewSuspeito" />
+                    </VBox>
+                </content>
+            </Tab>
+            <Tab text="Relatório">
+                <content>
+                    <VBox spacing="15.0" alignment="CENTER">
+                        <ListView fx:id="listrelatorio" />
+
+                        <HBox spacing="10.0" alignment="CENTER">
+                            <Label text="Data inicial: " />
+                            <DatePicker fx:id="startDatePicker" prefWidth="200" prefHeight="40" />
+                            <Label text="Data final: " />
+                            <DatePicker fx:id="endDatePicker" prefWidth="200" prefHeight="40" />
+                            <Label text="Escolha o período: " />
+                            <ComboBox fx:id="hourIntervalComboBox" prefWidth="200" prefHeight="40">
+                                <items>
+                                    <FXCollections fx:factory="observableArrayList">
+                                        <String fx:value="1 hora" />
+                                        <String fx:value="2 horas" />
+                                        <String fx:value="3 horas" />
+                                        <String fx:value="4 horas" />
+                                        <String fx:value="5 horas" />
+                                        <String fx:value="6 horas" />
+                                        <String fx:value="7 horas" />
+                                        <String fx:value="8 horas" />
+                                        <String fx:value="9 horas" />
+                                        <String fx:value="10 horas" />
+                                        <String fx:value="11 horas" />
+                                        <String fx:value="12 horas" />
+                                        <String fx:value="13 horas" />
+                                        <String fx:value="14 horas" />
+                                        <String fx:value="15 horas" />
+                                        <String fx:value="16 horas" />
+                                        <String fx:value="17 horas" />
+                                        <String fx:value="18 horas" />
+                                        <String fx:value="19 horas" />
+                                        <String fx:value="20 horas" />
+                                        <String fx:value="21 horas" />
+                                        <String fx:value="22 horas" />
+                                        <String fx:value="23 horas" />
+                                        <String fx:value="24 horas" />
+                                    </FXCollections>
+                                </items>
+                            </ComboBox>
+                        </HBox>
+                        <HBox spacing="20.0" alignment="CENTER">
+                        <Button onAction="#gerar" text="Gerar" prefWidth="100" prefHeight="80" />
+                        <Button onAction="#exportar" text="Exportar" prefWidth="100" prefHeight="80" />
+                        </HBox>
                     </VBox>
                 </content>
             </Tab>

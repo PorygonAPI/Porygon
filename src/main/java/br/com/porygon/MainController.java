@@ -170,4 +170,9 @@ public class MainController {
         visualizarListas();
     }
 
+    public void exportar(ActionEvent actionEvent) {
+    }
+
+    public void gerar(ActionEvent actionEvent) {
+    }
 }
