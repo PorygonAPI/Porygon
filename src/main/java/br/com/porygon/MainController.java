@@ -78,11 +78,11 @@ public class MainController {
             String listViewText;
             if (registro instanceof RegistroAutomatico regAut) {
                 // Alterar visualização de lista
-                listViewText = "Automático: " + regAut.getData() + " | " + regAut.getHora() + " | " + stringify(regAut.getTemperatura()) + " | " + stringify(regAut.getUmiIns()) + " | " + stringify(regAut.getPtoOrvalhoIns()) + " | " + stringify(regAut.getPressaoIns()) + " | " + stringify(regAut.getVelVento()) + " | " + stringify(regAut.getDirVento()) + " | " + stringify(regAut.getRajVento()) + " | " + stringify(regAut.getRadiacao()) + " | " + stringify(regAut.getChuva());
+                listViewText = "Automático - Data: " + regAut.getData() + " | Hora: " + regAut.getHora() + " | Temperatura (Ist): " + stringify(regAut.getTemperatura()) + " | Umidade (Ins): " + stringify(regAut.getUmiIns()) + " | Orvalho (Ins): " + stringify(regAut.getPtoOrvalhoIns()) + " | Pressão (Ins): " + stringify(regAut.getPressaoIns()) + " | Velocidade do Vento:  " + stringify(regAut.getVelVento()) + " | Direção do Vento: " + stringify(regAut.getDirVento()) + " | Rajada Vento: " + stringify(regAut.getRajVento()) + " | Radiação " + stringify(regAut.getRadiacao()) + " | Chuva: " + stringify(regAut.getChuva());
             } else {
                 // Alterar visualização de lista
                 RegistroManual regManual = (RegistroManual) registro;
-                listViewText = "Manual: " + regManual.getData() + " | " + regManual.getHora() + " | " + stringify(regManual.getTemperatura()) + " | " + stringify(regManual.getUmi()) + " | " + stringify(regManual.getPressao()) + " | " + stringify(regManual.getVelVento()) + " | " + stringify(regManual.getDirVento()) + " | " + stringify(regManual.getNebulosidade()) + " | " + stringify(regManual.getInsolacao()) + " | " + stringify(regManual.getTempMax()) + " | " + stringify(regManual.getTempMin()) + " | " + stringify(regManual.getChuva());
+                listViewText = "Manual - Data: " + regManual.getData() + " | Hora: " + regManual.getHora() + " | Temperatura (Ist): " + stringify(regManual.getTemperatura()) + " | Umidade: " + stringify(regManual.getUmi()) + " | Pressão: " + stringify(regManual.getPressao()) + " | Velocidade do Vento: " + stringify(regManual.getVelVento()) + " | Direção do Vento: " + stringify(regManual.getDirVento()) + " | Nebulosidade: " + stringify(regManual.getNebulosidade()) + " | Insolação:  " + stringify(regManual.getInsolacao()) + " | Temperatura Máxima " + stringify(regManual.getTempMax()) + " | Temperatura Minima:  " + stringify(regManual.getTempMin()) + " | Chuva:  " + stringify(regManual.getChuva());
             }
             listViewApurado.getItems().add(listViewText);
         }
@@ -92,12 +92,12 @@ public class MainController {
 
             if (registro instanceof RegistroAutomatico regAut) {
                 // Alterar visualização de lista
-                listViewText = "Automático: " + regAut.getData() + " | " + regAut.getHora() + " | " + stringify(regAut.getTemperatura()) + " | " + stringify(regAut.getUmiIns()) + " | " + stringify(regAut.getPtoOrvalhoIns()) + " | " + stringify(regAut.getPressaoIns()) + " | " + stringify(regAut.getVelVento()) + " | " + stringify(regAut.getDirVento()) + " | " + stringify(regAut.getRajVento()) + " | " + stringify(regAut.getRadiacao()) + " | " + stringify(regAut.getChuva());
+                listViewText = "Automático - Data: " + regAut.getData() + " | Hora: " + regAut.getHora() + " | Temperatura (Ist): " + stringify(regAut.getTemperatura()) + " | Umidade (Ins): " + stringify(regAut.getUmiIns()) + " | Orvalho (Ins): " + stringify(regAut.getPtoOrvalhoIns()) + " | Pressão (Ins): " + stringify(regAut.getPressaoIns()) + " | Velocidade do Vento: " + stringify(regAut.getVelVento()) + " | Direção do Vento: " + stringify(regAut.getDirVento()) + " | Rajada Vento: " + stringify(regAut.getRajVento()) + " | Radiação " + stringify(regAut.getRadiacao()) + " | Chuva: " + stringify(regAut.getChuva());
             } else {
                 // Alterar visualização de lista
                 RegistroManual regManual = (RegistroManual) registro;
 
-                listViewText = "Manual: " + regManual.getData() + " | " + regManual.getHora() + " | " + stringify(regManual.getTemperatura()) + " | " + stringify(regManual.getUmi()) + " | " + stringify(regManual.getPressao()) + " | " + stringify(regManual.getVelVento()) + " | " + stringify(regManual.getDirVento()) + " | " + stringify(regManual.getNebulosidade()) + " | " + stringify(regManual.getInsolacao()) + " | " + stringify(regManual.getTempMax()) + " | " + stringify(regManual.getTempMin()) + " | " + stringify(regManual.getChuva());
+                listViewText = "Manual - Data: " + regManual.getData() + " | Hora: " + regManual.getHora() + " | Temperatura (Ist): " + stringify(regManual.getTemperatura()) + " | Umidade (Ins): " + stringify(regManual.getUmi()) + " | Pressão " + stringify(regManual.getPressao()) + " | Velocidade do Vento: " + stringify(regManual.getVelVento()) + " | Direção do Vento: " + stringify(regManual.getDirVento()) + " | Nebulosidade: " + stringify(regManual.getNebulosidade()) + " | Insolação: " + stringify(regManual.getInsolacao()) + " | Temperatura Máxima " + stringify(regManual.getTempMax()) + " | Temperatura Minima: " + stringify(regManual.getTempMin()) + " | Chuva: " + stringify(regManual.getChuva());
             }
             listViewSuspeito.getItems().add(listViewText);
         }
