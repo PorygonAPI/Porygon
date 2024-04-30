@@ -210,6 +210,49 @@ public class MainController {
         }
     }
 
+    
+    // @FXML
+    // public void gerar() {
+    //     // Obtém as datas inicial e final selecionadas pelo usuário na interface
+    //     LocalDate dataInicial = startDatePicker.getValue();
+    //     LocalDate dataFinal = endDatePicker.getValue();
+
+    //     // Verifica se as datas foram selecionadas
+    //     if (dataInicial != null && dataFinal != null) {
+    //         // Calcula a média das temperaturas para o intervalo de datas especificado
+    //         double mediaTemperatura = calcularMediaTemperatura(dataInicial, dataFinal);
+
+    //         // Limpa a lista e adiciona o resultado da média juntamente com as informações
+    //         listrelatorio.getItems().clear();
+    //         listrelatorio.getItems().add("Data Inicial: " + dataInicial.toString() + ", Data Final: "
+    //                 + dataFinal.toString() + ", Média da temperatura: " + mediaTemperatura);
+    //     } else {
+    //         System.out.println("Por favor, selecione as datas inicial e final.");
+    //     }
+    // }
+
+    // public double calcularMediaTemperatura(LocalDate dataInicial, LocalDate dataFinal) {
+    //     double somaTemperaturas = 0.0;
+    //     int quantidadeRegistros = 0;
+    
+    //     for (Registro registro : dadoApurado) {
+    //         String dataRegistro = registro.getData();
+    
+    //         // Verifica se a data do registro está dentro do intervalo especificado
+    //         if (dataRegistro != null && !dataRegistro.isBefore(dataInicial) && !dataRegistro.isAfter(dataFinal)) {
+    //             // Verifica se o registro é do tipo RegistroAutomatico ou RegistroManual
+    //             if (registro instanceof RegistroAutomatico) {
+    //                 RegistroAutomatico regAut = (RegistroAutomatico) registro;
+    //                 somaTemperaturas += regAut.getTemperatura();
+    //                 quantidadeRegistros++;
+    //             } else if (registro instanceof RegistroManual) {
+    //                 RegistroManual regManual = (RegistroManual) registro;
+    //                 somaTemperaturas += regManual.getTemperatura();
+    //                 quantidadeRegistros++;
+    //             }
+    //         }
+    //     }
+
     public void exportar(@SuppressWarnings("exports") ActionEvent actionEvent) {
 //        ObservableList<String> dados = listrelatorio.getClass();
 //        StringBuilder csvBuilder = new StringBuilder();
