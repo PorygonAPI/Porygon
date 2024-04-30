@@ -46,6 +46,9 @@ public class Arquivo {
                         Double chuva = null;
 
                         for (int i = 0; i < split.length; i++) {
+                            // Remove as aspas duplas, se existirem, antes de fazer a conversão
+                            split[i] = split[i].replace("\"", "");
+                            
                             if (!split[i].isEmpty()) {
                                 switch (i) {
                                     case 0:
