@@ -3,6 +3,7 @@ package br.com.porygon;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.stage.FileChooser;
 import javafx.stage.Window;
@@ -38,6 +39,12 @@ public class MainController {
 
     @FXML
     private ListView<String> listViewSuspeito; // Atributo para visualizar a lista de registros apurados na tela
+
+    @FXML
+    private DatePicker startDatePicker; //DatePicker para data inicial
+
+    @FXML
+    private DatePicker endDatePicker; //DatePicker para data final
 
     // Listas
     List<Registro> registros = new ArrayList<Registro>(); // Lista de registros geral, gerada a partir do upload do

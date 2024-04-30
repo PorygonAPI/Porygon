@@ -16,6 +16,12 @@
         <TextField fx:id="tempMinField" promptText="Temperatura Mínima"/>
         <Button onAction="#verificar" text="Verificar" />
     </HBox>
+    <HBox spacing="10.0">
+        <!--<Label text="Data inicial: "/>-->
+        <DatePicker fx:id="startDatePicker" prefWidth="200" prefHeight="40" />
+        <!--<Label text="Data final: "/>-->
+        <DatePicker fx:id="endDatePicker" prefWidth="200" prefHeight="40" />
+    </HBox>
     <Label fx:id="selectedFilesLabel" />
     <Label fx:id="tempLabel" />
     <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE">
