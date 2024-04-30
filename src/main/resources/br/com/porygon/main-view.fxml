@@ -81,8 +81,9 @@
                             </ComboBox>
                         </HBox>
                         <HBox spacing="20.0" alignment="CENTER">
-                        <Button onAction="#gerar" text="Gerar" prefWidth="100" prefHeight="80" />
-                        <Button onAction="#exportar" text="Exportar" prefWidth="100" prefHeight="80" />
+                            <Button onAction="#gerar" text="Gerar" prefWidth="100" prefHeight="80" />
+
+                            <Button onAction="#exportar" text="Exportar" prefWidth="100" prefHeight="80" />
                         </HBox>
                     </VBox>
                 </content>
