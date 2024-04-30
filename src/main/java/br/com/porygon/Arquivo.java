@@ -151,44 +151,48 @@ public class Arquivo {
 
                         for (int i = 0; i < split.length; i++) {
                             if (!split[i].isEmpty()) {
-                                switch (i) {
-                                    case 0:
-                                        data = split[i];
-                                        break;
-                                    case 1:
-                                        hora = split[i];
-                                        break;
-                                    case 2:
-                                        temp = Double.parseDouble(split[i].replace(",", "."));
-                                        break;
-                                    case 3:
-                                        umi = Double.parseDouble(split[i].replace(",", "."));
-                                        break;
-                                    case 4:
-                                        pressao = Double.parseDouble(split[i].replace(",", "."));
-                                        break;
-                                    case 5:
-                                        velVento = Double.parseDouble(split[i].replace(",", "."));
-                                        break;
-                                    case 6:
-                                        dirVento = Double.parseDouble(split[i].replace(",", "."));
-                                        break;
-                                    case 7:
-                                        nebulosidade = Double.parseDouble(split[i].replace(",", "."));
-                                        break;
-                                    case 8:
-                                        insolacao = Double.parseDouble(split[i].replace(",", "."));
-                                        break;
-                                    case 9:
-                                        tempMax = Double.parseDouble(split[i].replace(",", "."));
-                                        break;
-                                    case 10:
-                                        tempMin = Double.parseDouble(split[i].replace(",", "."));
-                                        break;
-                                    case 11:
-                                        chuva = Double.parseDouble(split[i].replace(",", "."));
-                                        break;
-                                }
+                                try {
+                                    switch (i) {
+                                        case 0:
+                                            data = split[i];
+                                            break;
+                                        case 1:
+                                            hora = split[i];
+                                            break;
+                                        case 2:
+                                            temp = Double.parseDouble(split[i].replace(",", "."));
+                                            break;
+                                        case 3:
+                                            umi = Double.parseDouble(split[i].replace(",", "."));
+                                            break;
+                                        case 4:
+                                            pressao = Double.parseDouble(split[i].replace(",", "."));
+                                            break;
+                                        case 5:
+                                            velVento = Double.parseDouble(split[i].replace(",", "."));
+                                            break;
+                                        case 6:
+                                            dirVento = Double.parseDouble(split[i].replace(",", "."));
+                                            break;
+                                        case 7:
+                                            nebulosidade = Double.parseDouble(split[i].replace(",", "."));
+                                            break;
+                                        case 8:
+                                            insolacao = Double.parseDouble(split[i].replace(",", "."));
+                                            break;
+                                        case 9:
+                                            tempMax = Double.parseDouble(split[i].replace(",", "."));
+                                            break;
+                                        case 10:
+                                            tempMin = Double.parseDouble(split[i].replace(",", "."));
+                                            break;
+                                        case 11:
+                                            chuva = Double.parseDouble(split[i].replace(",", "."));
+                                            break;
+                                    }
+                                } catch (NumberFormatException e) {
+                                    // Tratar a exceção, como imprimir uma mensagem de erro ou realizar outra ação apropriada
+                                    e.printStackTrace();
                             }
 
                         }
@@ -199,6 +203,7 @@ public class Arquivo {
                         registros.add(regManual);
                         line = br.readLine();
                     }
+                }
                 } catch (NumberFormatException e) {
                     e.printStackTrace();
                 }

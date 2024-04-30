@@ -41,9 +41,13 @@ public class MainController {
     @FXML
     private TextField nebuMinField;
     @FXML
-    private TextField ventoMaxField;
+    private TextField velVentoMaxField;
     @FXML
-    private TextField ventoMinField;
+    private TextField velVentoMinField;
+    @FXML
+    private TextField dirVentoMaxField;
+    @FXML
+    private TextField dirVentoMinField;
     @FXML
     private TextField insoMaxField;
     @FXML
@@ -59,8 +63,11 @@ public class MainController {
     private Double umiMinima;
     private Double presMaxima;
     private Double presMinima;
-    private Double ventoMaxima;
-    private Double ventoMinima;
+    private Double velVentoMaxima;
+    private Double velVentoMinima;
+    private Double dirVentoMaxima;
+    private Double dirVentoMinima;
+
     private Double nebuMaxima;
     private Double nebuMinima;
     private Double insoMaxima;
@@ -113,17 +120,29 @@ public class MainController {
     public void setPresMinima(double presMinima) {
         this.presMinima = presMinima;
     }
-    public double getVentoMaxima() {
-        return ventoMaxima;
+    public Double getVelVentoMaxima() {
+        return velVentoMaxima;
     }
-    public void setVentoMaxima(double ventoMaxima) {
-        this.ventoMaxima = ventoMaxima;
+    public void setVelVentoMaxima(Double velVentoMaxima) {
+        this.velVentoMaxima = velVentoMaxima;
     }
-    public double getVentoMinima() {
-        return ventoMinima;
+    public Double getVelVentoMinima() {
+        return velVentoMinima;
     }
-    public void setVentoMinima(double ventoMinima) {
-        this.ventoMinima = ventoMinima;
+    public void setVelVentoMinima(Double velVentoMinima) {
+        this.velVentoMinima = velVentoMinima;
+    }
+    public Double getDirVentoMaxima() {
+        return dirVentoMaxima;
+    }
+    public void setDirVentoMaxima(Double dirVentoMaxima) {
+        this.dirVentoMaxima = dirVentoMaxima;
+    }
+    public Double getDirVentoMinima() {
+        return dirVentoMinima;
+    }
+    public void setDirVentoMinima(Double dirVentoMinima) {
+        this.dirVentoMinima = dirVentoMinima;
     }
     public double getNebuMaxima() {
         return nebuMaxima;
@@ -242,8 +261,10 @@ public class MainController {
             umiMinima = Double.parseDouble(umiMaxField.getText());
             presMaxima = Double.parseDouble(presMaxField.getText());
             presMinima = Double.parseDouble(presMinField.getText());
-            ventoMaxima = Double.parseDouble(ventoMaxField.getText());
-            ventoMinima = Double.parseDouble(ventoMinField.getText());
+            velVentoMaxima = Double.parseDouble(velVentoMaxField.getText());
+            velVentoMinima = Double.parseDouble(velVentoMinField.getText());
+            dirVentoMaxima = Double.parseDouble(dirVentoMaxField.getText());
+            dirVentoMinima = Double.parseDouble(dirVentoMinField.getText());
             nebuMaxima = Double.parseDouble(nebuMaxField.getText());
             nebuMinima = Double.parseDouble(nebuMinField.getText());
             insoMaxima = Double.parseDouble(insoMaxField.getText());
@@ -277,9 +298,9 @@ public class MainController {
                 dadoSuspeito.add(registro);
             } else if (registro.getPressao() != null && (registro.getPressao() >= presMaxima || registro.getPressao() <= presMinima)) {
                 dadoSuspeito.add(registro);
-            } else if (registro.getVelVento() != null && (registro.getVelVento() >= ventoMaxima || registro.getVelVento() <= ventoMinima)) {
+            } else if (registro.getVelVento() != null && (registro.getVelVento() >= velVentoMaxima || registro.getVelVento() <= velVentoMinima)) {
                 dadoSuspeito.add(registro);
-            } else if (registro.getDirVento() != null && (registro.getDirVento() >= ventoMaxima || registro.getDirVento() <= ventoMinima)) {
+            } else if (registro.getDirVento() != null && (registro.getDirVento() >= dirVentoMaxima || registro.getDirVento() <= dirVentoMinima)) {
                 dadoSuspeito.add(registro);
             } else if (registro.getNebulosidade() != null && (registro.getNebulosidade() >= nebuMaxima || registro.getNebulosidade() <= nebuMinima)) {
                 dadoSuspeito.add(registro);
@@ -293,4 +314,5 @@ public class MainController {
         }
         visualizarListas();
     }
+
 }

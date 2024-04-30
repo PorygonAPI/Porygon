@@ -28,10 +28,10 @@
             <TextField fx:id="dirVentoField" promptText="Direção Vento Mínima"/>
         </HBox>
         <HBox spacing="10.0">
-            <TextField fx:id="chuMaxField" promptText="Nebulosidade Máxima"/>
-            <TextField fx:id="chuMinField" promptText="Nebulosidade Mínima"/>
-            <TextField fx:id="insoMaxField" promptText="Pressão Máxima"/>
-            <TextField fx:id="insoMinField" promptText="Pressão Mínima"/>
+            <TextField fx:id="chuMaxField" promptText="Chuva Máxima"/>
+            <TextField fx:id="chuMinField" promptText="Chuva Mínima"/>
+            <TextField fx:id="insoMaxField" promptText="Insolação Máxima"/>
+            <TextField fx:id="insoMinField" promptText="Insolação Mínima"/>
         </HBox>
     </VBox>
     <Button onAction="#verificar" text="Verificar" />
