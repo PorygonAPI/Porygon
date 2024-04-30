@@ -1,19 +1,16 @@
 package br.com.porygon;
 
+// import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.stage.FileChooser;
 import javafx.stage.Window;
-import javafx.scene.control.ListView;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-
-import javafx.scene.control.TextField;
 
 public class MainController {
 
@@ -41,10 +38,16 @@ public class MainController {
     private ListView<String> listViewSuspeito; // Atributo para visualizar a lista de registros apurados na tela
 
     @FXML
+    private ListView<String> listrelatorio; // Atributo para visualizar a lista do relatorio (Data/Periodo) na tela
+
+    @FXML
     private DatePicker startDatePicker; //DatePicker para data inicial
 
     @FXML
     private DatePicker endDatePicker; //DatePicker para data final
+
+    @FXML
+    private ComboBox<String> hourIntervalComboBox;
 
     // Listas
     List<Registro> registros = new ArrayList<Registro>(); // Lista de registros geral, gerada a partir do upload do
@@ -52,9 +55,9 @@ public class MainController {
     List<Registro> dadoSuspeito = new ArrayList<Registro>(); // Lista de registros suspeitos, gerada após a execução do
     // método verificarRegistros
     List<Registro> dadoApurado = new ArrayList<Registro>(); // Lista de registros apurados, gerada a execução do método
-    
-//  List<Registro> listrelatorio = new ArrayList<>(); //Lista dos dados do relatorio por data e período
-    
+
+//    List<Registro> listrelatorio = new ArrayList<>(); //Lista dos dados do relatorio por data e período
+
     // verificarRegistros
 
     // Métodos de acesso
@@ -81,11 +84,11 @@ public class MainController {
             String listViewText;
             if (registro instanceof RegistroAutomatico regAut) {
                 // Alterar visualização de lista
-                listViewText = "Automático - Data: " + regAut.getData() + " | Hora: " + regAut.getHora() + " | Temperatura (Ist): " + stringify(regAut.getTemperatura()) + " | Umidade (Ins): " + stringify(regAut.getUmiIns()) + " | Orvalho (Ins): " + stringify(regAut.getPtoOrvalhoIns()) + " | Pressão (Ins): " + stringify(regAut.getPressaoIns()) + " | Velocidade do Vento:  " + stringify(regAut.getVelVento()) + " | Direção do Vento: " + stringify(regAut.getDirVento()) + " | Rajada Vento: " + stringify(regAut.getRajVento()) + " | Radiação " + stringify(regAut.getRadiacao()) + " | Chuva: " + stringify(regAut.getChuva());
+                listViewText = "Automático - Data: " + regAut.getData() + " | Hora: " + regAut.getHora() + " | Temperatura (Ins) : " + stringify(regAut.getTemperatura()) + " | Umidade (Ins): " + stringify(regAut.getUmiIns()) + " | Orvalho (Ins): " + stringify(regAut.getPtoOrvalhoIns()) + " | Pressão (Ins): " + stringify(regAut.getPressaoIns()) + " | Velocidade do Vento:  " + stringify(regAut.getVelVento()) + " | Direção do Vento: " + stringify(regAut.getDirVento()) + " | Rajada Vento: " + stringify(regAut.getRajVento()) + " | Radiação " + stringify(regAut.getRadiacao()) + " | Chuva: " + stringify(regAut.getChuva());
             } else {
                 // Alterar visualização de lista
                 RegistroManual regManual = (RegistroManual) registro;
-                listViewText = "Manual - Data: " + regManual.getData() + " | Hora: " + regManual.getHora() + " | Temperatura (Ist): " + stringify(regManual.getTemperatura()) + " | Umidade: " + stringify(regManual.getUmi()) + " | Pressão: " + stringify(regManual.getPressao()) + " | Velocidade do Vento: " + stringify(regManual.getVelVento()) + " | Direção do Vento: " + stringify(regManual.getDirVento()) + " | Nebulosidade: " + stringify(regManual.getNebulosidade()) + " | Insolação:  " + stringify(regManual.getInsolacao()) + " | Temperatura Máxima " + stringify(regManual.getTempMax()) + " | Temperatura Minima:  " + stringify(regManual.getTempMin()) + " | Chuva:  " + stringify(regManual.getChuva());
+                listViewText = "Manual - Data: " + regManual.getData() + " | Hora: " + regManual.getHora() + " | Temperatura : " + stringify(regManual.getTemperatura()) + " | Umidade: " + stringify(regManual.getUmi()) + " | Pressão: " + stringify(regManual.getPressao()) + " | Velocidade do Vento: " + stringify(regManual.getVelVento()) + " | Direção do Vento: " + stringify(regManual.getDirVento()) + " | Nebulosidade: " + stringify(regManual.getNebulosidade()) + " | Insolação:  " + stringify(regManual.getInsolacao()) + " | Temperatura Máxima " + stringify(regManual.getTempMax()) + " | Temperatura Minima:  " + stringify(regManual.getTempMin()) + " | Chuva:  " + stringify(regManual.getChuva());
             }
             listViewApurado.getItems().add(listViewText);
         }
@@ -95,12 +98,12 @@ public class MainController {
 
             if (registro instanceof RegistroAutomatico regAut) {
                 // Alterar visualização de lista
-                listViewText = "Automático - Data: " + regAut.getData() + " | Hora: " + regAut.getHora() + " | Temperatura (Ist): " + stringify(regAut.getTemperatura()) + " | Umidade (Ins): " + stringify(regAut.getUmiIns()) + " | Orvalho (Ins): " + stringify(regAut.getPtoOrvalhoIns()) + " | Pressão (Ins): " + stringify(regAut.getPressaoIns()) + " | Velocidade do Vento: " + stringify(regAut.getVelVento()) + " | Direção do Vento: " + stringify(regAut.getDirVento()) + " | Rajada Vento: " + stringify(regAut.getRajVento()) + " | Radiação " + stringify(regAut.getRadiacao()) + " | Chuva: " + stringify(regAut.getChuva());
+                listViewText = "Automático - Data: " + regAut.getData() + " | Hora: " + regAut.getHora() + " | Temperatura (Ins) : " + stringify(regAut.getTemperatura()) + " | Umidade (Ins): " + stringify(regAut.getUmiIns()) + " | Orvalho (Ins): " + stringify(regAut.getPtoOrvalhoIns()) + " | Pressão (Ins): " + stringify(regAut.getPressaoIns()) + " | Velocidade do Vento: " + stringify(regAut.getVelVento()) + " | Direção do Vento: " + stringify(regAut.getDirVento()) + " | Rajada Vento: " + stringify(regAut.getRajVento()) + " | Radiação " + stringify(regAut.getRadiacao()) + " | Chuva: " + stringify(regAut.getChuva());
             } else {
                 // Alterar visualização de lista
                 RegistroManual regManual = (RegistroManual) registro;
 
-                listViewText = "Manual - Data: " + regManual.getData() + " | Hora: " + regManual.getHora() + " | Temperatura (Ist): " + stringify(regManual.getTemperatura()) + " | Umidade (Ins): " + stringify(regManual.getUmi()) + " | Pressão " + stringify(regManual.getPressao()) + " | Velocidade do Vento: " + stringify(regManual.getVelVento()) + " | Direção do Vento: " + stringify(regManual.getDirVento()) + " | Nebulosidade: " + stringify(regManual.getNebulosidade()) + " | Insolação: " + stringify(regManual.getInsolacao()) + " | Temperatura Máxima " + stringify(regManual.getTempMax()) + " | Temperatura Minima: " + stringify(regManual.getTempMin()) + " | Chuva: " + stringify(regManual.getChuva());
+                listViewText = "Manual - Data: " + regManual.getData() + " | Hora: " + regManual.getHora() + " | Temperatura : " + stringify(regManual.getTemperatura()) + " | Umidade (Ins): " + stringify(regManual.getUmi()) + " | Pressão " + stringify(regManual.getPressao()) + " | Velocidade do Vento: " + stringify(regManual.getVelVento()) + " | Direção do Vento: " + stringify(regManual.getDirVento()) + " | Nebulosidade: " + stringify(regManual.getNebulosidade()) + " | Insolação: " + stringify(regManual.getInsolacao()) + " | Temperatura Máxima " + stringify(regManual.getTempMax()) + " | Temperatura Minima: " + stringify(regManual.getTempMin()) + " | Chuva: " + stringify(regManual.getChuva());
             }
             listViewSuspeito.getItems().add(listViewText);
         }
@@ -173,7 +176,41 @@ public class MainController {
         visualizarListas();
     }
 
-    public void exportar(ActionEvent actionEvent) {
+
+    // Método para calcular a média das temperaturas e exibir na lista
+    @FXML
+    public void gerar() {
+        double mediaTemperatura = calcularMediaTemperatura();
+
+        // Limpa a lista e adiciona o resultado da média
+        listrelatorio.getItems().clear();
+        listrelatorio.getItems().add("Média das temperaturas: " + mediaTemperatura);
+    }
+
+    public double calcularMediaTemperatura() {
+        double somaTemperaturas = 0.0;
+        int quantidadeRegistros = 0;
+
+        for (Registro registro : dadoApurado) {
+            if (registro instanceof RegistroAutomatico) {
+                RegistroAutomatico regAut = (RegistroAutomatico) registro;
+                somaTemperaturas += regAut.getTemperatura();
+                quantidadeRegistros++;
+            } else if (registro instanceof RegistroManual) {
+                RegistroManual regManual = (RegistroManual) registro;
+                somaTemperaturas += regManual.getTemperatura();
+                quantidadeRegistros++;
+            }
+        }
+
+        if (quantidadeRegistros == 0) {
+            return 0.0; // Retorna 0 se não houver registros
+        } else {
+            return somaTemperaturas / quantidadeRegistros; // Calcula a média
+        }
+    }
+
+    public void exportar(@SuppressWarnings("exports") ActionEvent actionEvent) {
 //        ObservableList<String> dados = listrelatorio.getClass();
 //        StringBuilder csvBuilder = new StringBuilder();
 //
@@ -204,8 +241,5 @@ public class MainController {
 //                e.printStackTrace();
 //            }
 //        }
-    }
-
-    public void gerar(ActionEvent actionEvent) {
     }
 }
