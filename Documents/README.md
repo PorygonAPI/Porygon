@@ -44,12 +44,6 @@
 ![image](https://github.com/Porygonn/Porygon/assets/142633184/44ed82fb-37d8-4df1-8fed-3c60ecd9dd8c)
 
 ## Sprint 2
-* Como pesquisador, desejo um relatório que me permita calcular os elementos necessários para plotar um gráfico boxplot com base nos dados de uma estação em uma data específica. Isso me proporcionará uma visualização clara da distribuição e variabilidade dos dados climáticos, facilitando análises detalhadas em minha pesquisa.
-
-    - Essa user story visa fornecer ao pesquisador uma ferramenta poderosa para explorar e compreender a distribuição dos dados climáticos de uma estação específica em uma data determinada.
-        - Seleção Data: O pesquisador deve poder especificar a data para a qual deseja analisar os dados e gerar o gráfico boxplot.
-        - Cálculo dos Elementos do Boxplot: Com base nos dados coletados, o sistema deve calcular os elementos necessários para construir o gráfico boxplot, como mínimo, primeiro quartil, mediana, terceiro quartil e máximo, proporcionando uma representação visual da distribuição dos dados.
-        - Após o cálculo dos elementos do boxplot, o sistema deve gerar um relatório detalhado que apresente os resultados de forma clara e organizada, facilitando a interpretação e análise pelo pesquisador.
 
 * Como pesquisador, desejo um relatório de situação que exiba as médias dos últimos valores das variáveis climáticas relevantes para cada cidade, possibilitando uma compreensão abrangente das condições climáticas. 
 
@@ -78,3 +72,23 @@
 
 ![image](https://github.com/Porygonn/Porygon/assets/142633184/c7111601-3d49-4efe-8643-e1eae7e2abd9)
 
+
+## Sprint 3
+
+* Como pesquisador, desejo poder alterar, restaurar e excluir dados irregulares quando necessário, garantindo a precisão, integridade e confiabilidade dos dados para minha pesquisa e assegurando a rastreabilidade dos registros no sistema. 
+
+    - Essa user story visa fornecer ao pesquisador as ferramentas necessárias para manter a precisão, integridade e confiabilidade dos dados utilizados em suas pesquisas, ao mesmo tempo em que garante a conformidade com os requisitos. 
+        - Alterar Dados Irregulares: O pesquisador devem ter a capacidade de modificar dados que foram identificados como irregulares;
+        - Restaurar Dados: Pode ser necessário restaurar dados alterados ou dados que se mostrarem 'coesos' para a planilha de dados "normais";
+        - Excluir Dados Irregulares: Quando os dados forem considerados irreparáveis ou não confiáveis, o pesquisador deve ter a capacidade de excluí-los do sistema. Isso garante que apenas dados precisos e confiáveis sejam utilizados na pesquisa.
+
+Como fazer o gráfico: 
+
+![BoxPlot](https://github.com/Porygonn/Porygon/assets/142633184/a959f99b-10d9-4a5d-86e3-0eefc106bdf2)
+
+* Como pesquisador, desejo um relatório que me permita calcular os elementos necessários para plotar um gráfico boxplot com base nos dados de uma estação em uma data específica. Isso me proporcionará uma visualização clara da distribuição e variabilidade dos dados climáticos, facilitando análises detalhadas em minha pesquisa.
+
+    - Essa user story visa fornecer ao pesquisador uma ferramenta poderosa para explorar e compreender a distribuição dos dados climáticos de uma estação específica em uma data determinada.
+        - Seleção Data: O pesquisador deve poder especificar a data para a qual deseja analisar os dados e gerar o gráfico boxplot.
+        - Cálculo dos Elementos do Boxplot: Com base nos dados coletados, o sistema deve calcular os elementos necessários para construir o gráfico boxplot, como mínimo, primeiro quartil, mediana, terceiro quartil e máximo, proporcionando uma representação visual da distribuição dos dados.
+        - Após o cálculo dos elementos do boxplot, o sistema deve gerar um relatório detalhado que apresente os resultados de forma clara e organizada, facilitando a interpretação e análise pelo pesquisador.

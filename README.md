@@ -99,7 +99,6 @@ instalação.
   | Como pesquisador, quero poder carregar meus arquivos contendo variáveis climáticas para que possam ser manipulados e submetidos à análise para minha pesquisa.  |Essencial|1|
   | Como pesquisador, quero que cada arquivo carregado, referente a uma estação específica, tenha seus registros armazenados separadamente por variável climática, para uma melhor organização e análise dos dados.  |Essencial|1|
   | Como pesquisador, desejo que registros suspeitos nos arquivos sejam identificados durante o processo de carregamento e sejam armazenados separadamente dos registros regulares para facilitar a detecção e análise de anomalias nos dados durante o processo de carregamento.  |Essencial|1|
-  | Como pesquisador, desejo calcular os elementos necessários para plotar um gráfico boxplot com base nos dados de uma estação em uma data específica. Isso me proporcionará uma visualização clara da distribuição e variabilidade dos dados climáticos, facilitando análises detalhadas em minha pesquisa. |Essencial |2|
   | Como pesquisador, desejo poder escolher um período específico para a geração do relatório de valor médio das variáveis climáticas por cidade, possibilitando uma análise detalhada das condições climáticas ao longo de um período determinado.  |Essencial|2|
   | Como pesquisador, desejo um relatório de situação que exiba os últimos valores de temperatura, umidade e outras variáveis climáticas relevantes para cada cidade, possibilitando uma compreensão abrangente das condições climáticas. |Essencial|2|
 
