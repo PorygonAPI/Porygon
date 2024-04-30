@@ -52,6 +52,9 @@ public class MainController {
     List<Registro> dadoSuspeito = new ArrayList<Registro>(); // Lista de registros suspeitos, gerada após a execução do
     // método verificarRegistros
     List<Registro> dadoApurado = new ArrayList<Registro>(); // Lista de registros apurados, gerada a execução do método
+    
+//  List<Registro> listrelatorio = new ArrayList<>(); //Lista dos dados do relatorio por data e período
+    
     // verificarRegistros
 
     // Métodos de acesso
@@ -171,6 +174,36 @@ public class MainController {
     }
 
     public void exportar(ActionEvent actionEvent) {
+//        ObservableList<String> dados = listrelatorio.getClass();
+//        StringBuilder csvBuilder = new StringBuilder();
+//
+//        // Adicionar cabeçalho do CSV
+//        csvBuilder.append("Coluna1,Coluna2,Coluna3\n");
+//
+//        // Iterar sobre os dados e adicionar ao CSV
+//        for (String dado : dados) {
+//            // Processar o dado e adicionar ao csvBuilder
+//            // Se dado for um objeto, você precisará converter cada campo para String
+//            // Por exemplo: csvBuilder.append(dado.getCampo1() + "," + dado.getCampo2() + "\n");
+//            csvBuilder.append(dado).append("\n");
+//        }
+//
+//        // Converter o StringBuilder para String
+//        String csvContent = csvBuilder.toString();
+//
+//        // Salvar o conteúdo CSV em um arquivo
+//        FileChooser fileChooser = new FileChooser();
+//        fileChooser.setTitle("Salvar Arquivo CSV");
+//        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV Files", "*.csv"));
+//        File file = fileChooser.showSaveDialog(((Node)actionEvent.getSource()).getScene().getWindow());
+//
+//        if (file != null) {
+//            try (PrintWriter writer = new PrintWriter(file)) {
+//                writer.write(csvContent);
+//            } catch (FileNotFoundException e) {
+//                e.printStackTrace();
+//            }
+//        }
     }
 
     public void gerar(ActionEvent actionEvent) {
