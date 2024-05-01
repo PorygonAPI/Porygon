@@ -38,9 +38,15 @@
                     </VBox>
                 </content>
             </Tab>
-            <Tab text="Relatório">
+            <Tab text="Relatório de Periocidade">
                 <content>
                     <VBox spacing="15.0" alignment="CENTER">
+                    <!-- <TableView fx:id="tableRelatorio">
+                        <columns>
+                            <TableColumn text="Hora" fx:id="horaColumn" />
+                            <TableColumn text="Temperatura" fx:id="temperaturaColumn" />
+                        </columns>
+                    </TableView> -->
                         <ListView fx:id="listrelatorio" />
 
                         <HBox spacing="10.0" alignment="CENTER">
