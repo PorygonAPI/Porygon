@@ -17,7 +17,8 @@ public class Arquivo {
     public void tratar(List<Registro> registros) {
         System.out.println("Estou tratando o arquivo - " + this.conteudo.getName());
         String[] fileNamePart = this.conteudo.getName().split(".csv")[0].split("_");
-        if (fileNamePart[0].indexOf("A") >= 0) {
+        String cidade = fileNamePart[1];
+        if (fileNamePart[0].contains("A")) {
             System.out.println("Arquivo automtico: - " + fileNamePart[0]);
             try {
                 try (BufferedReader br = new BufferedReader(new FileReader(this.conteudo.getPath()))) {
@@ -113,7 +114,7 @@ public class Arquivo {
 
                         }
 
-                        RegistroAutomatico regAutomatico = new RegistroAutomatico(data, hora,
+                        RegistroAutomatico regAutomatico = new RegistroAutomatico(cidade, data, hora,
                                 velVento, dirVento, tempIns, tempMax, tempMin, umiIns, umiMax, umiMin,
                                 ptoOrvalhoIns, ptoOrvalhoMax, ptoOrvalhoMin, pressaoIns, pressaoMax,
                                 pressaoMin, rajVento, radiacao, chuva);
@@ -196,7 +197,7 @@ public class Arquivo {
 
                         }
 
-                        RegistroManual regManual = new RegistroManual(data, hora, velVento, dirVento, temp, umi,
+                        RegistroManual regManual = new RegistroManual(cidade, data, hora, velVento, dirVento, temp, umi,
                                 pressao,
                                 nebulosidade, insolacao, tempMax, tempMin, chuva);
                         registros.add(regManual);

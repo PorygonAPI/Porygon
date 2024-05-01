@@ -83,9 +83,9 @@ public class RegistroManual extends Registro {
         this.chuva = chuva;
     }
 
-    public RegistroManual(String data, String hora, Double velVento, Double dirVento, Double temp, Double umi,
+    public RegistroManual(String cidade, String data, String hora, Double velVento, Double dirVento, Double temp, Double umi,
             Double pressao, Double nebulosidade, Double insolacao, Double tempMax, Double tempMin, Double chuva) {
-        super(data, hora, velVento, dirVento);
+        super(cidade, data, hora, velVento, dirVento);
         this.temp = temp;
         this.umi = umi;
         this.pressao = pressao;

@@ -1,6 +1,8 @@
 package br.com.porygon;
 
 // import javafx.collections.ObservableList;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -11,6 +13,7 @@ import javafx.stage.Window;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class MainController {
 
@@ -41,10 +44,7 @@ public class MainController {
     private ListView<String> listrelatorio; // Atributo para visualizar a lista do relatorio (Data/Periodo) na tela
 
     @FXML
-    private DatePicker startDatePicker; //DatePicker para data inicial
-
-    @FXML
-    private DatePicker endDatePicker; //DatePicker para data final
+    private ComboBox<String> cityComboBox;
 
     @FXML
     private ComboBox<String> hourIntervalComboBox;
@@ -55,6 +55,8 @@ public class MainController {
     List<Registro> dadoSuspeito = new ArrayList<Registro>(); // Lista de registros suspeitos, gerada após a execução do
     // método verificarRegistros
     List<Registro> dadoApurado = new ArrayList<Registro>(); // Lista de registros apurados, gerada a execução do método
+
+    String[] cidadesLista = {};
 
 //    List<Registro> listrelatorio = new ArrayList<>(); //Lista dos dados do relatorio por data e período
 
@@ -120,7 +122,7 @@ public class MainController {
 
         // Mostrar o diálogo de escolha de arquivo
         List<File> selectedFiles = fileChooser.showOpenMultipleDialog(stage);
-
+        ObservableList<String> opcoes = FXCollections.observableArrayList(cidadesLista);
         String arquivosSelecionados = "";
         // Exemplo de como você pode manipular os arquivos selecionados
         if (selectedFiles != null) {
@@ -128,6 +130,21 @@ public class MainController {
             for (File file : selectedFiles) {
                 System.out.println(file.getAbsolutePath());
                 arquivosSelecionados = arquivosSelecionados + "\n" + file.getAbsolutePath();
+                String[] fileNamePart = file.getName().split(".csv")[0].split("_");
+                String cidade = fileNamePart[1];
+
+                if (!opcoes.contains(cidade)) {
+                    // Adicionar novo valor ao array
+                    opcoes.add(cidade);
+                    System.out.println("");
+                }
+
+                // Definir a lista de opções para o ComboBox
+                cityComboBox.setItems(opcoes);
+
+                // Definir um valor padrão
+                cityComboBox.setValue(opcoes.getFirst());
+                hourIntervalComboBox.setValue("1 hora");
 
                 Arquivo arquivo = new Arquivo();
                 arquivo.setConteudo(file);
@@ -180,27 +197,34 @@ public class MainController {
     // Método para calcular a média das temperaturas e exibir na lista
     @FXML
     public void gerar() {
-        double mediaTemperatura = calcularMediaTemperatura();
 
+        String cidadeEscolhida = cityComboBox.getValue();
+        int horaEscolhida = Integer.parseInt(hourIntervalComboBox.getValue().split(" ")[0]);
+
+        double mediaTemperatura = calcularMediaTemperatura(cidadeEscolhida, horaEscolhida);
         // Limpa a lista e adiciona o resultado da média
         listrelatorio.getItems().clear();
         listrelatorio.getItems().add("Média das temperaturas: " + mediaTemperatura);
+
     }
 
-    public double calcularMediaTemperatura() {
+    public double calcularMediaTemperatura(String cidadeEscolhida, int horaEscolhida) {
         double somaTemperaturas = 0.0;
         int quantidadeRegistros = 0;
 
         for (Registro registro : dadoApurado) {
-            if (registro instanceof RegistroAutomatico) {
-                RegistroAutomatico regAut = (RegistroAutomatico) registro;
-                somaTemperaturas += regAut.getTemperatura();
-                quantidadeRegistros++;
-            } else if (registro instanceof RegistroManual) {
-                RegistroManual regManual = (RegistroManual) registro;
-                somaTemperaturas += regManual.getTemperatura();
-                quantidadeRegistros++;
+            if(Objects.equals(registro.getCidade(), cidadeEscolhida)){
+                if (registro instanceof RegistroAutomatico) {
+                    RegistroAutomatico regAut = (RegistroAutomatico) registro;
+                    somaTemperaturas += regAut.getTemperatura();
+                    quantidadeRegistros++;
+                } else if (registro instanceof RegistroManual) {
+                    RegistroManual regManual = (RegistroManual) registro;
+                    somaTemperaturas += regManual.getTemperatura();
+                    quantidadeRegistros++;
+                }
             }
+
         }
 
         if (quantidadeRegistros == 0) {

@@ -4,6 +4,8 @@ public class Registro {
     private String data;
     private String hora;
 
+    private String cidade;
+
     private Double temperatura;
 
     private Double velVento;
@@ -50,7 +52,16 @@ public class Registro {
         this.dirVento = dirVento;
     }
 
-    public Registro(String data, String hora, Double velVento, Double dirVento) {
+    public String getCidade() {
+        return cidade;
+    }
+
+    public void setCidade(String cidade) {
+        this.cidade = cidade;
+    }
+
+    public Registro(String cidade, String data, String hora, Double velVento, Double dirVento) {
+        this.cidade = cidade;
         this.data = data;
         this.hora = hora;
         this.velVento = velVento;
