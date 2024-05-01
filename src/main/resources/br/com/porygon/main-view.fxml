@@ -23,7 +23,7 @@
         <TextField fx:id="tempMinField" promptText="Temperatura Mínima" />
         <Button onAction="#verificar" text="Verificar" />
     </HBox>
-   <Button fx:id="BaixarRelatorioA" mnemonicParsing="false" onAction="#BaixarRelatorioA" text="Baixar Relatorio" />
+   <Button fx:id="BaixarRelatorioA" mnemonicParsing="false" onAction="#baixarRelatorioA" text="Baixar Relatorio" />
     <Label fx:id="selectedFilesLabel" />
     <Label fx:id="tempLabel" />
     <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE">

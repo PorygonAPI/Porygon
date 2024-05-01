@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 public class RelatorioRegistro {
 
@@ -13,21 +14,34 @@ public class RelatorioRegistro {
 
     // Modulo para adiconar os registros ao arquivo CSV
 
-    public static void BaixarRelatorioA(RegistroAutomatico registroa){
+    public static void baixarRelatorioA(List<Registro> registros){
         try{
             //Verificar se o aquivo já existe
             boolean arquivoExiste = new File(nomeArquivo).exists();
             //Abre o escritor para adicionar dados ao arquivo
             FileWriter escritor = new FileWriter(nomeArquivo,StandardCharsets.ISO_8859_1, true);
                 if(!arquivoExiste){
-                    escritor.write("data;hora;velVento;dirVento;tempIns;tempMax;tempMin;umiIns;umiMax;umiMin;ptoOrvalhoIns;ptoOrvalhoMax;ptoOrvalhoMin;pressaoIns;pressaoMax;pressaoMin;rajVento;radiacao;chuva\n");
+                    escritor.write("data;hora;velVento;dirVento;tempIns;umiIns;ptoOrvalhoIns;pressaoIns;rajVento;radiacao;chuva\n");
                 }
                 // Tira a media das variaveis
+                double somaTemperaturas = 0.0;
+                int quantidadeRegistrosTemperatura = 0;
 
-                //Escreve os dados no formato correto
-                escritor.write(registroa.getData() + ";" + registroa.getHora() + ";" + registroa.getVelVento() + ";" + registroa.getDirVento() + ";" + registroa.getTempIns() + ";" + registroa.getTempMax() + ";" + registroa.getTempMin() + ";" + registroa.getUmiIns() + ";" + registroa.getUmiMax() + ";" + registroa.getUmiMin() + ";" + registroa.getPtoOrvalhoIns() + ";" + registroa.getPtoOrvalhoMax() + ";" + registroa.getPtoOrvalhoMin() + ";" + registroa.getPressaoIns() + ";" + registroa.getPressaoMax() + ";" + registroa.getPressaoMin() + ";" + registroa.getRajVento() + ";" + registroa.getRadiacao() + ";" + registroa.getChuva() + "\n");
+                for (Registro registro : registros) {
+                    if (registro instanceof RegistroAutomatico registroa) {
+                        // Alterar visualização de lista
+                        if(registroa.getTemperatura() != null){
+                            somaTemperaturas += registroa.getTemperatura();
+                            quantidadeRegistrosTemperatura++;
+                        }
+
+                    }
+                }
+                
+//                escritor.write(registroa.getData() + ";" + registroa.getHora() + ";" + registroa.getVelVento() + ";" + registroa.getDirVento() + ";" + registroa.getTemperatura() + ";" + registroa.getUmiIns() + ";" + registroa.getPtoOrvalhoIns() + ";" + registroa.getPressaoIns() + ";" + registroa.getRajVento() + ";" + registroa.getRadiacao() + ";" + registroa.getChuva() + "\n");
                 //Escreve todos os dados do Buffer no arquivo
                 escritor.flush();
+
                 //Fecha o recurso de escrita
                 escritor.close();
         }

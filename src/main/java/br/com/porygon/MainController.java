@@ -162,8 +162,7 @@ public class MainController {
         }
         visualizarListas();
     }
-    public void BaixarRelatorioA(ActionEvent event){
-        RegistroAutomatico ra = new RegistroAutomatico("01/11/2023","0",20.0,7.0,20.0,7.0,20.0,2.0,87.0,87.0,86.0,18.0,4.0,18.0,4.0,17.0,8.0,923.0,923.0);
-        RelatorioRegistro.BaixarRelatorioA(ra);
+    public void baixarRelatorioA(ActionEvent event){
+        RelatorioRegistro.baixarRelatorioA(dadoApurado);
     }
 }
