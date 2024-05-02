@@ -11,9 +11,11 @@ import javafx.stage.FileChooser;
 import javafx.stage.Window;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
+// import java.util.Objects;
 
 public class MainController {
 
@@ -88,7 +90,9 @@ public class MainController {
             if (registro instanceof RegistroAutomatico regAut) {
                 // Alterar visualização de lista
                 listViewText = "Automático - Data: " + regAut.getData() + " | Hora: " + regAut.getHora()
-                        + " | Temperatura (Ins) : " + stringify(regAut.getTemperatura()) + " | Umidade (Ins): "
+                        + " | Temperatura (Ins) : " + stringify(regAut.getTemperatura()) + " | Temperatura Máxima :"
+                        + stringify(regAut.getTempMax()) + " | Temperatura Mínima: " + stringify(regAut.getTempMin())
+                        + " | Umidade (Ins): "
                         + stringify(regAut.getUmiIns()) + " | Orvalho (Ins): " + stringify(regAut.getPtoOrvalhoIns())
                         + " | Pressão (Ins): " + stringify(regAut.getPressaoIns()) + " | Velocidade do Vento:  "
                         + stringify(regAut.getVelVento()) + " | Direção do Vento: " + stringify(regAut.getDirVento())
@@ -116,7 +120,9 @@ public class MainController {
             if (registro instanceof RegistroAutomatico regAut) {
                 // Alterar visualização de lista
                 listViewText = "Automático - Data: " + regAut.getData() + " | Hora: " + regAut.getHora()
-                        + " | Temperatura (Ins) : " + stringify(regAut.getTemperatura()) + " | Umidade (Ins): "
+                        + " | Temperatura (Ins) : " + stringify(regAut.getTemperatura()) + " | Temperatura Máxima :"
+                        + stringify(regAut.getTempMax()) + " | Temperatura Mínima: " + stringify(regAut.getTempMin())
+                        + " | Umidade (Ins): "
                         + stringify(regAut.getUmiIns()) + " | Orvalho (Ins): " + stringify(regAut.getPtoOrvalhoIns())
                         + " | Pressão (Ins): " + stringify(regAut.getPressaoIns()) + " | Velocidade do Vento: "
                         + stringify(regAut.getVelVento()) + " | Direção do Vento: " + stringify(regAut.getDirVento())
@@ -223,24 +229,69 @@ public class MainController {
         visualizarListas();
     }
 
+    // RELATÓRIO PERIOCIDADE por CIDADE
+    // Criando métodos para o relatório. Converte as horas, para criar intervalos de
+    // tempo. Calcula a média dos variavéis Ins.
     @FXML
-    public void gerar() {
+    public void gerarrelatorioperiocidade() {
         String cidadeEscolhida = cityComboBox.getValue();
         int intervaloHoras = Integer.parseInt(hourIntervalComboBox.getValue().split(" ")[0]);
-        List<Double> medias = calcularMediasPorIntervalo(cidadeEscolhida, intervaloHoras);
+        List<List<Double>> mediasPorIntervalo = calcularMediasPorIntervalo(cidadeEscolhida, intervaloHoras);
 
-        // Limpa a lista e adiciona o resultado da média
         listrelatorio.getItems().clear();
-        for (int i = 0; i < medias.size(); i++) {
+        listrelatorio.getItems().add("Cidade: " + cidadeEscolhida);
+
+        // Adiciona os intervalos de tempo e as médias de todas as variáveis
+        for (int i = 0; i < mediasPorIntervalo.size(); i++) {
             int horaInicio = i * intervaloHoras;
             int horaFim = (horaInicio + intervaloHoras) % 24;
-            String intervaloTexto = String.format("Das %02d:00 às %02d:00", horaInicio, horaFim);
-            listrelatorio.getItems().add(intervaloTexto + ": Média das temperaturas: " + String.format("%.2f", medias.get(i)) + "°C");
+            String intervaloTexto = String.format("Das %02d:00 às %02d:00: ", horaInicio, horaFim);
+
+            // Adiciona as médias de todas as variáveis para o intervalo atual
+            List<Double> mediasVariaveis = mediasPorIntervalo.get(i);
+            for (int j = 0; j < mediasVariaveis.size(); j++) {
+                String variavel = getNomeVariavel(j);
+                double media = mediasVariaveis.get(j);
+                String unidadeMedida = getUnidadeMedida(j);
+                intervaloTexto += variavel + ": " + String.format("%.2f", media) + " " + unidadeMedida + "    ";
+            }
+            // Adiciona o intervalo de tempo e as médias de todas as variáveis
+            listrelatorio.getItems().add(intervaloTexto);
         }
     }
 
-    private List<Double> calcularMediasPorIntervalo(String cidadeEscolhida, int intervaloHoras) {
-        List<Double> medias = new ArrayList<>();
+    // Constroi o texto na tela para cada variável
+    private String getUnidadeMedida(int indiceVariavel) {
+        List<String> unidadesMedida = new ArrayList<>();
+        unidadesMedida.add("°C"); // Unidade de temperatura
+        unidadesMedida.add("%"); // Unidade de umidade
+        unidadesMedida.add("C"); // Unidade de ponto de orvalho
+        unidadesMedida.add("hPa"); // Unidade de pressão
+
+        if (indiceVariavel >= 0 && indiceVariavel < unidadesMedida.size()) {
+            return unidadesMedida.get(indiceVariavel);
+        } else {
+            return "";
+        }
+    }
+
+    private String getNomeVariavel(int indiceVariavel) {
+        List<String> nomesVariaveis = new ArrayList<>();
+        nomesVariaveis.add("Temperatura Ins. ");
+        nomesVariaveis.add("Umidade Ins. ");
+        nomesVariaveis.add("Pto Orvalho Ins. ");
+        nomesVariaveis.add("Pressão Ins. ");
+
+        if (indiceVariavel >= 0 && indiceVariavel < nomesVariaveis.size()) {
+            return nomesVariaveis.get(indiceVariavel);
+        } else {
+            return "Variável Desconhecida";
+        }
+    }
+
+    // Realia os agrupamentos de acordo com o período de tempo que o foi escolhido
+    private List<List<Double>> calcularMediasPorIntervalo(String cidadeEscolhida, int intervaloHoras) {
+        List<List<Double>> mediasPorIntervalo = new ArrayList<>();
         List<Registro> registrosFiltrados = filtrarRegistrosPorCidade(cidadeEscolhida);
 
         // Agrupar os registros em intervalos de tempo
@@ -248,85 +299,112 @@ public class MainController {
             int horaInicio = i;
             int horaFim = (i + intervaloHoras) % 24;
             List<Registro> subLista = new ArrayList<>();
-            for (Registro registro : registrosFiltrados) {
-                int horaRegistro = Integer.parseInt(registro.getHora().substring(0, 2));
-                if ((horaRegistro >= horaInicio && horaRegistro < horaFim) || // Caso normal
-                    (horaInicio > horaFim && (horaRegistro >= horaInicio || horaRegistro < horaFim))) { // Caso que atravessa a meia-noite
-                    subLista.add(registro);
+
+            // Se o intervalo for de 24 horas, adicione todos os registros do dia
+            if (intervaloHoras == 24) {
+                subLista.addAll(registrosFiltrados);
+            } else {
+                for (Registro registro : registrosFiltrados) {
+                    int horaRegistro = Integer.parseInt(registro.getHora().substring(0, 2));
+                    if ((horaRegistro >= horaInicio && horaRegistro < horaFim) ||
+                            (horaInicio > horaFim && (horaRegistro >= horaInicio || horaRegistro < horaFim))) {
+                        subLista.add(registro);
+                    }
                 }
             }
-            double media = calcularMediaTemperatura(subLista);
-            medias.add(media);
+
+            // Integra as médias de acordo com os grupos dos períodos de tempo
+            List<Double> mediasVariaveis = calcularMediasVariaveisPorIntervalo(subLista);
+            mediasPorIntervalo.add(mediasVariaveis);
+        }
+        return mediasPorIntervalo;
+    }
+
+    // Calcular médias de todas as variáveis para o intervalo de tempo especificado
+    private List<Double> calcularMediasVariaveisPorIntervalo(List<Registro> registros) {
+        List<Double> medias = new ArrayList<>();
+        double somaTempIns = 0.0;
+        double somaUmiIns = 0.0;
+        double somaPtoOrvalhoIns = 0.0;
+        double somaPressaoIns = 0.0;
+
+        int quantidadeRegistrosAuto = 0;
+
+        for (Registro registro : registros) {
+            if (registro instanceof RegistroAutomatico) {
+                RegistroAutomatico registroAuto = (RegistroAutomatico) registro;
+                if (registroAuto.getTempIns() != null) {
+                    somaTempIns += registroAuto.getTempIns();
+                    quantidadeRegistrosAuto++;
+                }
+                if (registroAuto.getUmiIns() != null) {
+                    somaUmiIns += registroAuto.getUmiIns();
+                }
+                if (registroAuto.getPtoOrvalhoIns() != null) {
+                    somaPtoOrvalhoIns += registroAuto.getPtoOrvalhoIns();
+                }
+                if (registroAuto.getPressaoIns() != null) {
+                    somaPressaoIns += registroAuto.getPressaoIns();
+                }
+            }
         }
 
+        if (quantidadeRegistrosAuto > 0) {
+            medias.add(somaTempIns / quantidadeRegistrosAuto);
+            medias.add(somaUmiIns / quantidadeRegistrosAuto);
+            medias.add(somaPtoOrvalhoIns / quantidadeRegistrosAuto);
+            medias.add(somaPressaoIns / quantidadeRegistrosAuto);
+        } else {
+            // Adicione valores padrão se não houver registros automáticos
+            medias.add(0.0); // média tempIns
+            medias.add(0.0); // média umiIns
+            medias.add(0.0); // média ptoOrvalhoIns
+            medias.add(0.0); // média pressaoIns
+        }
         return medias;
     }
 
+    // Filtra as variáveis de acordo com a cidade escolhida pelo usuário
     private List<Registro> filtrarRegistrosPorCidade(String cidadeEscolhida) {
         List<Registro> registrosFiltrados = new ArrayList<>();
         for (Registro registro : dadoApurado) {
-            if (Objects.equals(registro.getCidade(), cidadeEscolhida)) {
+            if (registro.getCidade().equals(cidadeEscolhida)) {
                 registrosFiltrados.add(registro);
             }
         }
         return registrosFiltrados;
     }
 
-    private double calcularMediaTemperatura(List<Registro> registros) {
-        double somaTemperaturas = 0.0;
-        int quantidadeRegistros = 0;
+    // Precisa Construir o arquivo como tabela sem passar os textos de string
+    public void exportarrelatorioperiocidade(@SuppressWarnings("exports") ActionEvent actionEvent) {
+        // Obtem os dados da lista
+        ObservableList<String> dados = listrelatorio.getItems();
 
-        for (Registro registro : registros) {
-            if (registro instanceof RegistroAutomatico) {
-                somaTemperaturas += ((RegistroAutomatico) registro).getTemperatura();
-                quantidadeRegistros++;
-            } else if (registro instanceof RegistroManual) {
-                somaTemperaturas += ((RegistroManual) registro).getTemperatura();
-                quantidadeRegistros++;
+        // Constroe o conteúdo CSV
+        StringBuilder csvBuilder = new StringBuilder();
+        csvBuilder.append(
+                "Intervalo de Tempo,Temperatura Ins. (°C),Umidade Ins. (%),Ponto de Orvalho Ins. (C),Pressão Ins. (hPa)\n");
+        for (String dado : dados) {
+            csvBuilder.append(dado).append("\n");
+        }
+
+        // Converta o StringBuilder para String
+        String csvContent = csvBuilder.toString();
+
+        // Escolha um local para salvar o arquivo
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Relatorio Periocidade");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV Files", "*.csv"));
+        File file = fileChooser.showSaveDialog(((Node) actionEvent.getSource()).getScene().getWindow());
+
+        // Salve o conteúdo CSV em um arquivo
+        if (file != null) {
+            try (PrintWriter writer = new PrintWriter(file)) {
+                writer.write(csvContent);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
             }
         }
 
-        if (quantidadeRegistros == 0) {
-            return 0.0; // Retorna 0 se não houver registros dentro do intervalo de tempo
-        } else {
-            return somaTemperaturas / quantidadeRegistros; // Calcula a média
-        }
-    }
-
-    
-    public void exportar(@SuppressWarnings("exports") ActionEvent actionEvent) {
-        // ObservableList<String> dados = listrelatorio.getClass();
-        // StringBuilder csvBuilder = new StringBuilder();
-        //
-        // // Adicionar cabeçalho do CSV
-        // csvBuilder.append("Coluna1,Coluna2,Coluna3\n");
-        //
-        // // Iterar sobre os dados e adicionar ao CSV
-        // for (String dado : dados) {
-        // // Processar o dado e adicionar ao csvBuilder
-        // // Se dado for um objeto, você precisará converter cada campo para String
-        // // Por exemplo: csvBuilder.append(dado.getCampo1() + "," + dado.getCampo2() +
-        // "\n");
-        // csvBuilder.append(dado).append("\n");
-        // }
-        //
-        // // Converter o StringBuilder para String
-        // String csvContent = csvBuilder.toString();
-        //
-        // // Salvar o conteúdo CSV em um arquivo
-        // FileChooser fileChooser = new FileChooser();
-        // fileChooser.setTitle("Salvar Arquivo CSV");
-        // fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV
-        // Files", "*.csv"));
-        // File file =
-        // fileChooser.showSaveDialog(((Node)actionEvent.getSource()).getScene().getWindow());
-        //
-        // if (file != null) {
-        // try (PrintWriter writer = new PrintWriter(file)) {
-        // writer.write(csvContent);
-        // } catch (FileNotFoundException e) {
-        // e.printStackTrace();
-        // }
-        // }
     }
 }
