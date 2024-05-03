@@ -1,5 +1,7 @@
 package br.com.porygon;
 
+import java.util.ArrayList;
+
 public class RegistroAutomatico extends Registro {
     private Double tempIns;
     private Double tempMax;
@@ -159,5 +161,4 @@ public class RegistroAutomatico extends Registro {
         this.chuva = chuva;
         setTemperatura(tempIns);
     }
-
 }

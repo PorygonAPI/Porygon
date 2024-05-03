@@ -1,17 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.Tab?>
-<?import javafx.scene.control.TabPane?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
-<VBox spacing="20.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.porygon.MainController">
+<VBox spacing="20.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.porygon.MainController">
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>
@@ -23,7 +16,6 @@
         <TextField fx:id="tempMinField" promptText="Temperatura Mínima" />
         <Button onAction="#verificar" text="Verificar" />
     </HBox>
-   <Button fx:id="BaixarRelatorioA" mnemonicParsing="false" onAction="#baixarRelatorioA" text="Baixar Relatorio" />
     <Label fx:id="selectedFilesLabel" />
     <Label fx:id="tempLabel" />
     <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE">
@@ -48,7 +40,8 @@
                 <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
                     <VBox alignment="CENTER" spacing="10.0">
-                        <ListView fx:id="listViewRelatorio" />
+                        <ListView fx:id="listViewRelatorio" prefHeight="152.0" prefWidth="378.0" />
+                  <Button fx:id="baixarRelatorioA" mnemonicParsing="false" onAction="#baixarRelatorioA" text="Baixar Relatorio" />
                     </VBox>
                 </content>
             </Tab>
