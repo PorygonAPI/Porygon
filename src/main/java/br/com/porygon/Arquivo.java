@@ -17,7 +17,8 @@ public class Arquivo {
     public void tratar(List<Registro> registros) {
         System.out.println("Estou tratando o arquivo - " + this.conteudo.getName());
         String[] fileNamePart = this.conteudo.getName().split(".csv")[0].split("_");
-        if (fileNamePart[0].indexOf("A") >= 0) {
+        String cidade = fileNamePart[1];
+        if (fileNamePart[0].contains("A")) {
             System.out.println("Arquivo automtico: - " + fileNamePart[0]);
             try {
                 try (BufferedReader br = new BufferedReader(new FileReader(this.conteudo.getPath()))) {
@@ -46,6 +47,9 @@ public class Arquivo {
                         Double chuva = null;
 
                         for (int i = 0; i < split.length; i++) {
+                            // Remove as aspas duplas, se existirem, antes de fazer a conversão
+                            split[i] = split[i].replace("\"", "");
+                            
                             if (!split[i].isEmpty()) {
                                 switch (i) {
                                     case 0:
@@ -110,7 +114,7 @@ public class Arquivo {
 
                         }
 
-                        RegistroAutomatico regAutomatico = new RegistroAutomatico(data, hora,
+                        RegistroAutomatico regAutomatico = new RegistroAutomatico(cidade, data, hora,
                                 velVento, dirVento, tempIns, tempMax, tempMin, umiIns, umiMax, umiMin,
                                 ptoOrvalhoIns, ptoOrvalhoMax, ptoOrvalhoMin, pressaoIns, pressaoMax,
                                 pressaoMin, rajVento, radiacao, chuva);
@@ -151,59 +155,54 @@ public class Arquivo {
 
                         for (int i = 0; i < split.length; i++) {
                             if (!split[i].isEmpty()) {
-                                try {
-                                    switch (i) {
-                                        case 0:
-                                            data = split[i];
-                                            break;
-                                        case 1:
-                                            hora = split[i];
-                                            break;
-                                        case 2:
-                                            temp = Double.parseDouble(split[i].replace(",", "."));
-                                            break;
-                                        case 3:
-                                            umi = Double.parseDouble(split[i].replace(",", "."));
-                                            break;
-                                        case 4:
-                                            pressao = Double.parseDouble(split[i].replace(",", "."));
-                                            break;
-                                        case 5:
-                                            velVento = Double.parseDouble(split[i].replace(",", "."));
-                                            break;
-                                        case 6:
-                                            dirVento = Double.parseDouble(split[i].replace(",", "."));
-                                            break;
-                                        case 7:
-                                            nebulosidade = Double.parseDouble(split[i].replace(",", "."));
-                                            break;
-                                        case 8:
-                                            insolacao = Double.parseDouble(split[i].replace(",", "."));
-                                            break;
-                                        case 9:
-                                            tempMax = Double.parseDouble(split[i].replace(",", "."));
-                                            break;
-                                        case 10:
-                                            tempMin = Double.parseDouble(split[i].replace(",", "."));
-                                            break;
-                                        case 11:
-                                            chuva = Double.parseDouble(split[i].replace(",", "."));
-                                            break;
-                                    }
-                                } catch (NumberFormatException e) {
-                                    // Tratar a exceção, como imprimir uma mensagem de erro ou realizar outra ação apropriada
-                                    e.printStackTrace();
+                                switch (i) {
+                                    case 0:
+                                        data = split[i];
+                                        break;
+                                    case 1:
+                                        hora = split[i];
+                                        break;
+                                    case 2:
+                                        temp = Double.parseDouble(split[i].replace(",", "."));
+                                        break;
+                                    case 3:
+                                        umi = Double.parseDouble(split[i].replace(",", "."));
+                                        break;
+                                    case 4:
+                                        pressao = Double.parseDouble(split[i].replace(",", "."));
+                                        break;
+                                    case 5:
+                                        velVento = Double.parseDouble(split[i].replace(",", "."));
+                                        break;
+                                    case 6:
+                                        dirVento = Double.parseDouble(split[i].replace(",", "."));
+                                        break;
+                                    case 7:
+                                        nebulosidade = Double.parseDouble(split[i].replace(",", "."));
+                                        break;
+                                    case 8:
+                                        insolacao = Double.parseDouble(split[i].replace(",", "."));
+                                        break;
+                                    case 9:
+                                        tempMax = Double.parseDouble(split[i].replace(",", "."));
+                                        break;
+                                    case 10:
+                                        tempMin = Double.parseDouble(split[i].replace(",", "."));
+                                        break;
+                                    case 11:
+                                        chuva = Double.parseDouble(split[i].replace(",", "."));
+                                        break;
+                                }
                             }
 
                         }
 
-                        RegistroManual regManual = new RegistroManual(data, hora, velVento, dirVento, temp, umi,
+                        RegistroManual regManual = new RegistroManual(cidade, data, hora, velVento, dirVento, temp, umi,
                                 pressao,
                                 nebulosidade, insolacao, tempMax, tempMin, chuva);
                         registros.add(regManual);
                         line = br.readLine();
                     }
-                }
                 } catch (NumberFormatException e) {
                     e.printStackTrace();
                 }
@@ -216,3 +215,4 @@ public class Arquivo {
         }
     }
 }
+

@@ -10,10 +10,10 @@ public class RegistroManual extends Registro {
     private Double tempMin = null;
     private Double chuva = null;
 
-    public Double converterEscala(Double temp) {
+    public Double converterEscala(Double tempInst) {
         // Obtém a temperatura da instância atual de RegistroAutomatico
-        if(temp != null){
-            double temperaturaCelsius = temp - 273.15;
+        if(tempInst != null){
+            double temperaturaCelsius = tempInst - 273.15;
             return temperaturaCelsius;
         }
         return null;
@@ -83,9 +83,9 @@ public class RegistroManual extends Registro {
         this.chuva = chuva;
     }
 
-    public RegistroManual(String data, String hora, Double velVento, Double dirVento, Double temp, Double umi,
+    public RegistroManual(String cidade, String data, String hora, Double velVento, Double dirVento, Double temp, Double umi,
             Double pressao, Double nebulosidade, Double insolacao, Double tempMax, Double tempMin, Double chuva) {
-        super(data, hora, velVento, dirVento);
+        super(cidade, data, hora, velVento, dirVento);
         this.temp = temp;
         this.umi = umi;
         this.pressao = pressao;

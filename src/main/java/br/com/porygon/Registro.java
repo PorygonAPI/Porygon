@@ -3,14 +3,14 @@ package br.com.porygon;
 public class Registro {
     private String data;
     private String hora;
-    private Double temp;
+
+    private String cidade;
+
+    private Double temperatura;
+
     private Double velVento;
+
     private Double dirVento;
-    private Double umidade;
-    private Double pressao;
-    private Double nebulosidade;
-    private Double insolacao;
-    private Double chuva;
 
     public String getData() {
         return data;
@@ -29,11 +29,11 @@ public class Registro {
     }
 
     public Double getTemperatura() {
-        return temp;
+        return temperatura;
     }
 
-    public void setTemperatura(Double temp) {
-        this.temp = temp;
+    public void setTemperatura(Double temperatura) {
+        this.temperatura = temperatura;
     }
 
     public Double getVelVento() {
@@ -52,64 +52,19 @@ public class Registro {
         this.dirVento = dirVento;
     }
 
-    public Double getUmidade() {
-        return umidade;
+    public String getCidade() {
+        return cidade;
     }
 
-    public void setUmidade(Double umidade) {
-        this.umidade = umidade;
+    public void setCidade(String cidade) {
+        this.cidade = cidade;
     }
 
-    public Double getPressao() {
-        return pressao;
-    }
-
-    public void setPressao(Double pressao) {
-        this.pressao = pressao;
-    }
-
-    public Double getNebulosidade() {
-        return nebulosidade;
-    }
-
-    public void setNebulosidade(Double nebulosidade) {
-        this.nebulosidade = nebulosidade;
-    }
-
-    public Double getInsolacao() {
-        return insolacao;
-    }
-
-    public void setInsolacao(Double insolacao) {
-        this.insolacao = insolacao;
-    }
-
-    public Double getChuva() {
-        return chuva;
-    }
-
-    public void setChuva(Double chuva) {
-        this.chuva = chuva;
-    }
-
-
-    public Registro(String data, String hora, Double velVento, Double dirVento) {
+    public Registro(String cidade, String data, String hora, Double velVento, Double dirVento) {
+        this.cidade = cidade;
         this.data = data;
         this.hora = hora;
         this.velVento = velVento;
         this.dirVento = dirVento;
     }
-
-    public Registro(String data, String hora, Double velVento, Double dirVento, Double temp, Double tempMax,
-            Double tempMin, Double umiIns, Double umiMax, Double umiMin, Double pressao, Double pressaoMax,
-            Double pressaoMin, Double rajVento, Double radiacao, Double chuva) {
-        //TODO Auto-generated constructor stub
-    }
-
-    public Registro(String data, String hora, Double velVento, Double dirVento, Double temp, Double umi,
-            Double pressao, Double nebulosidade, Double insolacao, Double tempMax, Double tempMin, Double chuva) {
-        //TODO Auto-generated constructor stub
-    }
 }
-
-
