@@ -375,28 +375,36 @@ public class MainController {
         return registrosFiltrados;
     }
 
-    // Precisa Construir o arquivo como tabela sem passar os textos de string
+    // Precisa armazenar os dados das medias corretamente sem que ele separe por ",".
     public void exportarrelatorioperiocidade(@SuppressWarnings("exports") ActionEvent actionEvent) {
         // Obtem os dados da lista
         ObservableList<String> dados = listrelatorio.getItems();
-
+    
         // Constroe o conteúdo CSV
         StringBuilder csvBuilder = new StringBuilder();
-        csvBuilder.append(
-                "Intervalo de Tempo,Temperatura Ins. (°C),Umidade Ins. (%),Ponto de Orvalho Ins. (C),Pressão Ins. (hPa)\n");
+        csvBuilder.append("Intervalo de Tempo,Temperatura Ins. (°C),Umidade Ins. (%),Ponto de Orvalho Ins. (C),Pressão Ins. (hPa)\n");
+        
+        // Processa cada linha de dados
         for (String dado : dados) {
-            csvBuilder.append(dado).append("\n");
+            // Substitui os caracteres indesejados por vírgulas
+            String linha = dado.replace("Temperatura Ins. :", "").replace("°C", "")
+                               .replace("Umidade Ins. :", "").replace("%", "")
+                               .replace("Pto Orvalho Ins. :", "").replace("C", "")
+                               .replace("Pressão Ins. :", "").replace("hPa", "");
+            
+            // Adiciona a linha ao conteúdo CSV
+            csvBuilder.append(linha).append("\n");
         }
-
+    
         // Converta o StringBuilder para String
         String csvContent = csvBuilder.toString();
-
+    
         // Escolha um local para salvar o arquivo
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Relatorio Periocidade");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV Files", "*.csv"));
         File file = fileChooser.showSaveDialog(((Node) actionEvent.getSource()).getScene().getWindow());
-
+    
         // Salve o conteúdo CSV em um arquivo
         if (file != null) {
             try (PrintWriter writer = new PrintWriter(file)) {
@@ -405,6 +413,5 @@ public class MainController {
                 e.printStackTrace();
             }
         }
-
     }
 }
