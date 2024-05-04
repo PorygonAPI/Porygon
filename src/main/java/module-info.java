@@ -9,6 +9,7 @@ module br.com.porygon {
     requires org.kordamp.ikonli.javafx;
     requires org.kordamp.bootstrapfx.core;
     requires eu.hansolo.tilesfx;
+    requires java.sql;
 
     opens br.com.porygon to javafx.fxml;
     exports br.com.porygon;

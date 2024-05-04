@@ -1,6 +1,7 @@
 package br.com.porygon;
 
 // import javafx.collections.ObservableList;
+import br.com.porygon.dao.ConfiguracaoDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -153,6 +154,32 @@ public class MainController {
     public double getRajVentoMinimo() { return rajVentoMinimo; }
     public void setRajVentoMinimo(double rajVentoMinimo) { this.rajVentoMinimo = rajVentoMinimo; }
 
+
+    public void initialize() {
+        ConfiguracaoDAO configDao = new ConfiguracaoDAO();
+        tempMaxField.setText(configDao.recuperarAtributos("tempMaxima"));
+        tempMinField.setText(configDao.recuperarAtributos("tempMinima"));
+        umiMaxField.setText(configDao.recuperarAtributos("umiMaxima"));
+        umiMinField.setText(configDao.recuperarAtributos("umiMinima"));
+        presMaxField.setText(configDao.recuperarAtributos("presMaxima"));
+        presMinField.setText(configDao.recuperarAtributos("presMinima"));
+        velVentoMaxField.setText(configDao.recuperarAtributos("velVentoMaxima"));
+        velVentoMinField.setText(configDao.recuperarAtributos("velVentoMinima"));
+        nebuMaxField.setText(configDao.recuperarAtributos("nebuMaxima"));
+        nebuMinField.setText(configDao.recuperarAtributos("nebuMinima"));
+        dirVentoMaxField.setText(configDao.recuperarAtributos("dirVentoMaxima"));
+        dirVentoMinField.setText(configDao.recuperarAtributos("dirVentoMinima"));
+        ptoOrvMaxField.setText(configDao.recuperarAtributos("ptoOrvalhoMaximo"));
+        ptoOrvMinField.setText(configDao.recuperarAtributos("ptoOrvalhoMinimo"));
+        rajVenMaxField.setText(configDao.recuperarAtributos("rajVentoMaximo"));
+        rajVenMinField.setText(configDao.recuperarAtributos("rajVentoMinimo"));
+        insoMaxField.setText(configDao.recuperarAtributos("insoMaxima"));
+        insoMinField.setText(configDao.recuperarAtributos("insoMinima"));
+        chuMaxField.setText(configDao.recuperarAtributos("chuvaMaxima"));
+        chuMinField.setText(configDao.recuperarAtributos("chuvaMinima"));
+
+
+    }
     public String stringify(Double dado) {
         if (dado == null) {
             return null;
@@ -163,6 +190,8 @@ public class MainController {
     // Método para colher informações das listas geradas no método verificarRegistros e vincular com o fxml
     public void visualizarListas() {
         listViewApurado.getItems().clear();
+        listViewSuspeito.getItems().clear();
+
         for (Registro registro : dadoApurado) {
             String listViewText;
             if (registro instanceof RegistroAutomatico regAut) {
@@ -191,7 +220,6 @@ public class MainController {
             }
             listViewApurado.getItems().add(listViewText);
         }
-        listViewSuspeito.getItems().clear();
         for (Registro registro : dadoSuspeito) {
             String listViewText;
 
@@ -272,27 +300,67 @@ public class MainController {
     @FXML
     private void verificar(ActionEvent event) { // Método chamado quando o pesquisador clica no botão "Verificar"
         // Transformar os valores de String para Double antes de fazer a comparação com as minimas e máximas informadas pelo pesquisador
-        try { 
+        try {
+            ConfiguracaoDAO configDao = new ConfiguracaoDAO();
             tempMaxima = Double.parseDouble(tempMaxField.getText());
+            configDao.adicionarAtributo("tempMaxima", tempMaxima);
             tempMinima = Double.parseDouble(tempMinField.getText());
+            configDao.adicionarAtributo("tempMinima", tempMinima);
+
             umiMaxima = Double.parseDouble(umiMinField.getText());
+            configDao.adicionarAtributo("umiMaxima", umiMaxima);
+
             umiMinima = Double.parseDouble(umiMaxField.getText());
+            configDao.adicionarAtributo("umiMinima", umiMinima);
+
             presMaxima = Double.parseDouble(presMaxField.getText());
+            configDao.adicionarAtributo("presMaxima", presMaxima);
+
             presMinima = Double.parseDouble(presMinField.getText());
+            configDao.adicionarAtributo("presMinima", presMinima);
+
             velVentoMaxima = Double.parseDouble(velVentoMaxField.getText());
+            configDao.adicionarAtributo("velVentoMaxima", velVentoMaxima);
+
             velVentoMinima = Double.parseDouble(velVentoMinField.getText());
+            configDao.adicionarAtributo("velVentoMinima", velVentoMinima);
+
             dirVentoMaxima = Double.parseDouble(dirVentoMaxField.getText());
+            configDao.adicionarAtributo("dirVentoMaxima", dirVentoMaxima);
+
             dirVentoMinima = Double.parseDouble(dirVentoMinField.getText());
+            configDao.adicionarAtributo("dirVentoMinima", dirVentoMinima);
+
             nebuMaxima = Double.parseDouble(nebuMaxField.getText());
+            configDao.adicionarAtributo("nebuMaxima", nebuMaxima);
+
             nebuMinima = Double.parseDouble(nebuMinField.getText());
+            configDao.adicionarAtributo("nebuMinima", nebuMinima);
+
             insoMaxima = Double.parseDouble(insoMaxField.getText());
+            configDao.adicionarAtributo("insoMaxima", insoMaxima);
+
             insoMinima = Double.parseDouble(insoMinField.getText());
+            configDao.adicionarAtributo("insoMinima", insoMinima);
+
             chuvaMaxima = Double.parseDouble(chuMaxField.getText());
+            configDao.adicionarAtributo("chuvaMaxima", chuvaMaxima);
+
             chuvaMinima = Double.parseDouble(chuMinField.getText());
+            configDao.adicionarAtributo("chuvaMinima", chuvaMinima);
+
             ptoOrvalhoMaximo = Double.parseDouble(ptoOrvMaxField.getText());
+            configDao.adicionarAtributo("ptoOrvalhoMaximo", ptoOrvalhoMaximo);
+
             ptoOrvalhoMinimo = Double.parseDouble(ptoOrvMinField.getText());
+            configDao.adicionarAtributo("ptoOrvalhoMinimo", ptoOrvalhoMinimo);
+
             rajVentoMaximo = Double.parseDouble(rajVenMaxField.getText());
+            configDao.adicionarAtributo("rajVentoMaximo", rajVentoMaximo);
+
             rajVentoMinimo = Double.parseDouble(rajVenMinField.getText());
+            configDao.adicionarAtributo("rajVentoMinimo", rajVentoMinimo);
+
 
             tempLabel.setText("Valores Cadastrados");
 
@@ -311,6 +379,9 @@ public class MainController {
     }
 
     private void verificarRegistros() {
+        dadoSuspeito.clear();
+        dadoApurado.clear();
+
         for (Registro registro : registros) {
             if (registro.getTemperatura() != null && (registro.getTemperatura() >= tempMaxima || registro.getTemperatura() <= tempMinima)) {
                 dadoSuspeito.add(registro);
