@@ -161,5 +161,4 @@ public class RegistroAutomatico extends Registro {
         this.chuva = chuva;
         setTemperatura(tempIns);
     }
-
 }

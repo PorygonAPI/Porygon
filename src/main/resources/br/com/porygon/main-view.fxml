@@ -121,6 +121,16 @@
                     </VBox>
                 </content>
             </Tab>
+            <Tab text="Relatório com médias">
+                <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                    <VBox alignment="CENTER" spacing="10.0">
+                        <ListView fx:id="listViewRelatorio" prefHeight="152.0" prefWidth="378.0" />
+                  <Button fx:id="baixarRelatorioA" mnemonicParsing="false" onAction="#baixarRelatorio" text="Baixar Relatorio" />
+                    </VBox>
+                </content>
+            </Tab>
+
         </tabs>
     </TabPane>
 </VBox>
