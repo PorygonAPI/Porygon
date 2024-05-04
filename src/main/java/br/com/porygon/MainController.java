@@ -340,7 +340,7 @@ public class MainController {
     //Preciso fazer um novo botão para gerar o relatorio na tela
     //Preciso fazer a parte do relatorio Manual
 
-    String desktopPath = System.getProperty("user.home") + "/Desktop/";
+    String desktopPath = System.getProperty("user.home") + "/Documents/";
     String nomeArquivo = desktopPath + "RelatorioRegistro.csv";
     String nomeArquivoManual = desktopPath + "RelatorioRegistroManual.csv";
 
