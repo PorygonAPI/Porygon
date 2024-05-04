@@ -320,30 +320,17 @@ public class MainController {
     }
 
     private void verificarRegistros() {
-        System.out.println("teste temp" + tempMaxima);
         for (Registro registro : registros) {
-            //verificar lista de regras
-            //se regra aplicada, entao verificar registro com aquela regra
-            System.out.println("Reg Manual" + registro.getTemperatura());
-                if (registro instanceof RegistroAutomatico) {
-                    RegistroAutomatico regAut = (RegistroAutomatico) registro;
-                    if (regAut.getTemperatura() != null || regAut.getTemperatura() >= tempMaxima
-                    || regAut.getTemperatura() <= tempMinima) {
-                dadoSuspeito.add(regAut);
+            if (registro.getTemperatura() == null || registro.getTemperatura() >= tempMaxima
+                    || registro.getTemperatura() <= tempMinima) {
+                dadoSuspeito.add(registro);
                 System.out.println("Dado incorreto");
             } else {
-                dadoApurado.add(regAut);
+                dadoApurado.add(registro);
                 System.out.println("Dado correto");
-            }
-        } else if (registro instanceof RegistroManual) {
-            RegistroManual regManual = (RegistroManual) registro;
-            if (regManual.getTemperatura() != null && (regManual.getTemperatura() >= tempMaxima || regManual.getTemperatura() <= tempMinima)) {
-                dadoSuspeito.add(regManual);
-                System.out.println("teste CSV");
             }
         }
         visualizarListas();
-        }
     }
 
     // RELATÓRIO PERIOCIDADE por CIDADE
