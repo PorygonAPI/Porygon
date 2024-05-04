@@ -91,32 +91,25 @@ public class MainController {
 
     @FXML
     private ListView<String> listViewApurado; // Atributo para visualizar a lista de registros apurados na tela
-
     @FXML
     private ListView<String> listViewSuspeito; // Atributo para visualizar a lista de registros apurados na tela
-
     @FXML
     private ListView<String> listrelatorio; // Atributo para visualizar a lista do relatorio (Data/Periodo) na tela
 
     @FXML
     private ComboBox<String> cityComboBox;
-
     @FXML
     private ComboBox<String> hourIntervalComboBox;
 
     // Listas
-    List<Registro> registros = new ArrayList<Registro>(); // Lista de registros geral, gerada a partir do upload do
-    // arquivo .csv
-    List<Registro> dadoSuspeito = new ArrayList<Registro>(); // Lista de registros suspeitos, gerada após a execução do
-    // método verificarRegistros
+    List<Registro> registros = new ArrayList<Registro>(); // Lista de registros geral, gerada a partir do upload do arquivo .csv
+    List<Registro> dadoSuspeito = new ArrayList<Registro>(); // Lista de registros suspeitos, gerada após a execução do método verificarRegistros
     List<Registro> dadoApurado = new ArrayList<Registro>(); // Lista de registros apurados, gerada a execução do método
+    List<Registro> dadosNulos = new ArrayList<Registro>(); // Lista de registros apurados, gerada a execução do método
 
     String[] cidadesLista = {};
 
-    // List<Registro> listrelatorio = new ArrayList<>(); //Lista dos dados do
-    // relatorio por data e período
-
-    // verificarRegistros
+    // List<Registro> listrelatorio = new ArrayList<>(); //Lista dos dados do relatorio por data e período
 
     // Métodos de acesso
     public double getTempMaxima() { return tempMaxima; }
@@ -167,8 +160,7 @@ public class MainController {
         return String.format("%.2f", dado);
     }
 
-    // Método para colher informações das listas geradas no método
-    // verificarRegistros e vincular com o fxml
+    // Método para colher informações das listas geradas no método verificarRegistros e vincular com o fxml
     public void visualizarListas() {
         listViewApurado.getItems().clear();
         for (Registro registro : dadoApurado) {
@@ -278,8 +270,9 @@ public class MainController {
     }
 
     @FXML
-    private void verificar(ActionEvent event) {// Método chamado quando o pesquisador clica no botão "Verificar"
-        try {
+    private void verificar(ActionEvent event) { // Método chamado quando o pesquisador clica no botão "Verificar"
+        // Transformar os valores de String para Double antes de fazer a comparação com as minimas e máximas informadas pelo pesquisador
+        try { 
             tempMaxima = Double.parseDouble(tempMaxField.getText());
             tempMinima = Double.parseDouble(tempMinField.getText());
             umiMaxima = Double.parseDouble(umiMinField.getText());
@@ -306,9 +299,7 @@ public class MainController {
             // System.out.println("Temperatura máxima: " + tempMaxima); // Teste de input e retorno
             // System.out.println("Temperatura mínima: " + tempMinima);
 
-            System.out.println("Dado Apurado: " + dadoApurado);
-            System.out.println("Dado Registrado: " + registros);
-            System.out.println("Dado Suspeito: " + dadoSuspeito);
+            //System.out.println("Dado Registrado: " + registros);
 
             verificarRegistros();
 
@@ -321,15 +312,33 @@ public class MainController {
 
     private void verificarRegistros() {
         for (Registro registro : registros) {
-            if (registro.getTemperatura() == null || registro.getTemperatura() >= tempMaxima
-                    || registro.getTemperatura() <= tempMinima) {
+            if (registro.getTemperatura() != null && (registro.getTemperatura() >= tempMaxima || registro.getTemperatura() <= tempMinima)) {
                 dadoSuspeito.add(registro);
-                System.out.println("Dado incorreto");
+            } else if (registro.getUmi() != null && (registro.getUmi() >= umiMaxima || registro.getUmi() <= umiMinima)) {
+                dadoSuspeito.add(registro);
+            } else if (registro.getPressao() != null && (registro.getPressao() >= presMaxima || registro.getPressao() <= presMinima)) {
+                dadoSuspeito.add(registro);
+            } else if (registro.getVelVento() != null && (registro.getVelVento() >= velVentoMaxima || registro.getVelVento() <= velVentoMinima)) {
+                dadoSuspeito.add(registro);
+            } else if (registro.getDirVento() != null && (registro.getDirVento() >= dirVentoMaxima || registro.getDirVento() <= dirVentoMinima)) {
+                dadoSuspeito.add(registro);
+            } else if (registro.getPtoOrvalhoIns() != null && (registro.getPtoOrvalhoIns() >= ptoOrvalhoMaximo || registro.getPtoOrvalhoIns() <= ptoOrvalhoMinimo)) {
+                dadoSuspeito.add(registro);
+            } else if (registro.getRajVento() != null && (registro.getRajVento() >= rajVentoMaximo || registro.getRajVento() <= rajVentoMinimo)) {
+                dadoSuspeito.add(registro);
+            } else if (registro.getChuva() != null && (registro.getChuva() >= chuvaMaxima || registro.getChuva() <= chuvaMinima)) {
+                dadoSuspeito.add(registro);
+            } else if (registro.getNebulosidade() != null && (registro.getNebulosidade() >= nebuMaxima || registro.getNebulosidade() <= nebuMinima)) {
+                dadoSuspeito.add(registro);
+            } else if (registro.getTemperatura() == null && registro.getUmi() == null && registro.getPressao() == null && registro.getVelVento() == null && registro.getDirVento() == null && registro.getPtoOrvalhoIns() == null && registro.getRajVento() == null && registro.getChuva() == null && registro.getNebulosidade() == null) {
+                dadosNulos.add(registro);
             } else {
                 dadoApurado.add(registro);
-                System.out.println("Dado correto");
             }
         }
+        //System.out.println("Dado Suspeito: " + dadoSuspeito);
+        //System.out.println("Dado Apurado: " + dadoApurado);
+        System.out.println("Dados Nulos: " + dadosNulos);
         visualizarListas();
     }
 

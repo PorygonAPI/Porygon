@@ -87,9 +87,9 @@ public class Registro {
     }
 
     public Registro(String cidade, String data, String hora, Double velVento, Double dirVento, Double temp,
-            Double tempMax, Double tempMin, Double umi, Double umiMax, Double umiMin, Double ptoOrvalhoIns,
-            Double ptoOrvalhoMax, Double ptoOrvalhoMin, Double pressao, Double pressaoMax, Double pressaoMin,
-            Double rajVento, Double radiacao, Double chuva) {
+            Double tempMax, Double tempMin, Double umi, Double pressao, Double chuva, Double umiMax, Double umiMin, Double ptoOrvalhoIns,
+            Double ptoOrvalhoMax, Double ptoOrvalhoMin, Double pressaoMax, Double pressaoMin,
+            Double rajVento, Double radiacao) {
         this.cidade = cidade;
         this.data = data; 
         this.hora = hora;
@@ -99,35 +99,35 @@ public class Registro {
         this.tempMax = tempMax;
         this.tempMin = tempMin;
         this.umi = umi;
+        this.pressao = pressao;
+        this.chuva = chuva;
         this.umiMax = umiMax;
         this.umiMin = umiMin;
         this.ptoOrvalhoIns = ptoOrvalhoIns;
         this.ptoOrvalhoMax = ptoOrvalhoMax;
         this.ptoOrvalhoMin = ptoOrvalhoMin;
-        this.pressao = pressao;
         this.pressaoMax = pressaoMax;
         this.pressaoMin = pressaoMin;
         this.rajVento = rajVento;
         this.radiacao = radiacao;
-        this.chuva = chuva;
         setTemperatura(temp);
     }
 
-    public Registro(String cidade, String data, String hora, Double velVento, Double dirVento, Double temp, Double umi,
-            Double pressao, Double nebulosidade, Double insolacao, Double tempMax, Double tempMin, Double chuva) {
+    public Registro(String cidade, String data, String hora, Double velVento, Double dirVento, Double temp, Double tempMax, Double tempMin, Double umi,
+            Double pressao, Double chuva, Double nebulosidade, Double insolacao) {
         this.cidade = cidade; 
         this.data = data;
         this.hora = hora;
         this.velVento = velVento;
         this.dirVento = dirVento;
         this.temp = temp;
-        this.umi = umi;
-        this.pressao = pressao;
-        this.nebulosidade = nebulosidade;
-        this.insolacao = insolacao;
         this.tempMax = tempMax;
         this.tempMin = tempMin;
+        this.umi = umi;
+        this.pressao = pressao;
         this.chuva = chuva;
+        this.nebulosidade = nebulosidade;
+        this.insolacao = insolacao;
         setTemperatura(converterEscala(temp));
         }
 }
