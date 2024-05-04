@@ -10,9 +10,8 @@ import javafx.scene.control.*;
 import javafx.stage.FileChooser;
 import javafx.stage.Window;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -317,43 +316,56 @@ public class MainController {
     }
 
     // Exportar dados CSV
-    public void exportarrelatorioperiocidade(@SuppressWarnings("exports") ActionEvent actionEvent) {
-        // Obtem os dados da lista
-        ObservableList<String> dados = listrelatorio.getItems();
+    public void exportarrelatorioperiocidade(@SuppressWarnings("exports") ActionEvent actionEvent) throws IOException {
+        String desktopPath = System.getProperty("user.home") + "/Documents/";
+        String nomeArquivoManual = desktopPath + "RelatorioRegistroManual.csv";
+        FileWriter escritorManual = new FileWriter(nomeArquivoManual, StandardCharsets.ISO_8859_1, false);
+        escritorManual.write("Data; Hora ;Temperatura Ins (°C) ;Umidade (%) ;Pressão (hPa) ;Velocidade do Vento (m/s) ; Direção do Vento (m/s) ; Nebulosidade ;Insolação (h) ; Chuva(mm)\n");
 
-        // Constroe o conteúdo CSV
-        StringBuilder csvBuilder = new StringBuilder();
-        csvBuilder.append(
-                "Intervalo de Tempo,Temperatura Ins. (°C),Umidade Ins. (%),Ponto de Orvalho Ins. (C),Pressão Ins. (hPa)\n");
 
-        // Processa cada linha de dados
-        for (String dado : dados) {
-            // Substitui os caracteres indesejados por vírgulas
-            String linha = dado.replace("Temperatura Ins. :", "").replace("°C", "")
-                    .replace("Umidade Ins. :", "").replace("%", "")
-                    .replace("Pto Orvalho Ins. :", "").replace("C", "")
-                    .replace("Pressão Ins. :", "").replace("hPa", "");
+        String nomeArquivo = desktopPath + "RelatorioRegistroAuto.csv";
+        FileWriter escritorAuto = new FileWriter(nomeArquivo, StandardCharsets.ISO_8859_1, false);
+        escritorAuto.write("Data; Hora ;Temperatura Ins (°C) ;Umidade Ins (%) ;Pto Orvalho Ins (C) ;Pressao Ins (hPa) \n");
 
-            // Adiciona a linha ao conteúdo CSV
-            csvBuilder.append(linha).append("\n");
-        }
+        for (Registro registro : dadoApurado) {
 
-        // Converta o StringBuilder para String
-        String csvContent = csvBuilder.toString();
+            if (registro instanceof RegistroAutomatico) {
+                RegistroAutomatico regAutomatico = (RegistroAutomatico) registro;
+                String horaOriginal = regAutomatico.getHora();
+                String horaFormatada = horaOriginal.substring(0, 2) + ":" + horaOriginal.substring(2);
 
-        // Escolha um local para salvar o arquivo
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Relatorio Periocidade");
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV Files", "*.csv"));
-        File file = fileChooser.showSaveDialog(((Node) actionEvent.getSource()).getScene().getWindow());
+                escritorAuto.write(
+                        regAutomatico.getData().toString() + ";" + horaFormatada + ";" +
+                        String.format("%.2f", regAutomatico.getTemperatura()) + ";" +
+                        String.format("%.2f", regAutomatico.getUmiIns()) + ";" +
+                        String.format("%.2f", regAutomatico.getPtoOrvalhoIns()) + ";" +
+                        String.format("%.2f", regAutomatico.getPressaoIns()) + ";" + "\n");
 
-        // Salve o conteúdo CSV em um arquivo
-        if (file != null) {
-            try (PrintWriter writer = new PrintWriter(file)) {
-                writer.write(csvContent);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
+            } else if (registro instanceof RegistroManual) {
+                RegistroManual regManual = (RegistroManual) registro;
+                String horaOriginal = regManual.getHora();
+                String horaFormatada = horaOriginal.substring(0, 2) + ":" + horaOriginal.substring(2);
+
+                escritorAuto.write(
+                        regManual.getData().toString() + ";" + horaFormatada + ";" +
+                                String.format("%.2f", regManual.getTemperatura()) + ";" +
+                                String.format("%.2f", regManual.getUmi()) + ";" +
+                                String.format("%.2f", regManual.getPressao()) + ";" +
+                                String.format("%.2f", regManual.getVelVento()) + ";" +
+                                String.format("%.2f", regManual.getDirVento()) + ";" +
+                                String.format("%.2f", regManual.getNebulosidade()) + ";" +
+                                String.format("%.2f", regManual.getInsolacao()) + ";" +
+                                String.format("%.2f", regManual.getChuva()) + ";" +"\n");
             }
+
+
         }
-    }
+            //Escreve todos os dados do Buffer no arquivo
+            escritorManual.flush();
+            escritorManual.close();
+
+            escritorAuto.flush();
+            escritorAuto.close();
+        }
 }
+
