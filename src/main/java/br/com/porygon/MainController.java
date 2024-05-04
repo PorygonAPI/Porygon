@@ -253,13 +253,6 @@ public class MainController {
         if (cidadeEscolhida != null && dataInicial != null && dataFinal != null) {
             LocalDate date = dataInicial;
             filtrarRegistrosPorDia(cidadeEscolhida, date, dataInicial, dataFinal);
-                
-
-            // listrelatorio.getItems().clear();
-            // listrelatorio.getItems()
-            //         .add("Cidade: " + cidadeEscolhida + " | Período: " + dataInicial + " a " + dataFinal);
-
-            // Adiciona as médias por intervalo
         } else {
             // Exibir mensagem de erro se os campos não estiverem preenchidos
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -286,16 +279,15 @@ public class MainController {
                     RegistroAutomatico regAutomatico = (RegistroAutomatico) registro;
                     registroTexto.append("Registro Automático - ");
 
-                    // tem que formatar isso 
-                    registroTexto.append("Hora:  ").append(regAutomatico.getHora());
+                    // formata a hora 
+                    String horaOriginal = regAutomatico.getHora();
+                    String horaFormatada = horaOriginal.substring(0, 2) + ":" + horaOriginal.substring(2);
 
-                    // tem que adicionar isso
-                    // + regAut.getData().format(formatter) + "
-
-                    registroTexto.append("Temperatura Ins. ").append(regAutomatico.getTemperatura()).append(" °C ");
-                    registroTexto.append("Umidade Ins. ").append(regAutomatico.getUmiIns()).append(" % ");
-                    registroTexto.append("Pto Orvalho Ins. ").append(regAutomatico.getPtoOrvalhoIns()).append(" C ");
-                    registroTexto.append("Pressao Ins. ").append(regAutomatico.getPressaoIns()).append(" hPa ");   
+                    registroTexto.append("Hora: ").append(horaFormatada).append("  ");
+                    registroTexto.append("Temperatura Ins: ").append(regAutomatico.getTemperatura()).append(" °C ");
+                    registroTexto.append("Umidade Ins: ").append(regAutomatico.getUmiIns()).append(" % ");
+                    registroTexto.append("Pto Orvalho Ins: ").append(regAutomatico.getPtoOrvalhoIns()).append(" C ");
+                    registroTexto.append("Pressao Ins: ").append(regAutomatico.getPressaoIns()).append(" hPa ");   
 
                     listrelatorio.getItems().add(registroTexto.toString());
 
@@ -303,31 +295,28 @@ public class MainController {
                     RegistroManual regManual = (RegistroManual) registro;
                     registroTexto.append("Registro Manual - ");
 
-                    // tem que formatar isso 
-                    registroTexto.append("Hora:  ").append(regManual.getHora());
+                    // formata a hora 
+                    String horaOriginal = regManual.getHora();
+                    String horaFormatada = horaOriginal.substring(0, 2) + ":" + horaOriginal.substring(2);
+                    registroTexto.append("Hora: ").append(horaFormatada).append("  ");
 
-                        // revisar os tipos de dados 
-                        registroTexto.append("Temperatura: ").append(regManual.getTemperatura()).append(" °C ");
-                        registroTexto.append("Umidade: ").append(regManual.getUmi()).append(" % ");
-                        registroTexto.append("Pressão: ").append(regManual.getPressao()).append(" ");
-                        registroTexto.append("Velocidade do Vento: ").append(regManual.getVelVento()).append(" m/s ");
-                        registroTexto.append("Direção do Vento: ").append(regManual.getDirVento()).append(" ");
-                        registroTexto.append("Nebulosidade: ").append(regManual.getNebulosidade()).append(" ");
-                        registroTexto.append("Insolação: ").append(regManual.getInsolacao()).append(" ");
-                        registroTexto.append("Temperatura Máxima: ").append(regManual.getTempMax()).append(" °C, ");
-                        registroTexto.append("Temperatura Mínima: ").append(regManual.getTempMin()).append(" °C, ");
-                        registroTexto.append("Chuva: ").append(regManual.getChuva()).append(" ");
-                        ;
-                    // Adicione outras variáveis relevantes
+                    // revisar os tipos de dados 
+                    registroTexto.append("Temperatura Ins: ").append(regManual.getTemperatura()).append(" °C ");
+                    registroTexto.append("Umidade: ").append(regManual.getUmi()).append(" % ");
+                    registroTexto.append("Pressão: ").append(regManual.getPressao()).append(" hPa ");
+                    registroTexto.append("Velocidade do Vento: ").append(regManual.getVelVento()).append(" m/s ");
+                    registroTexto.append("Direção do Vento: ").append(regManual.getDirVento()).append(" m/s ");
+                    registroTexto.append("Nebulosidade: ").append(regManual.getNebulosidade()).append("  ");
+                    registroTexto.append("Insolação: ").append(regManual.getInsolacao()).append(" h ");
+                    registroTexto.append("Chuva: ").append(regManual.getChuva()).append(" mm ");
+
                     listrelatorio.getItems().add(registroTexto.toString());
-
                 }
             }
         }
     }
 
-    // Precisa armazenar os dados das medias corretamente sem que ele separe por
-    // ",".
+    // Exportar dados CSV
     public void exportarrelatorioperiocidade(@SuppressWarnings("exports") ActionEvent actionEvent) {
         // Obtem os dados da lista
         ObservableList<String> dados = listrelatorio.getItems();
