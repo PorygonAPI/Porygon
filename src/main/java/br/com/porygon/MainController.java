@@ -14,7 +14,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 // import java.util.Objects;
@@ -50,14 +50,12 @@ public class MainController {
     @FXML
     private ComboBox<String> cityComboBox;
 
-    @FXML
-    private ComboBox<String> hourIntervalComboBox;
 
     @FXML
-    private DatePicker datePickerInicial;
+    private DatePicker startDatePicker;
 
     @FXML
-    private DatePicker datePickerFinal;
+    private DatePicker endDatePicker;
 
     // Listas
     List<Registro> registros = new ArrayList<Registro>(); // Lista de registros geral, gerada a partir do upload do
@@ -97,7 +95,9 @@ public class MainController {
             String listViewText;
             if (registro instanceof RegistroAutomatico regAut) {
                 // Alterar visualização de lista
-                listViewText = "Automático - Data: " + regAut.getData() + " | Hora: " + regAut.getHora()
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+                listViewText = "Automático - Data: " + regAut.getData().format(formatter) + " | Hora: " + regAut.getHora()
                         + " | Temperatura (Ins) : " + stringify(regAut.getTemperatura()) + " | Temperatura Máxima :"
                         + stringify(regAut.getTempMax()) + " | Temperatura Mínima: " + stringify(regAut.getTempMin())
                         + " | Umidade (Ins): "
@@ -109,7 +109,9 @@ public class MainController {
             } else {
                 // Alterar visualização de lista
                 RegistroManual regManual = (RegistroManual) registro;
-                listViewText = "Manual - Data: " + regManual.getData() + " | Hora: " + regManual.getHora()
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+                listViewText = "Manual - Data: " + regManual.getData().format(formatter) + " | Hora: " + regManual.getHora()
                         + " | Temperatura : " + stringify(regManual.getTemperatura()) + " | Umidade: "
                         + stringify(regManual.getUmi()) + " | Pressão: " + stringify(regManual.getPressao())
                         + " | Velocidade do Vento: " + stringify(regManual.getVelVento()) + " | Direção do Vento: "
@@ -127,7 +129,9 @@ public class MainController {
 
             if (registro instanceof RegistroAutomatico regAut) {
                 // Alterar visualização de lista
-                listViewText = "Automático - Data: " + regAut.getData() + " | Hora: " + regAut.getHora()
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+                listViewText = "Automático - Data: " + regAut.getData().format(formatter) + " | Hora: " + regAut.getHora()
                         + " | Temperatura (Ins) : " + stringify(regAut.getTemperatura()) + " | Temperatura Máxima :"
                         + stringify(regAut.getTempMax()) + " | Temperatura Mínima: " + stringify(regAut.getTempMin())
                         + " | Umidade (Ins): "
@@ -139,8 +143,8 @@ public class MainController {
             } else {
                 // Alterar visualização de lista
                 RegistroManual regManual = (RegistroManual) registro;
-
-                listViewText = "Manual - Data: " + regManual.getData() + " | Hora: " + regManual.getHora()
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                listViewText = "Manual - Data: " + regManual.getData().format(formatter) + " | Hora: " + regManual.getHora()
                         + " | Temperatura : " + stringify(regManual.getTemperatura()) + " | Umidade (Ins): "
                         + stringify(regManual.getUmi()) + " | Pressão " + stringify(regManual.getPressao())
                         + " | Velocidade do Vento: " + stringify(regManual.getVelVento()) + " | Direção do Vento: "
@@ -187,7 +191,6 @@ public class MainController {
 
                 // Definir um valor padrão
                 cityComboBox.setValue(opcoes.getFirst());
-                hourIntervalComboBox.setValue("1 hora");
 
                 Arquivo arquivo = new Arquivo();
                 arquivo.setConteudo(file);
@@ -243,23 +246,20 @@ public class MainController {
     @FXML
     public void gerarrelatorioperiocidade() {
         String cidadeEscolhida = cityComboBox.getValue();
-        LocalDate dataInicial = datePickerInicial.getValue();
-        LocalDate dataFinal = datePickerFinal.getValue();
+        LocalDate dataInicial = startDatePicker.getValue();
+        LocalDate dataFinal = endDatePicker.getValue();
 
         // Verifica se as datas foram selecionadas
         if (cidadeEscolhida != null && dataInicial != null && dataFinal != null) {
-            List<List<Double>> mediasPorIntervalo = calcularMediasPorIntervalo(cidadeEscolhida, dataInicial, dataFinal);
+            LocalDate date = dataInicial;
+            filtrarRegistrosPorDia(cidadeEscolhida, date, dataInicial, dataFinal);
+                
 
-            listrelatorio.getItems().clear();
-            listrelatorio.getItems()
-                    .add("Cidade: " + cidadeEscolhida + " | Período: " + dataInicial + " a " + dataFinal);
+            // listrelatorio.getItems().clear();
+            // listrelatorio.getItems()
+            //         .add("Cidade: " + cidadeEscolhida + " | Período: " + dataInicial + " a " + dataFinal);
 
             // Adiciona as médias por intervalo
-            for (int i = 0; i < mediasPorIntervalo.size(); i++) {
-                // Crie o texto do intervalo e as médias das variáveis
-                String intervaloTexto = criarTextoIntervalo(dataInicial.plusDays(i), mediasPorIntervalo.get(i));
-                listrelatorio.getItems().add(intervaloTexto);
-            }
         } else {
             // Exibir mensagem de erro se os campos não estiverem preenchidos
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -269,115 +269,60 @@ public class MainController {
         }
     }
 
-    // Método para criar texto do intervalo e médias das variáveis
-    private String criarTextoIntervalo(LocalDate data, List<Double> mediasVariaveis) {
-        StringBuilder texto = new StringBuilder();
-        texto.append("Data: ").append(data).append(" | Médias: ");
-        for (int i = 0; i < mediasVariaveis.size(); i++) {
-            texto.append(getNomeVariavel(i)).append(": ").append(String.format("%.2f", mediasVariaveis.get(i)))
-                    .append(" ").append(getUnidadeMedida(i)).append(" | ");
-        }
-        return texto.toString();
-    }
+    // Método para filtrar os registros para um dia específico e cidade
+    private void filtrarRegistrosPorDia(String cidadeEscolhida, LocalDate data, LocalDate dataInicial, LocalDate dataFinal) {
+        listrelatorio.getItems().add("Cidade: " + cidadeEscolhida + " | Período: " + dataInicial + " a " + dataFinal);
 
-    private List<List<Double>> calcularMediasPorIntervalo(String cidadeEscolhida, LocalDate dataInicial,
-            LocalDate dataFinal) {
-        // Inicializa a lista de médias por intervalo
-        List<List<Double>> mediasPorIntervalo = new ArrayList<>();
-
-        // Obtém o número total de dias no intervalo
-        long totalDias = ChronoUnit.DAYS.between(dataInicial, dataFinal);
-
-        // Loop para cada dia no intervalo
-        for (int i = 0; i <= totalDias; i++) {
-            // Inicializa a lista de médias para o dia atual
-            List<Double> mediasDia = new ArrayList<>();
-
-            // Obtém a data atual no loop
-            LocalDate dataAtual = dataInicial.plusDays(i);
-
-            // Filtra os registros para o dia atual
-            List<Registro> registrosDia = filtrarRegistrosPorDia(cidadeEscolhida, dataAtual);
-
-            // Se houver registros para o dia atual, calcula as médias das variáveis
-            if (!registrosDia.isEmpty()) {
-                // Inicializa as somas das variáveis para o dia atual
-                double somaTempIns = 0.0;
-                double somaUmiIns = 0.0;
-                double somaPtoOrvalhoIns = 0.0;
-                double somaPressaoIns = 0.0;
-
-                // Loop sobre os registros do dia atual para calcular as somas
-                for (Registro registro : registrosDia) {
-                    if (registro instanceof RegistroAutomatico) {
-                        RegistroAutomatico registroAuto = (RegistroAutomatico) registro;
-                        somaTempIns += registroAuto.getTempIns() != null ? registroAuto.getTempIns() : 0.0;
-                        somaUmiIns += registroAuto.getUmiIns() != null ? registroAuto.getUmiIns() : 0.0;
-                        somaPtoOrvalhoIns += registroAuto.getPtoOrvalhoIns() != null ? registroAuto.getPtoOrvalhoIns()
-                                : 0.0;
-                        somaPressaoIns += registroAuto.getPressaoIns() != null ? registroAuto.getPressaoIns() : 0.0;
-                    }
-                }
-
-                // Calcula as médias das variáveis para o dia atual
-                int totalRegistrosDia = registrosDia.size();
-                mediasDia.add(somaTempIns / totalRegistrosDia);
-                mediasDia.add(somaUmiIns / totalRegistrosDia);
-                mediasDia.add(somaPtoOrvalhoIns / totalRegistrosDia);
-                mediasDia.add(somaPressaoIns / totalRegistrosDia);
-            } else {
-                // Se não houver registros para o dia atual, adiciona médias nulas
-                mediasDia.add(null);
-                mediasDia.add(null);
-                mediasDia.add(null);
-                mediasDia.add(null);
-            }
-
-            // Adiciona as médias do dia atual à lista de médias por intervalo
-            mediasPorIntervalo.add(mediasDia);
-        }
-
-        return mediasPorIntervalo;
-    }
-
-    // Método para filtrar os registros para um dia específico
-    private List<Registro> filtrarRegistrosPorDia(String cidadeEscolhida, LocalDate data) {
-        List<Registro> registrosFiltrados = new ArrayList<>();
         for (Registro registro : dadoApurado) {
-            LocalDate dataRegistro = LocalDate.parse(registro.getData());
-            if (registro.getCidade().equals(cidadeEscolhida) && dataRegistro.equals(data)) {
-                registrosFiltrados.add(registro);
+
+
+            if (registro.getCidade().equals(cidadeEscolhida) && !(data.isBefore(dataInicial) || data.isAfter(dataFinal))) {
+                StringBuilder registroTexto = new StringBuilder();
+                System.out.println(registro.getCidade());
+
+
+                // Adicione aqui a lógica para obter os valores relevantes do registro
+                if (registro instanceof RegistroAutomatico) {
+                    RegistroAutomatico regAutomatico = (RegistroAutomatico) registro;
+                    registroTexto.append("Registro Automático - ");
+
+                    // tem que formatar isso 
+                    registroTexto.append("Hora:  ").append(regAutomatico.getHora());
+
+                    // tem que adicionar isso
+                    // + regAut.getData().format(formatter) + "
+
+                    registroTexto.append("Temperatura Ins. ").append(regAutomatico.getTemperatura()).append(" °C ");
+                    registroTexto.append("Umidade Ins. ").append(regAutomatico.getUmiIns()).append(" % ");
+                    registroTexto.append("Pto Orvalho Ins. ").append(regAutomatico.getPtoOrvalhoIns()).append(" C ");
+                    registroTexto.append("Pressao Ins. ").append(regAutomatico.getPressaoIns()).append(" hPa ");   
+
+                    listrelatorio.getItems().add(registroTexto.toString());
+
+                } else if (registro instanceof RegistroManual) {
+                    RegistroManual regManual = (RegistroManual) registro;
+                    registroTexto.append("Registro Manual - ");
+
+                    // tem que formatar isso 
+                    registroTexto.append("Hora:  ").append(regManual.getHora());
+
+                        // revisar os tipos de dados 
+                        registroTexto.append("Temperatura: ").append(regManual.getTemperatura()).append(" °C ");
+                        registroTexto.append("Umidade: ").append(regManual.getUmi()).append(" % ");
+                        registroTexto.append("Pressão: ").append(regManual.getPressao()).append(" ");
+                        registroTexto.append("Velocidade do Vento: ").append(regManual.getVelVento()).append(" m/s ");
+                        registroTexto.append("Direção do Vento: ").append(regManual.getDirVento()).append(" ");
+                        registroTexto.append("Nebulosidade: ").append(regManual.getNebulosidade()).append(" ");
+                        registroTexto.append("Insolação: ").append(regManual.getInsolacao()).append(" ");
+                        registroTexto.append("Temperatura Máxima: ").append(regManual.getTempMax()).append(" °C, ");
+                        registroTexto.append("Temperatura Mínima: ").append(regManual.getTempMin()).append(" °C, ");
+                        registroTexto.append("Chuva: ").append(regManual.getChuva()).append(" ");
+                        ;
+                    // Adicione outras variáveis relevantes
+                    listrelatorio.getItems().add(registroTexto.toString());
+
+                }
             }
-        }
-        return registrosFiltrados;
-    }
-
-    // Constroi o texto na tela para cada variável
-    private String getUnidadeMedida(int indiceVariavel) {
-        List<String> unidadesMedida = new ArrayList<>();
-        unidadesMedida.add("°C"); // Unidade de temperatura
-        unidadesMedida.add("%"); // Unidade de umidade
-        unidadesMedida.add("C"); // Unidade de ponto de orvalho
-        unidadesMedida.add("hPa"); // Unidade de pressão
-
-        if (indiceVariavel >= 0 && indiceVariavel < unidadesMedida.size()) {
-            return unidadesMedida.get(indiceVariavel);
-        } else {
-            return "";
-        }
-    }
-
-    private String getNomeVariavel(int indiceVariavel) {
-        List<String> nomesVariaveis = new ArrayList<>();
-        nomesVariaveis.add("Temperatura Ins. ");
-        nomesVariaveis.add("Umidade Ins. ");
-        nomesVariaveis.add("Pto Orvalho Ins. ");
-        nomesVariaveis.add("Pressão Ins. ");
-
-        if (indiceVariavel >= 0 && indiceVariavel < nomesVariaveis.size()) {
-            return nomesVariaveis.get(indiceVariavel);
-        } else {
-            return "Variável Desconhecida";
         }
     }
 

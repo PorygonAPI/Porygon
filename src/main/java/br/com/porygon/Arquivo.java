@@ -1,6 +1,8 @@
 package br.com.porygon;
 
 import java.io.*;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class Arquivo {
@@ -26,7 +28,7 @@ public class Arquivo {
                     line = br.readLine();
                     while (line != null) {
                         String[] split = line.split(";");
-                        String data = null;
+                        LocalDate data = null;
                         String hora = null;
                         Double tempIns = null;
                         Double tempMax = null;
@@ -53,7 +55,10 @@ public class Arquivo {
                             if (!split[i].isEmpty()) {
                                 switch (i) {
                                     case 0:
-                                        data = split[i];
+                                        String dateString = split[i];
+                                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                                        LocalDate date = LocalDate.parse(dateString, formatter);
+                                        data = date;
                                         break;
                                     case 1:
                                         hora = split[i];
@@ -140,7 +145,7 @@ public class Arquivo {
                     line = br.readLine();
                     while (line != null) {
                         String[] split = line.split(";");
-                        String data = null;
+                        LocalDate data = null;
                         String hora = null;
                         Double temp = null;
                         Double umi = null;
@@ -157,7 +162,10 @@ public class Arquivo {
                             if (!split[i].isEmpty()) {
                                 switch (i) {
                                     case 0:
-                                        data = split[i];
+                                        String dateString = split[i];
+                                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                                        LocalDate date = LocalDate.parse(dateString, formatter);
+                                        data = date;
                                         break;
                                     case 1:
                                         hora = split[i];

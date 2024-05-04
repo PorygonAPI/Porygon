@@ -50,39 +50,13 @@
                         <ListView fx:id="listrelatorio" />
 
                         <HBox spacing="10.0" alignment="CENTER">
+                            <Label text="Data inicial: " />
+                            <DatePicker fx:id="startDatePicker" prefWidth="200" prefHeight="40" />
+                            <Label text="Data final: " />
+                            <DatePicker fx:id="endDatePicker" prefWidth="200" prefHeight="40" />
                             <Label text="Escolha a cidade: " />
                             <ComboBox fx:id="cityComboBox" prefWidth="200" prefHeight="40" />
                             <Label text="Escolha o período: " />
-                            <ComboBox fx:id="hourIntervalComboBox" prefWidth="200" prefHeight="40">
-                                <items>
-                                    <FXCollections fx:factory="observableArrayList">
-                                        <String fx:value="1 hora" />
-                                        <String fx:value="2 horas" />
-                                        <String fx:value="3 horas" />
-                                        <String fx:value="4 horas" />
-                                        <String fx:value="5 horas" />
-                                        <String fx:value="6 horas" />
-                                        <String fx:value="7 horas" />
-                                        <String fx:value="8 horas" />
-                                        <String fx:value="9 horas" />
-                                        <String fx:value="10 horas" />
-                                        <String fx:value="11 horas" />
-                                        <String fx:value="12 horas" />
-                                        <String fx:value="13 horas" />
-                                        <String fx:value="14 horas" />
-                                        <String fx:value="15 horas" />
-                                        <String fx:value="16 horas" />
-                                        <String fx:value="17 horas" />
-                                        <String fx:value="18 horas" />
-                                        <String fx:value="19 horas" />
-                                        <String fx:value="20 horas" />
-                                        <String fx:value="21 horas" />
-                                        <String fx:value="22 horas" />
-                                        <String fx:value="23 horas" />
-                                        <String fx:value="24 horas" />
-                                    </FXCollections>
-                                </items>
-                            </ComboBox>
                         </HBox>
                         <HBox spacing="20.0" alignment="CENTER">
                             <Button onAction="#gerarrelatorioperiocidade" text="Gerar" prefWidth="100" prefHeight="80" />
