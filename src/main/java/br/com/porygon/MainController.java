@@ -13,6 +13,8 @@ import javafx.stage.Window;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 // import java.util.Objects;
@@ -50,6 +52,12 @@ public class MainController {
 
     @FXML
     private ComboBox<String> hourIntervalComboBox;
+
+    @FXML
+    private DatePicker datePickerInicial;
+
+    @FXML
+    private DatePicker datePickerFinal;
 
     // Listas
     List<Registro> registros = new ArrayList<Registro>(); // Lista de registros geral, gerada a partir do upload do
@@ -235,29 +243,113 @@ public class MainController {
     @FXML
     public void gerarrelatorioperiocidade() {
         String cidadeEscolhida = cityComboBox.getValue();
-        int intervaloHoras = Integer.parseInt(hourIntervalComboBox.getValue().split(" ")[0]);
-        List<List<Double>> mediasPorIntervalo = calcularMediasPorIntervalo(cidadeEscolhida, intervaloHoras);
+        LocalDate dataInicial = datePickerInicial.getValue();
+        LocalDate dataFinal = datePickerFinal.getValue();
 
-        listrelatorio.getItems().clear();
-        listrelatorio.getItems().add("Cidade: " + cidadeEscolhida);
+        // Verifica se as datas foram selecionadas
+        if (cidadeEscolhida != null && dataInicial != null && dataFinal != null) {
+            List<List<Double>> mediasPorIntervalo = calcularMediasPorIntervalo(cidadeEscolhida, dataInicial, dataFinal);
 
-        // Adiciona os intervalos de tempo e as médias de todas as variáveis
-        for (int i = 0; i < mediasPorIntervalo.size(); i++) {
-            int horaInicio = i * intervaloHoras;
-            int horaFim = (horaInicio + intervaloHoras) % 24;
-            String intervaloTexto = String.format("Das %02d:00 às %02d:00: ", horaInicio, horaFim);
+            listrelatorio.getItems().clear();
+            listrelatorio.getItems()
+                    .add("Cidade: " + cidadeEscolhida + " | Período: " + dataInicial + " a " + dataFinal);
 
-            // Adiciona as médias de todas as variáveis para o intervalo atual
-            List<Double> mediasVariaveis = mediasPorIntervalo.get(i);
-            for (int j = 0; j < mediasVariaveis.size(); j++) {
-                String variavel = getNomeVariavel(j);
-                double media = mediasVariaveis.get(j);
-                String unidadeMedida = getUnidadeMedida(j);
-                intervaloTexto += variavel + ": " + String.format("%.2f", media) + " " + unidadeMedida + "    ";
+            // Adiciona as médias por intervalo
+            for (int i = 0; i < mediasPorIntervalo.size(); i++) {
+                // Crie o texto do intervalo e as médias das variáveis
+                String intervaloTexto = criarTextoIntervalo(dataInicial.plusDays(i), mediasPorIntervalo.get(i));
+                listrelatorio.getItems().add(intervaloTexto);
             }
-            // Adiciona o intervalo de tempo e as médias de todas as variáveis
-            listrelatorio.getItems().add(intervaloTexto);
+        } else {
+            // Exibir mensagem de erro se os campos não estiverem preenchidos
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erro");
+            alert.setHeaderText("Por favor, selecione a cidade e as datas inicial e final.");
+            alert.showAndWait();
         }
+    }
+
+    // Método para criar texto do intervalo e médias das variáveis
+    private String criarTextoIntervalo(LocalDate data, List<Double> mediasVariaveis) {
+        StringBuilder texto = new StringBuilder();
+        texto.append("Data: ").append(data).append(" | Médias: ");
+        for (int i = 0; i < mediasVariaveis.size(); i++) {
+            texto.append(getNomeVariavel(i)).append(": ").append(String.format("%.2f", mediasVariaveis.get(i)))
+                    .append(" ").append(getUnidadeMedida(i)).append(" | ");
+        }
+        return texto.toString();
+    }
+
+    private List<List<Double>> calcularMediasPorIntervalo(String cidadeEscolhida, LocalDate dataInicial,
+            LocalDate dataFinal) {
+        // Inicializa a lista de médias por intervalo
+        List<List<Double>> mediasPorIntervalo = new ArrayList<>();
+
+        // Obtém o número total de dias no intervalo
+        long totalDias = ChronoUnit.DAYS.between(dataInicial, dataFinal);
+
+        // Loop para cada dia no intervalo
+        for (int i = 0; i <= totalDias; i++) {
+            // Inicializa a lista de médias para o dia atual
+            List<Double> mediasDia = new ArrayList<>();
+
+            // Obtém a data atual no loop
+            LocalDate dataAtual = dataInicial.plusDays(i);
+
+            // Filtra os registros para o dia atual
+            List<Registro> registrosDia = filtrarRegistrosPorDia(cidadeEscolhida, dataAtual);
+
+            // Se houver registros para o dia atual, calcula as médias das variáveis
+            if (!registrosDia.isEmpty()) {
+                // Inicializa as somas das variáveis para o dia atual
+                double somaTempIns = 0.0;
+                double somaUmiIns = 0.0;
+                double somaPtoOrvalhoIns = 0.0;
+                double somaPressaoIns = 0.0;
+
+                // Loop sobre os registros do dia atual para calcular as somas
+                for (Registro registro : registrosDia) {
+                    if (registro instanceof RegistroAutomatico) {
+                        RegistroAutomatico registroAuto = (RegistroAutomatico) registro;
+                        somaTempIns += registroAuto.getTempIns() != null ? registroAuto.getTempIns() : 0.0;
+                        somaUmiIns += registroAuto.getUmiIns() != null ? registroAuto.getUmiIns() : 0.0;
+                        somaPtoOrvalhoIns += registroAuto.getPtoOrvalhoIns() != null ? registroAuto.getPtoOrvalhoIns()
+                                : 0.0;
+                        somaPressaoIns += registroAuto.getPressaoIns() != null ? registroAuto.getPressaoIns() : 0.0;
+                    }
+                }
+
+                // Calcula as médias das variáveis para o dia atual
+                int totalRegistrosDia = registrosDia.size();
+                mediasDia.add(somaTempIns / totalRegistrosDia);
+                mediasDia.add(somaUmiIns / totalRegistrosDia);
+                mediasDia.add(somaPtoOrvalhoIns / totalRegistrosDia);
+                mediasDia.add(somaPressaoIns / totalRegistrosDia);
+            } else {
+                // Se não houver registros para o dia atual, adiciona médias nulas
+                mediasDia.add(null);
+                mediasDia.add(null);
+                mediasDia.add(null);
+                mediasDia.add(null);
+            }
+
+            // Adiciona as médias do dia atual à lista de médias por intervalo
+            mediasPorIntervalo.add(mediasDia);
+        }
+
+        return mediasPorIntervalo;
+    }
+
+    // Método para filtrar os registros para um dia específico
+    private List<Registro> filtrarRegistrosPorDia(String cidadeEscolhida, LocalDate data) {
+        List<Registro> registrosFiltrados = new ArrayList<>();
+        for (Registro registro : dadoApurado) {
+            LocalDate dataRegistro = LocalDate.parse(registro.getData());
+            if (registro.getCidade().equals(cidadeEscolhida) && dataRegistro.equals(data)) {
+                registrosFiltrados.add(registro);
+            }
+        }
+        return registrosFiltrados;
     }
 
     // Constroi o texto na tela para cada variável
@@ -289,122 +381,38 @@ public class MainController {
         }
     }
 
-    // Realia os agrupamentos de acordo com o período de tempo que o foi escolhido
-    private List<List<Double>> calcularMediasPorIntervalo(String cidadeEscolhida, int intervaloHoras) {
-        List<List<Double>> mediasPorIntervalo = new ArrayList<>();
-        List<Registro> registrosFiltrados = filtrarRegistrosPorCidade(cidadeEscolhida);
-
-        // Agrupar os registros em intervalos de tempo
-        for (int i = 0; i < 24; i += intervaloHoras) {
-            int horaInicio = i;
-            int horaFim = (i + intervaloHoras) % 24;
-            List<Registro> subLista = new ArrayList<>();
-
-            // Se o intervalo for de 24 horas, adicione todos os registros do dia
-            if (intervaloHoras == 24) {
-                subLista.addAll(registrosFiltrados);
-            } else {
-                for (Registro registro : registrosFiltrados) {
-                    int horaRegistro = Integer.parseInt(registro.getHora().substring(0, 2));
-                    if ((horaRegistro >= horaInicio && horaRegistro < horaFim) ||
-                            (horaInicio > horaFim && (horaRegistro >= horaInicio || horaRegistro < horaFim))) {
-                        subLista.add(registro);
-                    }
-                }
-            }
-
-            // Integra as médias de acordo com os grupos dos períodos de tempo
-            List<Double> mediasVariaveis = calcularMediasVariaveisPorIntervalo(subLista);
-            mediasPorIntervalo.add(mediasVariaveis);
-        }
-        return mediasPorIntervalo;
-    }
-
-    // Calcular médias de todas as variáveis para o intervalo de tempo especificado
-    private List<Double> calcularMediasVariaveisPorIntervalo(List<Registro> registros) {
-        List<Double> medias = new ArrayList<>();
-        double somaTempIns = 0.0;
-        double somaUmiIns = 0.0;
-        double somaPtoOrvalhoIns = 0.0;
-        double somaPressaoIns = 0.0;
-
-        int quantidadeRegistrosAuto = 0;
-
-        for (Registro registro : registros) {
-            if (registro instanceof RegistroAutomatico) {
-                RegistroAutomatico registroAuto = (RegistroAutomatico) registro;
-                if (registroAuto.getTempIns() != null) {
-                    somaTempIns += registroAuto.getTempIns();
-                    quantidadeRegistrosAuto++;
-                }
-                if (registroAuto.getUmiIns() != null) {
-                    somaUmiIns += registroAuto.getUmiIns();
-                }
-                if (registroAuto.getPtoOrvalhoIns() != null) {
-                    somaPtoOrvalhoIns += registroAuto.getPtoOrvalhoIns();
-                }
-                if (registroAuto.getPressaoIns() != null) {
-                    somaPressaoIns += registroAuto.getPressaoIns();
-                }
-            }
-        }
-
-        if (quantidadeRegistrosAuto > 0) {
-            medias.add(somaTempIns / quantidadeRegistrosAuto);
-            medias.add(somaUmiIns / quantidadeRegistrosAuto);
-            medias.add(somaPtoOrvalhoIns / quantidadeRegistrosAuto);
-            medias.add(somaPressaoIns / quantidadeRegistrosAuto);
-        } else {
-            // Adicione valores padrão se não houver registros automáticos
-            medias.add(0.0); // média tempIns
-            medias.add(0.0); // média umiIns
-            medias.add(0.0); // média ptoOrvalhoIns
-            medias.add(0.0); // média pressaoIns
-        }
-        return medias;
-    }
-
-    // Filtra as variáveis de acordo com a cidade escolhida pelo usuário
-    private List<Registro> filtrarRegistrosPorCidade(String cidadeEscolhida) {
-        List<Registro> registrosFiltrados = new ArrayList<>();
-        for (Registro registro : dadoApurado) {
-            if (registro.getCidade().equals(cidadeEscolhida)) {
-                registrosFiltrados.add(registro);
-            }
-        }
-        return registrosFiltrados;
-    }
-
-    // Precisa armazenar os dados das medias corretamente sem que ele separe por ",".
+    // Precisa armazenar os dados das medias corretamente sem que ele separe por
+    // ",".
     public void exportarrelatorioperiocidade(@SuppressWarnings("exports") ActionEvent actionEvent) {
         // Obtem os dados da lista
         ObservableList<String> dados = listrelatorio.getItems();
-    
+
         // Constroe o conteúdo CSV
         StringBuilder csvBuilder = new StringBuilder();
-        csvBuilder.append("Intervalo de Tempo,Temperatura Ins. (°C),Umidade Ins. (%),Ponto de Orvalho Ins. (C),Pressão Ins. (hPa)\n");
-        
+        csvBuilder.append(
+                "Intervalo de Tempo,Temperatura Ins. (°C),Umidade Ins. (%),Ponto de Orvalho Ins. (C),Pressão Ins. (hPa)\n");
+
         // Processa cada linha de dados
         for (String dado : dados) {
             // Substitui os caracteres indesejados por vírgulas
             String linha = dado.replace("Temperatura Ins. :", "").replace("°C", "")
-                               .replace("Umidade Ins. :", "").replace("%", "")
-                               .replace("Pto Orvalho Ins. :", "").replace("C", "")
-                               .replace("Pressão Ins. :", "").replace("hPa", "");
-            
+                    .replace("Umidade Ins. :", "").replace("%", "")
+                    .replace("Pto Orvalho Ins. :", "").replace("C", "")
+                    .replace("Pressão Ins. :", "").replace("hPa", "");
+
             // Adiciona a linha ao conteúdo CSV
             csvBuilder.append(linha).append("\n");
         }
-    
+
         // Converta o StringBuilder para String
         String csvContent = csvBuilder.toString();
-    
+
         // Escolha um local para salvar o arquivo
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Relatorio Periocidade");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV Files", "*.csv"));
         File file = fileChooser.showSaveDialog(((Node) actionEvent.getSource()).getScene().getWindow());
-    
+
         // Salve o conteúdo CSV em um arquivo
         if (file != null) {
             try (PrintWriter writer = new PrintWriter(file)) {
