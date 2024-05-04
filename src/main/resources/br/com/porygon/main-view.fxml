@@ -1,42 +1,97 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.collections.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<?import javafx.collections.FXCollections?>
-<?import java.lang.String?>
-<VBox spacing="20.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.porygon.MainController">
+<VBox prefHeight="561.0" prefWidth="1082.0" spacing="20.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.porygon.MainController">
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>
     <HBox spacing="10.0">
         <Button onAction="#selectFilesClick" text="Insira um arquivo" />
     </HBox>
-    <HBox spacing="10.0">
-        <TextField fx:id="tempMaxField" promptText="Temperatura Máxima"/>
-        <TextField fx:id="tempMinField" promptText="Temperatura Mínima"/>
-        <Button onAction="#verificar" text="Verificar" />
-    </HBox>
     <Label fx:id="selectedFilesLabel" />
     <Label fx:id="tempLabel" />
     <TabPane prefHeight="400.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
+            <Tab text="Configurações">
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                <VBox alignment="CENTER" spacing="10.0">
+                    <Label text="Defina os valores máximos e mínimos de cada variável climática para verificação dos registros." />
+                    <Label text="A definição ocorrerá apenas uma vez e os valores cadastrados serão armazenados e utilizados para as próximas consultas." />
+                    <Label text=" " />
+                    <!-- Temperatura e Umidade -->
+                    <HBox spacing="10.0">
+                        <Label alignment="CENTER_RIGHT" prefHeight="26.0" prefWidth="130.0" text="Temperatura Max:" />
+                        <TextField fx:id="tempMaxField" prefHeight="26.0" prefWidth="120.0" promptText="Temperatura Max" />
+                        <Label alignment="CENTER_RIGHT" prefHeight="26.0" prefWidth="130.0" text="Temperatura Min:" />
+                        <TextField fx:id="tempMinField" prefHeight="26.0" prefWidth="120.0" promptText="Temperatura Min" />
+                        <Label alignment="CENTER_RIGHT" prefHeight="26.0" prefWidth="130.0" text="Umidade Max:" />
+                        <TextField fx:id="umiMaxField" prefHeight="26.0" prefWidth="120.0" promptText="Umidade Max" />
+                        <Label alignment="CENTER_RIGHT" prefHeight="26.0" prefWidth="130.0" text="Umidade Min:" />
+                        <TextField fx:id="umiMinField" prefHeight="26.0" prefWidth="120.0" promptText="Umidade Min" />
+                    </HBox>
+                    <!-- Pressão e Nebulosidade -->
+                    <HBox spacing="10.0">
+                        <Label alignment="CENTER_RIGHT" prefHeight="26.0" prefWidth="130.0" text="Pressão Max:" />
+                        <TextField fx:id="presMaxField" prefHeight="26.0" prefWidth="120.0" promptText="Pressão Max" />
+                        <Label alignment="CENTER_RIGHT" prefHeight="26.0" prefWidth="130.0" text="Pressão Min:" />
+                        <TextField fx:id="presMinField" prefHeight="26.0" prefWidth="120.0" promptText="Pressão Min" />
+                        <Label alignment="CENTER_RIGHT" prefHeight="26.0" prefWidth="130.0" text="Nebulosidade Max:" />
+                        <TextField fx:id="nebuMaxField" prefHeight="26.0" prefWidth="120.0" promptText="Nebulosidade Max" />
+                        <Label alignment="CENTER_RIGHT" prefHeight="26.0" prefWidth="130.0" text="Nebulosidade Min:" />
+                        <TextField fx:id="nebuMinField" prefHeight="26.0" prefWidth="120.0" promptText="Nebulosidade Min" />
+                    </HBox>
+                    <!-- Velocidade do Vento e Direção do Vento -->
+                    <HBox spacing="10.0">
+                        <Label alignment="CENTER_RIGHT" prefHeight="26.0" prefWidth="130.0" text="Velocidade Vento Max:" />
+                        <TextField fx:id="velVentoMaxField" prefHeight="26.0" prefWidth="120.0" promptText="Velocidade Max" />
+                        <Label alignment="CENTER_RIGHT" prefHeight="26.0" prefWidth="130.0" text="Velocidade Vento Min:" />
+                        <TextField fx:id="velVentoMinField" prefHeight="26.0" prefWidth="120.0" promptText="Velocidade Min" />
+                        <Label alignment="CENTER_RIGHT" prefHeight="26.0" prefWidth="130.0" text="Direção Vento Max:" />
+                        <TextField fx:id="dirVentoMaxField" prefHeight="26.0" prefWidth="120.0" promptText="Direção Vento Max" />
+                        <Label alignment="CENTER_RIGHT" prefHeight="26.0" prefWidth="130.0" text="Direção Vento Min:" />
+                        <TextField fx:id="dirVentoMinField" prefHeight="26.0" prefWidth="120.0" promptText="Direção Vento Min" />
+                    </HBox>
+                    <!-- Chuva e Insolação -->
+                    <HBox spacing="10.0">
+                        <Label alignment="CENTER_RIGHT" prefHeight="26.0" prefWidth="130.0" text="Chuva Max:" />
+                        <TextField fx:id="chuMaxField" prefHeight="26.0" prefWidth="120.0" promptText="Chuva Max" />
+                        <Label alignment="CENTER_RIGHT" prefHeight="26.0" prefWidth="130.0" text="Chuva Min:" />
+                        <TextField fx:id="chuMinField" prefHeight="26.0" prefWidth="120.0" promptText="Chuva Min" />
+                        <Label alignment="CENTER_RIGHT" prefHeight="26.0" prefWidth="130.0" text="Insolação Max:" />
+                        <TextField fx:id="insoMaxField" prefHeight="26.0" prefWidth="120.0" promptText="Insolação Max" />
+                        <Label alignment="CENTER_RIGHT" prefHeight="26.0" prefWidth="130.0" text="Insolação Min:" />
+                        <TextField fx:id="insoMinField" prefHeight="26.0" prefWidth="120.0" promptText="Insolação Min" />
+                    </HBox>
+                    <!-- Pto Orvalho e Rajada de Vento -->
+                    <HBox spacing="10.0">
+                        <Label alignment="CENTER_RIGHT" prefHeight="26.0" prefWidth="130.0" text="Pto Orvalho Max:" />
+                        <TextField fx:id="ptoOrvMaxField" prefHeight="26.0" prefWidth="120.0" promptText="Pto Orvalho Max" />
+                        <Label alignment="CENTER_RIGHT" prefHeight="26.0" prefWidth="130.0" text="Pto Orvalho Min:" />
+                        <TextField fx:id="ptoOrvMinField" prefHeight="26.0" prefWidth="120.0" promptText="Pto Orvalho Min" />
+                        <Label alignment="CENTER_RIGHT" prefHeight="26.0" prefWidth="130.0" text="Rajada Vento Max:" />
+                        <TextField fx:id="rajVenMaxField" prefHeight="26.0" prefWidth="120.0" promptText="Rajada Vento Max" />
+                        <Label alignment="CENTER_RIGHT" prefHeight="26.0" prefWidth="130.0" text="Rajada Vento Min:" />
+                        <TextField fx:id="rajVenMinField" prefHeight="26.0" prefWidth="120.0" promptText="Rajada Vento Min" />
+                    </HBox>
+                    <Button onAction="#verificar" text="Cadastrar" />
+                </VBox>
+            </Tab>
             <Tab text="Climas com dados apurados">
-                <content>
-                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-                    <VBox spacing="15.0" alignment="CENTER">
-                        <ListView fx:id="listViewApurado" />
-                    </VBox>
-                </content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                <VBox alignment="CENTER" spacing="15.0">
+                    <ListView fx:id="listViewApurado" />
+                </VBox>
             </Tab>
             <Tab text="Climas com dados suspeitos">
-                <content>
-                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-                    <VBox spacing="15.0" alignment="CENTER">
-                        <ListView fx:id="listViewSuspeito" />
-                    </VBox>
-                </content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                <VBox alignment="CENTER" spacing="15.0">
+                    <ListView fx:id="listViewSuspeito" />
+                </VBox>
             </Tab>
             <Tab text="Relatório de Periocidade">
                 <content>

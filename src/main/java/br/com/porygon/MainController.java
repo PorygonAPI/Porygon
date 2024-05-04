@@ -1,6 +1,7 @@
 package br.com.porygon;
 
 // import javafx.collections.ObservableList;
+import br.com.porygon.dao.ConfiguracaoDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -14,6 +15,9 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 // import java.util.Objects;
@@ -29,20 +33,71 @@ public class MainController {
     // pesquisador
 
     @FXML
-    private TextField tempMaxField; // Campo de input da temperatura máxima
-
+    private TextField tempMaxField;
     @FXML
-    private TextField tempMinField; // Campo de input da temperatura mínima
+    private TextField tempMinField;
+    @FXML
+    private TextField umiMaxField;
+    @FXML
+    private TextField umiMinField;
+    @FXML
+    private TextField presMaxField;
+    @FXML
+    private TextField presMinField;
+    @FXML
+    private TextField nebuMaxField;
+    @FXML
+    private TextField nebuMinField;
+    @FXML
+    private TextField velVentoMaxField;
+    @FXML
+    private TextField velVentoMinField;
+    @FXML
+    private TextField dirVentoMaxField;
+    @FXML
+    private TextField dirVentoMinField;
+    @FXML
+    private TextField insoMaxField;
+    @FXML
+    private TextField insoMinField;
+    @FXML
+    private TextField chuMaxField;
+    @FXML
+    private TextField chuMinField;
+    @FXML
+    private TextField ptoOrvMaxField;
+    @FXML
+    private TextField ptoOrvMinField;
+    @FXML
+    private TextField rajVenMaxField;
+    @FXML
+    private TextField rajVenMinField;
 
     private double tempMaxima; // Atributo da temperatura máxima informada pelo pesquisador
     private double tempMinima; // Atributo da temperatura máxima informada pelo pesquisador
+    private double umiMaxima;
+    private double umiMinima;
+    private double presMaxima;
+    private double presMinima;
+    private double velVentoMaxima;
+    private double velVentoMinima;
+    private double dirVentoMaxima;
+    private double dirVentoMinima;
+    private double nebuMaxima;
+    private double nebuMinima;
+    private double insoMaxima;
+    private double insoMinima;
+    private double chuvaMaxima;
+    private double chuvaMinima;
+    private double ptoOrvalhoMaximo;
+    private double ptoOrvalhoMinimo;
+    private double rajVentoMaximo;
+    private double rajVentoMinimo;
 
     @FXML
     private ListView<String> listViewApurado; // Atributo para visualizar a lista de registros apurados na tela
-
     @FXML
     private ListView<String> listViewSuspeito; // Atributo para visualizar a lista de registros apurados na tela
-
     @FXML
     private ListView<String> listrelatorio; // Atributo para visualizar a lista do relatorio (Data/Periodo) na tela
 
@@ -57,28 +112,40 @@ public class MainController {
     private DatePicker endDatePicker;
 
     // Listas
-    List<Registro> registros = new ArrayList<Registro>(); // Lista de registros geral, gerada a partir do upload do
-    // arquivo .csv
-    List<Registro> dadoSuspeito = new ArrayList<Registro>(); // Lista de registros suspeitos, gerada após a execução do
-    // método verificarRegistros
+    List<Registro> registros = new ArrayList<Registro>(); // Lista de registros geral, gerada a partir do upload do arquivo .csv
+    List<Registro> dadoSuspeito = new ArrayList<Registro>(); // Lista de registros suspeitos, gerada após a execução do método verificarRegistros
     List<Registro> dadoApurado = new ArrayList<Registro>(); // Lista de registros apurados, gerada a execução do método
+    List<Registro> dadosNulos = new ArrayList<Registro>(); // Lista de registros apurados, gerada a execução do método
 
     String[] cidadesLista = {};
 
-    // List<Registro> listrelatorio = new ArrayList<>(); //Lista dos dados do
-    // relatorio por data e período
-
-    // verificarRegistros
+    // List<Registro> listrelatorio = new ArrayList<>(); //Lista dos dados do relatorio por data e período
 
     // Métodos de acesso
-    public double getTempMaxima() {
-        return tempMaxima;
-    }
 
-    public double getTempMinima() {
-        return tempMinima;
+    public void initialize() {
+        ConfiguracaoDAO configDao = new ConfiguracaoDAO();
+        tempMaxField.setText(configDao.recuperarAtributos("tempMaxima"));
+        tempMinField.setText(configDao.recuperarAtributos("tempMinima"));
+        umiMaxField.setText(configDao.recuperarAtributos("umiMaxima"));
+        umiMinField.setText(configDao.recuperarAtributos("umiMinima"));
+        presMaxField.setText(configDao.recuperarAtributos("presMaxima"));
+        presMinField.setText(configDao.recuperarAtributos("presMinima"));
+        velVentoMaxField.setText(configDao.recuperarAtributos("velVentoMaxima"));
+        velVentoMinField.setText(configDao.recuperarAtributos("velVentoMinima"));
+        nebuMaxField.setText(configDao.recuperarAtributos("nebuMaxima"));
+        nebuMinField.setText(configDao.recuperarAtributos("nebuMinima"));
+        dirVentoMaxField.setText(configDao.recuperarAtributos("dirVentoMaxima"));
+        dirVentoMinField.setText(configDao.recuperarAtributos("dirVentoMinima"));
+        ptoOrvMaxField.setText(configDao.recuperarAtributos("ptoOrvalhoMaximo"));
+        ptoOrvMinField.setText(configDao.recuperarAtributos("ptoOrvalhoMinimo"));
+        rajVenMaxField.setText(configDao.recuperarAtributos("rajVentoMaximo"));
+        rajVenMinField.setText(configDao.recuperarAtributos("rajVentoMinimo"));
+        insoMaxField.setText(configDao.recuperarAtributos("insoMaxima"));
+        insoMinField.setText(configDao.recuperarAtributos("insoMinima"));
+        chuMaxField.setText(configDao.recuperarAtributos("chuvaMaxima"));
+        chuMinField.setText(configDao.recuperarAtributos("chuvaMinima"));
     }
-
     public String stringify(Double dado) {
         if (dado == null) {
             return null;
@@ -86,17 +153,16 @@ public class MainController {
         return String.format("%.2f", dado);
     }
 
-    // Método para colher informações das listas geradas no método
-    // verificarRegistros e vincular com o fxml
+    // Método para colher informações das listas geradas no método verificarRegistros e vincular com o fxml
     public void visualizarListas() {
         listViewApurado.getItems().clear();
         for (Registro registro : dadoApurado) {
-            String listViewText;
+            String listViewTextApurado;
             if (registro instanceof RegistroAutomatico regAut) {
                 // Alterar visualização de lista
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
-                listViewText = "Automático - Data: " + regAut.getData().format(formatter) + " | Hora: " + regAut.getHora()
+                listViewTextApurado = "Automático - Data: " + regAut.getData().format(formatter) + " | Hora: " + regAut.getHora()
                         + " | Temperatura (Ins) : " + stringify(regAut.getTemperatura()) + " | Temperatura Máxima :"
                         + stringify(regAut.getTempMax()) + " | Temperatura Mínima: " + stringify(regAut.getTempMin())
                         + " | Umidade (Ins): "
@@ -105,12 +171,13 @@ public class MainController {
                         + stringify(regAut.getVelVento()) + " | Direção do Vento: " + stringify(regAut.getDirVento())
                         + " | Rajada Vento: " + stringify(regAut.getRajVento()) + " | Radiação "
                         + stringify(regAut.getRadiacao()) + " | Chuva: " + stringify(regAut.getChuva());
+
             } else {
                 // Alterar visualização de lista
                 RegistroManual regManual = (RegistroManual) registro;
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
-                listViewText = "Manual - Data: " + regManual.getData().format(formatter) + " | Hora: " + regManual.getHora()
+                listViewTextApurado = "Manual - Data: " + regManual.getData().format(formatter) + " | Hora: " + regManual.getHora()
                         + " | Temperatura : " + stringify(regManual.getTemperatura()) + " | Umidade: "
                         + stringify(regManual.getUmi()) + " | Pressão: " + stringify(regManual.getPressao())
                         + " | Velocidade do Vento: " + stringify(regManual.getVelVento()) + " | Direção do Vento: "
@@ -119,18 +186,19 @@ public class MainController {
                         + stringify(regManual.getInsolacao()) + " | Temperatura Máxima "
                         + stringify(regManual.getTempMax()) + " | Temperatura Minima:  "
                         + stringify(regManual.getTempMin()) + " | Chuva:  " + stringify(regManual.getChuva());
+                System.out.println(listViewTextApurado);
             }
-            listViewApurado.getItems().add(listViewText);
+            listViewApurado.getItems().add(listViewTextApurado);
         }
         listViewSuspeito.getItems().clear();
         for (Registro registro : dadoSuspeito) {
-            String listViewText;
+            String listViewTextSuspeito;
 
             if (registro instanceof RegistroAutomatico regAut) {
                 // Alterar visualização de lista
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
-                listViewText = "Automático - Data: " + regAut.getData().format(formatter) + " | Hora: " + regAut.getHora()
+                listViewTextSuspeito = "Automático - Data: " + regAut.getData().format(formatter) + " | Hora: " + regAut.getHora()
                         + " | Temperatura (Ins) : " + stringify(regAut.getTemperatura()) + " | Temperatura Máxima :"
                         + stringify(regAut.getTempMax()) + " | Temperatura Mínima: " + stringify(regAut.getTempMin())
                         + " | Umidade (Ins): "
@@ -143,7 +211,7 @@ public class MainController {
                 // Alterar visualização de lista
                 RegistroManual regManual = (RegistroManual) registro;
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-                listViewText = "Manual - Data: " + regManual.getData().format(formatter) + " | Hora: " + regManual.getHora()
+                listViewTextSuspeito = "Manual - Data: " + regManual.getData().format(formatter) + " | Hora: " + regManual.getHora()
                         + " | Temperatura : " + stringify(regManual.getTemperatura()) + " | Umidade (Ins): "
                         + stringify(regManual.getUmi()) + " | Pressão " + stringify(regManual.getPressao())
                         + " | Velocidade do Vento: " + stringify(regManual.getVelVento()) + " | Direção do Vento: "
@@ -153,7 +221,7 @@ public class MainController {
                         + stringify(regManual.getTempMax()) + " | Temperatura Minima: "
                         + stringify(regManual.getTempMin()) + " | Chuva: " + stringify(regManual.getChuva());
             }
-            listViewSuspeito.getItems().add(listViewText);
+            listViewSuspeito.getItems().add(listViewTextSuspeito);
         }
     }
 
@@ -202,19 +270,76 @@ public class MainController {
     }
 
     @FXML
-    private void verificar(ActionEvent event) {// Método chamado quando o pesquisador clica no botão "Verificar"
+    private void verificar(ActionEvent event) { // Método chamado quando o pesquisador clica no botão "Verificar"
+        // Transformar os valores de String para Double antes de fazer a comparação com as minimas e máximas informadas pelo pesquisador
         try {
+            ConfiguracaoDAO configDao = new ConfiguracaoDAO();
             tempMaxima = Double.parseDouble(tempMaxField.getText());
+            configDao.adicionarAtributo("tempMaxima", tempMaxima);
             tempMinima = Double.parseDouble(tempMinField.getText());
+            configDao.adicionarAtributo("tempMinima", tempMinima);
 
-            tempLabel.setText("Temperatura máxima: " + tempMaxima + "       Temperatura mínima: " + tempMinima);
+            umiMaxima = Double.parseDouble(umiMaxField.getText());
+            configDao.adicionarAtributo("umiMaxima", umiMaxima);
 
-            System.out.println("Temperatura máxima: " + tempMaxima); // Teste de input e retorno
-            System.out.println("Temperatura mínima: " + tempMinima);
+            umiMinima = Double.parseDouble(umiMinField.getText());
+            configDao.adicionarAtributo("umiMinima", umiMinima);
 
-            System.out.println("Dado Apurado: " + dadoApurado);
-            System.out.println("Dado Registrado: " + registros);
-            System.out.println("Dado Suspeito: " + dadoSuspeito);
+            presMaxima = Double.parseDouble(presMaxField.getText());
+            configDao.adicionarAtributo("presMaxima", presMaxima);
+
+            presMinima = Double.parseDouble(presMinField.getText());
+            configDao.adicionarAtributo("presMinima", presMinima);
+
+            velVentoMaxima = Double.parseDouble(velVentoMaxField.getText());
+            configDao.adicionarAtributo("velVentoMaxima", velVentoMaxima);
+
+            velVentoMinima = Double.parseDouble(velVentoMinField.getText());
+            configDao.adicionarAtributo("velVentoMinima", velVentoMinima);
+
+            dirVentoMaxima = Double.parseDouble(dirVentoMaxField.getText());
+            configDao.adicionarAtributo("dirVentoMaxima", dirVentoMaxima);
+
+            dirVentoMinima = Double.parseDouble(dirVentoMinField.getText());
+            configDao.adicionarAtributo("dirVentoMinima", dirVentoMinima);
+
+            nebuMaxima = Double.parseDouble(nebuMaxField.getText());
+            configDao.adicionarAtributo("nebuMaxima", nebuMaxima);
+
+            nebuMinima = Double.parseDouble(nebuMinField.getText());
+            configDao.adicionarAtributo("nebuMinima", nebuMinima);
+
+            insoMaxima = Double.parseDouble(insoMaxField.getText());
+            configDao.adicionarAtributo("insoMaxima", insoMaxima);
+
+            insoMinima = Double.parseDouble(insoMinField.getText());
+            configDao.adicionarAtributo("insoMinima", insoMinima);
+
+            chuvaMaxima = Double.parseDouble(chuMaxField.getText());
+            configDao.adicionarAtributo("chuvaMaxima", chuvaMaxima);
+
+            chuvaMinima = Double.parseDouble(chuMinField.getText());
+            configDao.adicionarAtributo("chuvaMinima", chuvaMinima);
+
+            ptoOrvalhoMaximo = Double.parseDouble(ptoOrvMaxField.getText());
+            configDao.adicionarAtributo("ptoOrvalhoMaximo", ptoOrvalhoMaximo);
+
+            ptoOrvalhoMinimo = Double.parseDouble(ptoOrvMinField.getText());
+            configDao.adicionarAtributo("ptoOrvalhoMinimo", ptoOrvalhoMinimo);
+
+            rajVentoMaximo = Double.parseDouble(rajVenMaxField.getText());
+            configDao.adicionarAtributo("rajVentoMaximo", rajVentoMaximo);
+
+            rajVentoMinimo = Double.parseDouble(rajVenMinField.getText());
+            configDao.adicionarAtributo("rajVentoMinimo", rajVentoMinimo);
+
+
+            tempLabel.setText("Valores Cadastrados");
+
+            // System.out.println("Temperatura máxima: " + tempMaxima); // Teste de input e retorno
+            // System.out.println("Temperatura mínima: " + tempMinima);
+
+            //System.out.println("Dado Registrado: " + registros);
 
             verificarRegistros();
 
@@ -227,13 +352,58 @@ public class MainController {
 
     private void verificarRegistros() {
         for (Registro registro : registros) {
-            if (registro.getTemperatura() == null || registro.getTemperatura() >= tempMaxima
-                    || registro.getTemperatura() <= tempMinima) {
-                dadoSuspeito.add(registro);
-                System.out.println("Dado incorreto");
-            } else {
-                dadoApurado.add(registro);
-                System.out.println("Dado correto");
+            //verificar lista de regras
+            //se regra aplicada, entao verificar registro com aquela regra
+            if (registro instanceof RegistroAutomatico) {
+                RegistroAutomatico regAut = (RegistroAutomatico) registro;
+
+                if (regAut.getTemperatura() != null && (regAut.getTemperatura() >= tempMaxima || regAut.getTemperatura() <= tempMinima)) {
+                    dadoSuspeito.add(regAut);
+                } else if (regAut.getUmiIns() != null && (regAut.getUmiIns() >= umiMaxima || regAut.getUmiIns() <= umiMinima)) {
+                    dadoSuspeito.add(regAut);
+                } else if (regAut.getPressaoIns() != null && (regAut.getPressaoIns() >= presMaxima || regAut.getPressaoIns() <= presMinima)) {
+                    dadoSuspeito.add(regAut);
+                } else if (regAut.getVelVento() != null && (regAut.getVelVento() >= velVentoMaxima || regAut.getVelVento() <= velVentoMinima)) {
+                    dadoSuspeito.add(regAut);
+                } else if (regAut.getDirVento() != null && (regAut.getDirVento() >= dirVentoMaxima || regAut.getDirVento() <= dirVentoMinima)) {
+                    dadoSuspeito.add(regAut);
+                } else if (regAut.getPtoOrvalhoIns() != null && (regAut.getPtoOrvalhoIns() >= ptoOrvalhoMaximo || regAut.getPtoOrvalhoIns() <= ptoOrvalhoMinimo)) {
+                    dadoSuspeito.add(regAut);
+                } else if (regAut.getRajVento() != null && (regAut.getRajVento() >= rajVentoMaximo || regAut.getRajVento() <= rajVentoMinimo)) {
+                    dadoSuspeito.add(regAut);
+                } else if (regAut.getChuva() != null && (regAut.getChuva() >= chuvaMaxima || regAut.getChuva() <= chuvaMinima)) {
+                    dadoSuspeito.add(regAut);
+                } else if (regAut.getTemperatura() == null && regAut.getUmiIns() == null && regAut.getPressaoIns() == null && regAut.getVelVento() == null && regAut.getDirVento() == null && regAut.getPtoOrvalhoIns() == null && regAut.getRajVento() == null && regAut.getChuva() == null){
+                    dadosNulos.add(regAut);
+                }
+                else {
+                    dadoApurado.add(regAut);
+                }
+
+            } else if (registro instanceof RegistroManual) {
+                RegistroManual regManual = (RegistroManual) registro;
+
+                if (regManual.getTemperatura() != null && (regManual.getTemperatura() >= tempMaxima || regManual.getTemperatura() <= tempMinima)) {
+                    dadoSuspeito.add(regManual);
+                } else if (regManual.getUmi() != null && (regManual.getUmi() >= umiMaxima || regManual.getUmi() <= umiMinima)) {
+                    dadoSuspeito.add(regManual);
+                } else if (regManual.getPressao() != null && (regManual.getPressao() >= presMaxima || regManual.getPressao() <= presMinima)) {
+                    dadoSuspeito.add(regManual);
+                } else if (regManual.getVelVento() != null && (regManual.getVelVento() >= velVentoMaxima || regManual.getVelVento() <= velVentoMinima)) {
+                    dadoSuspeito.add(regManual);
+                } else if (regManual.getDirVento() != null && (regManual.getDirVento() >= dirVentoMaxima || regManual.getDirVento() <= dirVentoMinima)) {
+                    dadoSuspeito.add(regManual);
+                } else if (regManual.getNebulosidade() != null && (regManual.getNebulosidade() >= nebuMaxima || regManual.getNebulosidade() <= nebuMinima)) {
+                    dadoSuspeito.add(regManual);
+                } else if (regManual.getInsolacao() != null && (regManual.getInsolacao() >= insoMaxima || regManual.getInsolacao() <= insoMinima)) {
+                    dadoSuspeito.add(regManual);
+                } else if (regManual.getChuva() != null && (regManual.getChuva() >= chuvaMaxima || regManual.getChuva() <= chuvaMinima)) {
+                    dadoSuspeito.add(regManual);
+                } else if (regManual.getTemperatura() == null && regManual.getUmi() == null && regManual.getPressao() == null && regManual.getVelVento() == null && regManual.getDirVento() == null &&  regManual.getChuva() == null && regManual.getNebulosidade() == null) {
+                    dadosNulos.add(regManual);
+                } else {
+                    dadoApurado.add(regManual);
+                }
             }
         }
         visualizarListas();
