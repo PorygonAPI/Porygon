@@ -1,5 +1,7 @@
 package br.com.porygon;
 
+import java.time.LocalDate;
+
 public class RegistroAutomatico extends Registro {
     private Double tempIns;
     private Double tempMax;
@@ -137,11 +139,11 @@ public class RegistroAutomatico extends Registro {
         this.chuva = chuva;
     }
 
-    public RegistroAutomatico(String data, String hora, Double velVento, Double dirVento, Double tempIns,
+    public RegistroAutomatico(String cidade, LocalDate data, String hora, Double velVento, Double dirVento, Double tempIns,
             Double tempMax, Double tempMin, Double umiIns, Double umiMax, Double umiMin, Double ptoOrvalhoIns,
             Double ptoOrvalhoMax, Double ptoOrvalhoMin, Double pressaoIns, Double pressaoMax, Double pressaoMin,
             Double rajVento, Double radiacao, Double chuva) {
-        super(data, hora, velVento, dirVento);
+        super(cidade, data, hora, velVento, dirVento);
         this.tempIns = tempIns;
         this.tempMax = tempMax;
         this.tempMin = tempMin;

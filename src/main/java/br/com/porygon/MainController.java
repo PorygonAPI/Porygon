@@ -1,18 +1,22 @@
 package br.com.porygon;
 
+// import javafx.collections.ObservableList;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.stage.FileChooser;
 import javafx.stage.Window;
-import javafx.scene.control.ListView;
 
-import java.io.File;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-
-import javafx.scene.control.TextField;
+// import java.util.Objects;
 
 public class MainController {
 
@@ -39,12 +43,31 @@ public class MainController {
     @FXML
     private ListView<String> listViewSuspeito; // Atributo para visualizar a lista de registros apurados na tela
 
+    @FXML
+    private ListView<String> listrelatorio; // Atributo para visualizar a lista do relatorio (Data/Periodo) na tela
+
+    @FXML
+    private ComboBox<String> cityComboBox;
+
+
+    @FXML
+    private DatePicker startDatePicker;
+
+    @FXML
+    private DatePicker endDatePicker;
+
     // Listas
     List<Registro> registros = new ArrayList<Registro>(); // Lista de registros geral, gerada a partir do upload do
     // arquivo .csv
     List<Registro> dadoSuspeito = new ArrayList<Registro>(); // Lista de registros suspeitos, gerada após a execução do
     // método verificarRegistros
     List<Registro> dadoApurado = new ArrayList<Registro>(); // Lista de registros apurados, gerada a execução do método
+
+    String[] cidadesLista = {};
+
+    // List<Registro> listrelatorio = new ArrayList<>(); //Lista dos dados do
+    // relatorio por data e período
+
     // verificarRegistros
 
     // Métodos de acesso
@@ -56,8 +79,8 @@ public class MainController {
         return tempMinima;
     }
 
-    public String stringify(Double dado){
-        if(dado == null){
+    public String stringify(Double dado) {
+        if (dado == null) {
             return null;
         }
         return String.format("%.2f", dado);
@@ -71,11 +94,31 @@ public class MainController {
             String listViewText;
             if (registro instanceof RegistroAutomatico regAut) {
                 // Alterar visualização de lista
-                listViewText = "Automático: " + regAut.getData() + " | " + regAut.getHora() + " | " + stringify(regAut.getTemperatura()) + " | " + stringify(regAut.getUmiIns()) + " | " + stringify(regAut.getPtoOrvalhoIns()) + " | " + stringify(regAut.getPressaoIns()) + " | " + stringify(regAut.getVelVento()) + " | " + stringify(regAut.getDirVento()) + " | " + stringify(regAut.getRajVento()) + " | " + stringify(regAut.getRadiacao()) + " | " + stringify(regAut.getChuva());
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+                listViewText = "Automático - Data: " + regAut.getData().format(formatter) + " | Hora: " + regAut.getHora()
+                        + " | Temperatura (Ins) : " + stringify(regAut.getTemperatura()) + " | Temperatura Máxima :"
+                        + stringify(regAut.getTempMax()) + " | Temperatura Mínima: " + stringify(regAut.getTempMin())
+                        + " | Umidade (Ins): "
+                        + stringify(regAut.getUmiIns()) + " | Orvalho (Ins): " + stringify(regAut.getPtoOrvalhoIns())
+                        + " | Pressão (Ins): " + stringify(regAut.getPressaoIns()) + " | Velocidade do Vento:  "
+                        + stringify(regAut.getVelVento()) + " | Direção do Vento: " + stringify(regAut.getDirVento())
+                        + " | Rajada Vento: " + stringify(regAut.getRajVento()) + " | Radiação "
+                        + stringify(regAut.getRadiacao()) + " | Chuva: " + stringify(regAut.getChuva());
             } else {
                 // Alterar visualização de lista
                 RegistroManual regManual = (RegistroManual) registro;
-                listViewText = "Manual: " + regManual.getData() + " | " + regManual.getHora() + " | " + stringify(regManual.getTemperatura()) + " | " + stringify(regManual.getUmi()) + " | " + stringify(regManual.getPressao()) + " | " + stringify(regManual.getVelVento()) + " | " + stringify(regManual.getDirVento()) + " | " + stringify(regManual.getNebulosidade()) + " | " + stringify(regManual.getInsolacao()) + " | " + stringify(regManual.getTempMax()) + " | " + stringify(regManual.getTempMin()) + " | " + stringify(regManual.getChuva());
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+                listViewText = "Manual - Data: " + regManual.getData().format(formatter) + " | Hora: " + regManual.getHora()
+                        + " | Temperatura : " + stringify(regManual.getTemperatura()) + " | Umidade: "
+                        + stringify(regManual.getUmi()) + " | Pressão: " + stringify(regManual.getPressao())
+                        + " | Velocidade do Vento: " + stringify(regManual.getVelVento()) + " | Direção do Vento: "
+                        + stringify(regManual.getDirVento()) + " | Nebulosidade: "
+                        + stringify(regManual.getNebulosidade()) + " | Insolação:  "
+                        + stringify(regManual.getInsolacao()) + " | Temperatura Máxima "
+                        + stringify(regManual.getTempMax()) + " | Temperatura Minima:  "
+                        + stringify(regManual.getTempMin()) + " | Chuva:  " + stringify(regManual.getChuva());
             }
             listViewApurado.getItems().add(listViewText);
         }
@@ -85,12 +128,30 @@ public class MainController {
 
             if (registro instanceof RegistroAutomatico regAut) {
                 // Alterar visualização de lista
-                listViewText = "Automático: " + regAut.getData() + " | " + regAut.getHora() + " | " + stringify(regAut.getTemperatura()) + " | " + stringify(regAut.getUmiIns()) + " | " + stringify(regAut.getPtoOrvalhoIns()) + " | " + stringify(regAut.getPressaoIns()) + " | " + stringify(regAut.getVelVento()) + " | " + stringify(regAut.getDirVento()) + " | " + stringify(regAut.getRajVento()) + " | " + stringify(regAut.getRadiacao()) + " | " + stringify(regAut.getChuva());
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+                listViewText = "Automático - Data: " + regAut.getData().format(formatter) + " | Hora: " + regAut.getHora()
+                        + " | Temperatura (Ins) : " + stringify(regAut.getTemperatura()) + " | Temperatura Máxima :"
+                        + stringify(regAut.getTempMax()) + " | Temperatura Mínima: " + stringify(regAut.getTempMin())
+                        + " | Umidade (Ins): "
+                        + stringify(regAut.getUmiIns()) + " | Orvalho (Ins): " + stringify(regAut.getPtoOrvalhoIns())
+                        + " | Pressão (Ins): " + stringify(regAut.getPressaoIns()) + " | Velocidade do Vento: "
+                        + stringify(regAut.getVelVento()) + " | Direção do Vento: " + stringify(regAut.getDirVento())
+                        + " | Rajada Vento: " + stringify(regAut.getRajVento()) + " | Radiação "
+                        + stringify(regAut.getRadiacao()) + " | Chuva: " + stringify(regAut.getChuva());
             } else {
                 // Alterar visualização de lista
                 RegistroManual regManual = (RegistroManual) registro;
-
-                listViewText = "Manual: " + regManual.getData() + " | " + regManual.getHora() + " | " + stringify(regManual.getTemperatura()) + " | " + stringify(regManual.getUmi()) + " | " + stringify(regManual.getPressao()) + " | " + stringify(regManual.getVelVento()) + " | " + stringify(regManual.getDirVento()) + " | " + stringify(regManual.getNebulosidade()) + " | " + stringify(regManual.getInsolacao()) + " | " + stringify(regManual.getTempMax()) + " | " + stringify(regManual.getTempMin()) + " | " + stringify(regManual.getChuva());
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                listViewText = "Manual - Data: " + regManual.getData().format(formatter) + " | Hora: " + regManual.getHora()
+                        + " | Temperatura : " + stringify(regManual.getTemperatura()) + " | Umidade (Ins): "
+                        + stringify(regManual.getUmi()) + " | Pressão " + stringify(regManual.getPressao())
+                        + " | Velocidade do Vento: " + stringify(regManual.getVelVento()) + " | Direção do Vento: "
+                        + stringify(regManual.getDirVento()) + " | Nebulosidade: "
+                        + stringify(regManual.getNebulosidade()) + " | Insolação: "
+                        + stringify(regManual.getInsolacao()) + " | Temperatura Máxima "
+                        + stringify(regManual.getTempMax()) + " | Temperatura Minima: "
+                        + stringify(regManual.getTempMin()) + " | Chuva: " + stringify(regManual.getChuva());
             }
             listViewSuspeito.getItems().add(listViewText);
         }
@@ -107,7 +168,7 @@ public class MainController {
 
         // Mostrar o diálogo de escolha de arquivo
         List<File> selectedFiles = fileChooser.showOpenMultipleDialog(stage);
-
+        ObservableList<String> opcoes = FXCollections.observableArrayList(cidadesLista);
         String arquivosSelecionados = "";
         // Exemplo de como você pode manipular os arquivos selecionados
         if (selectedFiles != null) {
@@ -115,6 +176,20 @@ public class MainController {
             for (File file : selectedFiles) {
                 System.out.println(file.getAbsolutePath());
                 arquivosSelecionados = arquivosSelecionados + "\n" + file.getAbsolutePath();
+                String[] fileNamePart = file.getName().split(".csv")[0].split("_");
+                String cidade = fileNamePart[1];
+
+                if (!opcoes.contains(cidade)) {
+                    // Adicionar novo valor ao array
+                    opcoes.add(cidade);
+                    System.out.println("");
+                }
+
+                // Definir a lista de opções para o ComboBox
+                cityComboBox.setItems(opcoes);
+
+                // Definir um valor padrão
+                cityComboBox.setValue(opcoes.getFirst());
 
                 Arquivo arquivo = new Arquivo();
                 arquivo.setConteudo(file);
@@ -152,7 +227,8 @@ public class MainController {
 
     private void verificarRegistros() {
         for (Registro registro : registros) {
-            if (registro.getTemperatura() == null || registro.getTemperatura() >= tempMaxima || registro.getTemperatura() <= tempMinima) {
+            if (registro.getTemperatura() == null || registro.getTemperatura() >= tempMaxima
+                    || registro.getTemperatura() <= tempMinima) {
                 dadoSuspeito.add(registro);
                 System.out.println("Dado incorreto");
             } else {
@@ -163,4 +239,133 @@ public class MainController {
         visualizarListas();
     }
 
+    // RELATÓRIO PERIOCIDADE por CIDADE
+    // Criando métodos para o relatório. Converte as horas, para criar intervalos de
+    // tempo. Calcula a média dos variavéis Ins.
+    @FXML
+    public void gerarrelatorioperiocidade() {
+        String cidadeEscolhida = cityComboBox.getValue();
+        LocalDate dataInicial = startDatePicker.getValue();
+        LocalDate dataFinal = endDatePicker.getValue();
+
+        // Verifica se as datas foram selecionadas
+        if (cidadeEscolhida != null && dataInicial != null && dataFinal != null) {
+            LocalDate date = dataInicial;
+            filtrarRegistrosPorDia(cidadeEscolhida, date, dataInicial, dataFinal);
+        } else {
+            // Exibir mensagem de erro se os campos não estiverem preenchidos
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erro");
+            alert.setHeaderText("Por favor, selecione a cidade e as datas inicial e final.");
+            alert.showAndWait();
+        }
+    }
+
+    // Método para filtrar os registros para um dia específico e cidade
+    private void filtrarRegistrosPorDia(String cidadeEscolhida, LocalDate data, LocalDate dataInicial, LocalDate dataFinal) {
+        listrelatorio.getItems().add("Cidade: " + cidadeEscolhida + " | Período: " + dataInicial + " a " + dataFinal);
+
+        for (Registro registro : dadoApurado) {
+
+
+            if (registro.getCidade().equals(cidadeEscolhida) && !(data.isBefore(dataInicial) || data.isAfter(dataFinal))) {
+                StringBuilder registroTexto = new StringBuilder();
+                System.out.println(registro.getCidade());
+
+
+                // Adicione aqui a lógica para obter os valores relevantes do registro
+                if (registro instanceof RegistroAutomatico) {
+                    RegistroAutomatico regAutomatico = (RegistroAutomatico) registro;
+                    registroTexto.append("Registro Automático - ");
+
+                    // formata a hora 
+                    String horaOriginal = regAutomatico.getHora();
+                    String horaFormatada = horaOriginal.substring(0, 2) + ":" + horaOriginal.substring(2);
+
+                    registroTexto.append("Hora: ").append(horaFormatada).append("  ");
+                    registroTexto.append("Temperatura Ins: ").append(regAutomatico.getTemperatura()).append(" °C ");
+                    registroTexto.append("Umidade Ins: ").append(regAutomatico.getUmiIns()).append(" % ");
+                    registroTexto.append("Pto Orvalho Ins: ").append(regAutomatico.getPtoOrvalhoIns()).append(" C ");
+                    registroTexto.append("Pressao Ins: ").append(regAutomatico.getPressaoIns()).append(" hPa ");   
+
+                    listrelatorio.getItems().add(registroTexto.toString());
+
+                } else if (registro instanceof RegistroManual) {
+                    RegistroManual regManual = (RegistroManual) registro;
+                    registroTexto.append("Registro Manual - ");
+
+                    // formata a hora 
+                    String horaOriginal = regManual.getHora();
+                    String horaFormatada = horaOriginal.substring(0, 2) + ":" + horaOriginal.substring(2);
+                    registroTexto.append("Hora: ").append(horaFormatada).append("  ");
+
+                    // revisar os tipos de dados 
+                    registroTexto.append("Temperatura Ins: ").append(regManual.getTemperatura()).append(" °C ");
+                    registroTexto.append("Umidade: ").append(regManual.getUmi()).append(" % ");
+                    registroTexto.append("Pressão: ").append(regManual.getPressao()).append(" hPa ");
+                    registroTexto.append("Velocidade do Vento: ").append(regManual.getVelVento()).append(" m/s ");
+                    registroTexto.append("Direção do Vento: ").append(regManual.getDirVento()).append(" m/s ");
+                    registroTexto.append("Nebulosidade: ").append(regManual.getNebulosidade()).append("  ");
+                    registroTexto.append("Insolação: ").append(regManual.getInsolacao()).append(" h ");
+                    registroTexto.append("Chuva: ").append(regManual.getChuva()).append(" mm ");
+
+                    listrelatorio.getItems().add(registroTexto.toString());
+                }
+            }
+        }
+    }
+
+    // Exportar dados CSV
+    public void exportarrelatorioperiocidade(@SuppressWarnings("exports") ActionEvent actionEvent) throws IOException {
+        String desktopPath = System.getProperty("user.home") + "/Documents/";
+        String nomeArquivoManual = desktopPath + "RelatorioRegistroManual.csv";
+        FileWriter escritorManual = new FileWriter(nomeArquivoManual, StandardCharsets.ISO_8859_1, false);
+        escritorManual.write("Data; Hora ;Temperatura Ins (°C) ;Umidade (%) ;Pressão (hPa) ;Velocidade do Vento (m/s) ; Direção do Vento (m/s) ; Nebulosidade ;Insolação (h) ; Chuva(mm)\n");
+
+
+        String nomeArquivo = desktopPath + "RelatorioRegistroAuto.csv";
+        FileWriter escritorAuto = new FileWriter(nomeArquivo, StandardCharsets.ISO_8859_1, false);
+        escritorAuto.write("Data; Hora ;Temperatura Ins (°C) ;Umidade Ins (%) ;Pto Orvalho Ins (C) ;Pressao Ins (hPa) \n");
+
+        for (Registro registro : dadoApurado) {
+
+            if (registro instanceof RegistroAutomatico) {
+                RegistroAutomatico regAutomatico = (RegistroAutomatico) registro;
+                String horaOriginal = regAutomatico.getHora();
+                String horaFormatada = horaOriginal.substring(0, 2) + ":" + horaOriginal.substring(2);
+
+                escritorAuto.write(
+                        regAutomatico.getData().toString() + ";" + horaFormatada + ";" +
+                        String.format("%.2f", regAutomatico.getTemperatura()) + ";" +
+                        String.format("%.2f", regAutomatico.getUmiIns()) + ";" +
+                        String.format("%.2f", regAutomatico.getPtoOrvalhoIns()) + ";" +
+                        String.format("%.2f", regAutomatico.getPressaoIns()) + ";" + "\n");
+
+            } else if (registro instanceof RegistroManual) {
+                RegistroManual regManual = (RegistroManual) registro;
+                String horaOriginal = regManual.getHora();
+                String horaFormatada = horaOriginal.substring(0, 2) + ":" + horaOriginal.substring(2);
+
+                escritorAuto.write(
+                        regManual.getData().toString() + ";" + horaFormatada + ";" +
+                                String.format("%.2f", regManual.getTemperatura()) + ";" +
+                                String.format("%.2f", regManual.getUmi()) + ";" +
+                                String.format("%.2f", regManual.getPressao()) + ";" +
+                                String.format("%.2f", regManual.getVelVento()) + ";" +
+                                String.format("%.2f", regManual.getDirVento()) + ";" +
+                                String.format("%.2f", regManual.getNebulosidade()) + ";" +
+                                String.format("%.2f", regManual.getInsolacao()) + ";" +
+                                String.format("%.2f", regManual.getChuva()) + ";" +"\n");
+            }
+
+
+        }
+            //Escreve todos os dados do Buffer no arquivo
+            escritorManual.flush();
+            escritorManual.close();
+
+            escritorAuto.flush();
+            escritorAuto.close();
+        }
 }
+
