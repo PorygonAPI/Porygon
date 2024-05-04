@@ -644,7 +644,7 @@ public class MainController {
                     registroTexto.append("Hora: ").append(horaFormatada).append("  ");
 
                     // revisar os tipos de dados 
-                    registroTexto.append("Temperatura Ins: ").append(regManual.getTemperatura()).append(" °C ");
+                    registroTexto.append("Temperatura Ins: ").append(String.format("%.2f", regManual.getTemperatura())).append(" °C ");
                     registroTexto.append("Umidade: ").append(regManual.getUmi()).append(" % ");
                     registroTexto.append("Pressão: ").append(regManual.getPressao()).append(" hPa ");
                     registroTexto.append("Velocidade do Vento: ").append(regManual.getVelVento()).append(" m/s ");
