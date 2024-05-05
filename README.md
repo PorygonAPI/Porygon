@@ -54,7 +54,7 @@
 ### Prazos
 > - [x] 04/03 a 08/03 - *Kick-off*
 > - [x] 25/03 a 14/04 - *Primeira Sprint*
-> - [ ] 15/04 a 05/05 - *Segunda Sprint*
+> - [x] 15/04 a 05/05 - *Segunda Sprint*
 > - [ ] 06/05 a 26/05 - *Terceira Sprint*
 > - [ ] 27/05 a 16/06 - *Quarta Sprint*
 > - [ ] 27/06 - *Feira de Soluções e Apresentação Final API*
@@ -101,7 +101,8 @@ instalação.
   | Como pesquisador, desejo que registros suspeitos nos arquivos sejam identificados durante o processo de carregamento e sejam armazenados separadamente dos registros regulares para facilitar a detecção e análise de anomalias nos dados durante o processo de carregamento.  |Essencial|1|
   | Como pesquisador, desejo poder escolher um período específico para a geração do relatório de valor médio das variáveis climáticas por cidade, possibilitando uma análise detalhada das condições climáticas ao longo de um período determinado.  |Essencial|2|
   | Como pesquisador, desejo um relatório de situação que exiba os últimos valores de temperatura, umidade e outras variáveis climáticas relevantes para cada cidade, possibilitando uma compreensão abrangente das condições climáticas. |Essencial|2|
-
+  | Como pesquisador, desejo poder alterar, restaurar e excluir dados irregulares quando necessário, garantindo a precisão, integridade e confiabilidade dos dados para minha pesquisa e assegurando a rastreabilidade dos registros no sistema.|Essencial|3|
+  |Como pesquisador, desejo um relatório que me permita calcular os elementos necessários para plotar um gráfico boxplot com base nos dados de uma estação em uma data específica. Isso me proporcionará uma visualização clara da distribuição e variabilidade dos dados climáticos, facilitando análises detalhadas em minha pesquisa.|Essencial|3|
   
 
 ## Backlog das Sprints
@@ -125,6 +126,18 @@ instalação.
 
 <details>
 <summary> SPRINT 2 </summary>
+
+* Criação de uma interface para cadastramento das variáveis climáticas
+* Integração com a fonte de dados climáticos
+* Definição dos campos do relatório climático
+* Formatação dos dados de resposta
+* Implementação da lógica de coleta de dados climáticos
+* Criação das Label de cabeçalho
+* Gerar CSV como relatório
+* Geração do Relatório de valor médio
+* Componente de data ( Início e Fim)
+* Criação das TextFields para cada variável climática
+* Implementação do Banco ao Código
 
  </details>
  
