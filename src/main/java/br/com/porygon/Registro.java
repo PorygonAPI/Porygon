@@ -1,8 +1,12 @@
 package br.com.porygon;
 
+import java.time.LocalDate;
+
 public class Registro {
-    private String data;
+    private LocalDate data;
     private String hora;
+
+    private String cidade;
 
     private Double temperatura;
 
@@ -10,11 +14,11 @@ public class Registro {
 
     private Double dirVento;
 
-    public String getData() {
+    public LocalDate getData() {
         return data;
     }
 
-    public void setData(String data) {
+    public void setData(LocalDate data) {
         this.data = data;
     }
 
@@ -50,7 +54,16 @@ public class Registro {
         this.dirVento = dirVento;
     }
 
-    public Registro(String data, String hora, Double velVento, Double dirVento) {
+    public String getCidade() {
+        return cidade;
+    }
+
+    public void setCidade(String cidade) {
+        this.cidade = cidade;
+    }
+
+    public Registro(String cidade, LocalDate data, String hora, Double velVento, Double dirVento) {
+        this.cidade = cidade;
         this.data = data;
         this.hora = hora;
         this.velVento = velVento;
