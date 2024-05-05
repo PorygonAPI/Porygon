@@ -1,6 +1,8 @@
 package br.com.porygon;
 
 import java.io.*;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class Arquivo {
@@ -17,7 +19,8 @@ public class Arquivo {
     public void tratar(List<Registro> registros) {
         System.out.println("Estou tratando o arquivo - " + this.conteudo.getName());
         String[] fileNamePart = this.conteudo.getName().split(".csv")[0].split("_");
-        if (fileNamePart[0].indexOf("A") >= 0) {
+        String cidade = fileNamePart[1];
+        if (fileNamePart[0].contains("A")) {
             System.out.println("Arquivo automtico: - " + fileNamePart[0]);
             try {
                 try (BufferedReader br = new BufferedReader(new FileReader(this.conteudo.getPath()))) {
@@ -25,7 +28,7 @@ public class Arquivo {
                     line = br.readLine();
                     while (line != null) {
                         String[] split = line.split(";");
-                        String data = null;
+                        LocalDate data = null;
                         String hora = null;
                         Double tempIns = null;
                         Double tempMax = null;
@@ -46,10 +49,16 @@ public class Arquivo {
                         Double chuva = null;
 
                         for (int i = 0; i < split.length; i++) {
+                            // Remove as aspas duplas, se existirem, antes de fazer a conversão
+                            split[i] = split[i].replace("\"", "");
+                            
                             if (!split[i].isEmpty()) {
                                 switch (i) {
                                     case 0:
-                                        data = split[i];
+                                        String dateString = split[i];
+                                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                                        LocalDate date = LocalDate.parse(dateString, formatter);
+                                        data = date;
                                         break;
                                     case 1:
                                         hora = split[i];
@@ -110,7 +119,7 @@ public class Arquivo {
 
                         }
 
-                        RegistroAutomatico regAutomatico = new RegistroAutomatico(data, hora,
+                        RegistroAutomatico regAutomatico = new RegistroAutomatico(cidade, data, hora,
                                 velVento, dirVento, tempIns, tempMax, tempMin, umiIns, umiMax, umiMin,
                                 ptoOrvalhoIns, ptoOrvalhoMax, ptoOrvalhoMin, pressaoIns, pressaoMax,
                                 pressaoMin, rajVento, radiacao, chuva);
@@ -136,7 +145,7 @@ public class Arquivo {
                     line = br.readLine();
                     while (line != null) {
                         String[] split = line.split(";");
-                        String data = null;
+                        LocalDate data = null;
                         String hora = null;
                         Double temp = null;
                         Double umi = null;
@@ -153,7 +162,10 @@ public class Arquivo {
                             if (!split[i].isEmpty()) {
                                 switch (i) {
                                     case 0:
-                                        data = split[i];
+                                        String dateString = split[i];
+                                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                                        LocalDate date = LocalDate.parse(dateString, formatter);
+                                        data = date;
                                         break;
                                     case 1:
                                         hora = split[i];
@@ -193,7 +205,7 @@ public class Arquivo {
 
                         }
 
-                        RegistroManual regManual = new RegistroManual(data, hora, velVento, dirVento, temp, umi,
+                        RegistroManual regManual = new RegistroManual(cidade, data, hora, velVento, dirVento, temp, umi,
                                 pressao,
                                 nebulosidade, insolacao, tempMax, tempMin, chuva);
                         registros.add(regManual);
