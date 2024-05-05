@@ -15,7 +15,7 @@
     * [Requisitos Não Funcionais](#requisitos-não-funcionais)
     * [Backlog do Produto](#backlog-do-produto)
     * [Backlog das Sprints](#backlog-das-sprints)
-    * [Acordos do time](#acordos-do-time)
+      
 ##
 ## *Projeto API*
 
