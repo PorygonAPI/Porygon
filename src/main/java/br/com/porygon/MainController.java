@@ -208,9 +208,7 @@ public class MainController {
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
                 listViewTextApurado = "Automático - Data: " + regAut.getData().format(formatter) + " | Hora: " + regAut.getHora()
-                        + " | Temperatura (Ins) : " + stringify(regAut.getTemperatura()) + " | Temperatura Máxima :"
-                        + stringify(regAut.getTempMax()) + " | Temperatura Mínima: " + stringify(regAut.getTempMin())
-                        + " | Umidade (Ins): "
+                        + " | Temperatura (Ins) : " + stringify(regAut.getTemperatura()) +  " | Umidade (Ins): "
                         + stringify(regAut.getUmiIns()) + " | Orvalho (Ins): " + stringify(regAut.getPtoOrvalhoIns())
                         + " | Pressão (Ins): " + stringify(regAut.getPressaoIns()) + " | Velocidade do Vento:  "
                         + stringify(regAut.getVelVento()) + " | Direção do Vento: " + stringify(regAut.getDirVento())
@@ -228,9 +226,7 @@ public class MainController {
                         + " | Velocidade do Vento: " + stringify(regManual.getVelVento()) + " | Direção do Vento: "
                         + stringify(regManual.getDirVento()) + " | Nebulosidade: "
                         + stringify(regManual.getNebulosidade()) + " | Insolação:  "
-                        + stringify(regManual.getInsolacao()) + " | Temperatura Máxima "
-                        + stringify(regManual.getTempMax()) + " | Temperatura Minima:  "
-                        + stringify(regManual.getTempMin()) + " | Chuva:  " + stringify(regManual.getChuva());
+                        + stringify(regManual.getInsolacao()) + " | Chuva:  " + stringify(regManual.getChuva());
                 System.out.println(listViewTextApurado);
             }
             listViewApurado.getItems().add(listViewTextApurado);
@@ -244,9 +240,7 @@ public class MainController {
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
                 listViewTextSuspeito = "Automático - Data: " + regAut.getData().format(formatter) + " | Hora: " + regAut.getHora()
-                        + " | Temperatura (Ins) : " + stringify(regAut.getTemperatura()) + " | Temperatura Máxima :"
-                        + stringify(regAut.getTempMax()) + " | Temperatura Mínima: " + stringify(regAut.getTempMin())
-                        + " | Umidade (Ins): "
+                        + " | Temperatura (Ins) : " + stringify(regAut.getTemperatura()) + " | Umidade (Ins): "
                         + stringify(regAut.getUmiIns()) + " | Orvalho (Ins): " + stringify(regAut.getPtoOrvalhoIns())
                         + " | Pressão (Ins): " + stringify(regAut.getPressaoIns()) + " | Velocidade do Vento: "
                         + stringify(regAut.getVelVento()) + " | Direção do Vento: " + stringify(regAut.getDirVento())
@@ -262,9 +256,7 @@ public class MainController {
                         + " | Velocidade do Vento: " + stringify(regManual.getVelVento()) + " | Direção do Vento: "
                         + stringify(regManual.getDirVento()) + " | Nebulosidade: "
                         + stringify(regManual.getNebulosidade()) + " | Insolação: "
-                        + stringify(regManual.getInsolacao()) + " | Temperatura Máxima "
-                        + stringify(regManual.getTempMax()) + " | Temperatura Minima: "
-                        + stringify(regManual.getTempMin()) + " | Chuva: " + stringify(regManual.getChuva());
+                        + stringify(regManual.getInsolacao()) + " | Chuva: " + stringify(regManual.getChuva());
             }
             listViewSuspeito.getItems().add(listViewTextSuspeito);
         }
