@@ -21,13 +21,16 @@ create table arquivo (
 );
 
 create table registro(
+    arquivo bigint,
 	id bigint auto_increment primary key,
-    data_hora timestamp not null
+    tipo_registro varchar(30),
+    data_hora timestamp not null,
+    foreign key(arquivo) references arquivo(id)
 );
 
 create table reg_informacao(
 	registro bigint,
-	nome varchar(100) not null unique, 
+	nome varchar(100) primary key, 
     valor double not null,
     foreign key(registro) references registro(id)
 );
