@@ -4,6 +4,8 @@ import java.io.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.io.File;
+import java.io.IOException;
 
 public class Arquivo {
     private File conteudo;
@@ -15,6 +17,32 @@ public class Arquivo {
     public void setConteudo(File conteudo) {
         this.conteudo = conteudo;
     }
+
+
+    // Lê o nome do arquivo
+    // public void tratar() {
+    //    try {
+    //     String nomeArquivo = conteudo.getName();
+    //     // Extrair informações do nome do arquivo
+    //     String[] nomePartes = nomeArquivo.split("_");
+    //     String nome = nomePartes[0];
+    //     String cidade = nomePartes[1];
+    //     String estacao = nomePartes[2].substring(0, nomePartes[2].indexOf(".")); // Remove a extensão .csv
+
+    //     // Criar um objeto Registro com os dados extraídos
+    //     Registro registro = new Registro();
+    //     registro.setNome(nome);
+    //     registro.setCidade(cidade);
+    //     registro.setEstacao(estacao);
+
+    //     // Salvar no banco de dados
+    //     ArquivoDAO arquivoDAO = new ArquivoDAO();
+    //     arquivoDAO.salvarArquivo(registro);
+    // } catch (IOException e) {
+    //     e.printStackTrace();
+    // }
+  
+    
 
     public void tratar(List<Registro> registros) {
         System.out.println("Estou tratando o arquivo - " + this.conteudo.getName());
