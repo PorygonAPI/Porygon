@@ -16,8 +16,8 @@ create table atr_configuracao (
 create table arquivo (
 	id bigint auto_increment primary key, 
     nome varchar(100) not null, 
-    cidade varchar(10) not null, 
-    estacao varchar(20) not null
+    cidade varchar(100) not null, 
+    estacao varchar(100) not null
 );
 
 create table registro(

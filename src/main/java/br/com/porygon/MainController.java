@@ -1,5 +1,6 @@
 package br.com.porygon;
 
+import br.com.porygon.dao.ArquivoDAO;
 // import javafx.collections.ObservableList;
 import br.com.porygon.dao.ConfiguracaoDAO;
 import javafx.collections.FXCollections;
@@ -416,6 +417,8 @@ public class MainController {
         if (selectedFiles != null) {
             System.out.println("Arquivos selecionados:");
             for (File file : selectedFiles) {
+                ArquivoDAO arquivoDao = new ArquivoDAO(); 
+                arquivoDao.salvarArquivo();
                 System.out.println(file.getAbsolutePath());
                 arquivosSelecionados = arquivosSelecionados + "\n" + file.getAbsolutePath();
                 String[] fileNamePart = file.getName().split(".csv")[0].split("_");
