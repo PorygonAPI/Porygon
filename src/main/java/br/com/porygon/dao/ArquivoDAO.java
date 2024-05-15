@@ -20,6 +20,32 @@ public class ArquivoDAO {
         return connection;
     }
 
+//     Realiza a inserção dos dados lidos no banco
+//      public void salvarArquivo(String nome, String cidade, String estacao) {
+//         Connection con = null;
+//         try {
+//             con = getConnection();
+//             String insert_sql = "INSERT INTO arquivo (nome, cidade, estacao) VALUES (?, ?, ?)";
+//             PreparedStatement pst = con.prepareStatement(insert_sql);
+//             pst.setString(1, nome);
+//             pst.setString(2, cidade);
+//             pst.setString(3, estacao);
+//             pst.executeUpdate();
+//         } catch (SQLException e) {
+//             e.printStackTrace();
+//             throw new RuntimeException("Erro ao inserir novo atributo!", e);
+//         } finally {
+//             try {
+//                 if (con != null)
+//                     con.close();
+//             } catch (SQLException e) {
+//                 e.printStackTrace();
+//                 throw new RuntimeException("Erro ao fechar conexão", e);
+//             }
+//         }
+//     }
+// }
+
     public void salvarArquivo() {
          Connection con = null;
         try {
@@ -30,7 +56,6 @@ public class ArquivoDAO {
             pst.setString(1, "Nome teste");
             pst.setString(2, "Cidade teste");
             pst.setString(3, "Estacao teste");
-
             pst.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
