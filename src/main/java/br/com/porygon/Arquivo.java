@@ -1,7 +1,12 @@
 package br.com.porygon;
 
+import br.com.porygon.dao.RegistroDAO;
+
 import java.io.*;
+import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.io.File;
@@ -41,21 +46,38 @@ public class Arquivo {
     // } catch (IOException e) {
     //     e.printStackTrace();
     // }
-  
+
+
+    public static Timestamp convertToTimestamp(String dateStr, String timeStr) {
+        // Definindo os formatos de data e hora
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HHmm");
+
+        // Convertendo as strings para LocalDate e LocalTime
+        LocalDate date = LocalDate.parse(dateStr, dateFormatter);
+        LocalTime time = LocalTime.parse(timeStr, timeFormatter);
+
+        // Combinando LocalDate e LocalTime em LocalDateTime
+        LocalDateTime dateTime = LocalDateTime.of(date, time);
+
+        // Convertendo LocalDateTime para Timestamp
+        return Timestamp.valueOf(dateTime);
+    }
     
 
-    public void tratar(List<Registro> registros) {
-        System.out.println("Estou tratando o arquivo - " + this.conteudo.getName());
+    public void tratar(int arquivoId) {
         String[] fileNamePart = this.conteudo.getName().split(".csv")[0].split("_");
         String cidade = fileNamePart[1];
+        RegistroDAO registroDAO = new RegistroDAO();
         if (fileNamePart[0].contains("A")) {
-            System.out.println("Arquivo automtico: - " + fileNamePart[0]);
             try {
                 try (BufferedReader br = new BufferedReader(new FileReader(this.conteudo.getPath()))) {
                     String line = br.readLine();
                     line = br.readLine();
                     while (line != null) {
                         String[] split = line.split(";");
+                        int regId = registroDAO.salvarRegistro(convertToTimestamp(split[0].replace("\"", ""), split[1].replace("\"", "")), arquivoId, "Automático");
+
                         LocalDate data = null;
                         String hora = null;
                         Double tempIns = null;
@@ -79,7 +101,7 @@ public class Arquivo {
                         for (int i = 0; i < split.length; i++) {
                             // Remove as aspas duplas, se existirem, antes de fazer a conversão
                             split[i] = split[i].replace("\"", "");
-                            
+
                             if (!split[i].isEmpty()) {
                                 switch (i) {
                                     case 0:
@@ -93,15 +115,18 @@ public class Arquivo {
                                         break;
                                     case 2:
                                         tempIns = Double.parseDouble(split[i].replace(",", "."));
+                                        registroDAO.salvarInformacao(regId, "tempIns", tempIns);
                                         break;
                                     case 3:
                                         tempMax = Double.parseDouble(split[i].replace(",", "."));
+
                                         break;
                                     case 4:
                                         tempMin = Double.parseDouble(split[i].replace(",", "."));
                                         break;
                                     case 5:
                                         umiIns = Double.parseDouble(split[i].replace(",", "."));
+                                        registroDAO.salvarInformacao(regId, "umiIns", umiIns);
                                         break;
                                     case 6:
                                         umiMax = Double.parseDouble(split[i].replace(",", "."));
@@ -111,6 +136,7 @@ public class Arquivo {
                                         break;
                                     case 8:
                                         ptoOrvalhoIns = Double.parseDouble(split[i].replace(",", "."));
+                                        registroDAO.salvarInformacao(regId, "ptoOrvalhoIns", ptoOrvalhoIns);
                                         break;
                                     case 9:
                                         ptoOrvalhoMax = Double.parseDouble(split[i].replace(",", "."));
@@ -120,6 +146,7 @@ public class Arquivo {
                                         break;
                                     case 11:
                                         pressaoIns = Double.parseDouble(split[i].replace(",", "."));
+                                        registroDAO.salvarInformacao(regId, "pressaoIns", pressaoIns);
                                         break;
                                     case 12:
                                         pressaoMax = Double.parseDouble(split[i].replace(",", "."));
@@ -129,18 +156,23 @@ public class Arquivo {
                                         break;
                                     case 14:
                                         velVento = Double.parseDouble(split[i].replace(",", "."));
+                                        registroDAO.salvarInformacao(regId, "velVento", velVento);
                                         break;
                                     case 15:
                                         dirVento = Double.parseDouble(split[i].replace(",", "."));
+                                        registroDAO.salvarInformacao(regId, "dirVento", dirVento);
                                         break;
                                     case 16:
                                         rajVento = Double.parseDouble(split[i].replace(",", "."));
+                                        registroDAO.salvarInformacao(regId, "rajVento", rajVento);
                                         break;
                                     case 17:
                                         radiacao = Double.parseDouble(split[i].replace(",", "."));
+                                        registroDAO.salvarInformacao(regId, "radiacao", radiacao);
                                         break;
                                     case 18:
                                         chuva = Double.parseDouble(split[i].replace(",", "."));
+                                        registroDAO.salvarInformacao(regId, "chuva", chuva);
                                         break;
                                 }
                             }
@@ -151,7 +183,7 @@ public class Arquivo {
                                 velVento, dirVento, tempIns, tempMax, tempMin, umiIns, umiMax, umiMin,
                                 ptoOrvalhoIns, ptoOrvalhoMax, ptoOrvalhoMin, pressaoIns, pressaoMax,
                                 pressaoMin, rajVento, radiacao, chuva);
-                        registros.add(regAutomatico);
+//                        registros.add(regAutomatico);
                         line = br.readLine();
                     }
                 } catch (NumberFormatException e) {
@@ -236,7 +268,7 @@ public class Arquivo {
                         RegistroManual regManual = new RegistroManual(cidade, data, hora, velVento, dirVento, temp, umi,
                                 pressao,
                                 nebulosidade, insolacao, tempMax, tempMin, chuva);
-                        registros.add(regManual);
+//                        registros.add(regManual);
                         line = br.readLine();
                     }
                 } catch (NumberFormatException e) {
