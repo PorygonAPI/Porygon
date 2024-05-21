@@ -592,7 +592,7 @@ public class MainController {
             cityComboBox.setItems(opcoes);
 
             // Definir um valor padrão
-            cityComboBox.setValue(opcoes.getFirst());
+//            cityComboBox.setValue(opcoes.getFirst());
 
             Arquivo arquivo = new Arquivo();
             arquivo.setConteudo(selectedFile);

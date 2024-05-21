@@ -44,6 +44,7 @@ create table registro(
 create table reg_informacao(
    registro bigint,
    nome varchar(100),
+   dado_suspeito tinyint(1) default 0 null,
    valor double not null,
    foreign key(registro) references registro(id),
    primary key(registro, nome)

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DdlMappings">
+    <mapping uuid="f8e5cbdc-56d4-4119-9dbb-06459c6848ff" name="porygon@localhost Mapping">
+      <data-sources db="110c4971-e2a0-4232-afc9-6afeb9e2610f" />
+      <scope>
+        <node kind="schema" qname="porygon" />
+      </scope>
+    </mapping>
+  </component>
+</project>

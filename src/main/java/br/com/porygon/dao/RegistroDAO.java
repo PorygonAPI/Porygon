@@ -115,6 +115,160 @@ public class RegistroDAO {
         return null;
     }
 
+    /**
+     * Essa função atualiza a lista de dados apurados
+     * @return ObservableList<Map<String, String>>
+     */
+    public ObservableList<Map<String, String>> getDadosApurados(){
+        Connection con = null;
+        ObservableList<Map<String, String>> dados = FXCollections.observableArrayList();
+
+        try {
+            con = getConnection();
+            String select_sql = "select * from registro";
+            PreparedStatement pst = con.prepareStatement(select_sql);
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+
+                String sql = "SELECT r.data_hora,\n" +
+                        "       r.tipo_arquivo,\n" +
+                        "       MAX(CASE WHEN ri.nome = 'tempIns' THEN ri.valor END) AS temperatura,\n" +
+                        "       MAX(CASE WHEN ri.nome = 'pressaoIns' THEN ri.valor END) AS pressao,\n" +
+                        "       MAX(CASE WHEN ri.nome = 'velVento' THEN ri.valor END) AS velVento,\n" +
+                        "       MAX(CASE WHEN ri.nome = 'chuva' THEN ri.valor END) AS chuva,\n" +
+                        "       MAX(CASE WHEN ri.nome = 'ptoOrvalhoIns' THEN ri.valor END) AS ptoOrvalho,\n" +
+                        "       MAX(CASE WHEN ri.nome = 'umiIns' THEN ri.valor END) AS umidade,\n" +
+                        "       MAX(CASE WHEN ri.nome = 'nebulosidade' THEN ri.valor END) AS nebulosidade,\n" +
+                        "       MAX(CASE WHEN ri.nome = 'radiacao' THEN ri.valor END) AS radiacao,\n" +
+                        "       MAX(CASE WHEN ri.nome = 'dirVento' THEN ri.valor END) AS dirVento,\n" +
+                        "       MAX(CASE WHEN ri.nome = 'insolacao' THEN ri.valor END) AS insolacao,\n" +
+                        "       MAX(CASE WHEN ri.nome = 'rajVento' THEN ri.valor END) AS rajVento\n" +
+                        "FROM registro r\n" +
+                        "    LEFT JOIN reg_informacao ri ON r.id = ri.registro\n" +
+                        "where r.id = ? and ri.dado_suspeito = false\n" +
+                        "GROUP BY r.arquivo, r.data_hora, r.tipo_arquivo;";
+
+                try (PreparedStatement ist = con.prepareStatement(sql)) {
+                    ist.setInt(1, rs.getInt("id"));
+
+                    try (ResultSet result = ist.executeQuery()) {
+                        if (result.next()) {
+                            Map<String, String> row = new HashMap<>();
+
+                            String dataHora = result.getTimestamp("data_hora").toString();
+                            String tipoArquivo = result.getString("tipo_arquivo");
+                            row.put("data_hora", dataHora);
+                            row.put("tipo_arquivo", tipoArquivo);
+                            row.put("temperatura", result.getString("temperatura"));
+                            row.put("pressao", result.getString("pressao"));
+                            row.put("velVento", Double.toString(result.getDouble("velVento")));
+                            row.put("chuva", result.getString("chuva"));
+                            row.put("ptoOrvalho", result.getString("ptoOrvalho"));
+                            row.put("umidade", result.getString("umidade"));
+                            row.put("nebulosidade", String.valueOf(result.getDouble("nebulosidade")));
+                            row.put("radiacao", result.getString("radiacao"));
+                            row.put("dirVento", result.getString("dirVento"));
+                            row.put("insolacao", result.getString("insolacao"));
+                            row.put("rajVento", result.getString("rajVento"));
+                            dados.add(row);
+                        }
+                    }
+                }
+
+
+            }
+            return dados;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao resgatar atributo!", e);
+        } finally {
+            try {
+                if (con != null)
+                    con.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                throw new RuntimeException("Erro ao fechar conexão", e);
+            }
+        }
+    }
+
+    /**
+     * Essa função atualiza a lista de dados suspeitos
+     * @return ObservableList<Map<String, String>>
+     */
+    public ObservableList<Map<String, String>> getDadosSuspeitos(){
+        Connection con = null;
+        ObservableList<Map<String, String>> dados = FXCollections.observableArrayList();
+
+        try {
+            con = getConnection();
+            String select_sql = "select * from registro";
+            PreparedStatement pst = con.prepareStatement(select_sql);
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+
+                String sql = "SELECT r.data_hora,\n" +
+                        "       r.tipo_arquivo,\n" +
+                        "       MAX(CASE WHEN ri.nome = 'tempIns' THEN ri.valor END) AS temperatura,\n" +
+                        "       MAX(CASE WHEN ri.nome = 'pressaoIns' THEN ri.valor END) AS pressao,\n" +
+                        "       MAX(CASE WHEN ri.nome = 'velVento' THEN ri.valor END) AS velVento,\n" +
+                        "       MAX(CASE WHEN ri.nome = 'chuva' THEN ri.valor END) AS chuva,\n" +
+                        "       MAX(CASE WHEN ri.nome = 'ptoOrvalhoIns' THEN ri.valor END) AS ptoOrvalho,\n" +
+                        "       MAX(CASE WHEN ri.nome = 'umiIns' THEN ri.valor END) AS umidade,\n" +
+                        "       MAX(CASE WHEN ri.nome = 'nebulosidade' THEN ri.valor END) AS nebulosidade,\n" +
+                        "       MAX(CASE WHEN ri.nome = 'radiacao' THEN ri.valor END) AS radiacao,\n" +
+                        "       MAX(CASE WHEN ri.nome = 'dirVento' THEN ri.valor END) AS dirVento,\n" +
+                        "       MAX(CASE WHEN ri.nome = 'insolacao' THEN ri.valor END) AS insolacao,\n" +
+                        "       MAX(CASE WHEN ri.nome = 'rajVento' THEN ri.valor END) AS rajVento\n" +
+                        "FROM registro r\n" +
+                        "    LEFT JOIN reg_informacao ri ON r.id = ri.registro\n" +
+                        "where r.id = ? and ri.dado_suspeito = true\n" +
+                        "GROUP BY r.arquivo, r.data_hora, r.tipo_arquivo;";
+
+                try (PreparedStatement ist = con.prepareStatement(sql)) {
+                    ist.setInt(1, rs.getInt("id"));
+
+                    try (ResultSet result = ist.executeQuery()) {
+                        if (result.next()) {
+                            Map<String, String> row = new HashMap<>();
+
+                            String dataHora = result.getTimestamp("data_hora").toString();
+                            String tipoArquivo = result.getString("tipo_arquivo");
+                            row.put("data_hora", dataHora);
+                            row.put("tipo_arquivo", tipoArquivo);
+                            row.put("temperatura", result.getString("temperatura"));
+                            row.put("pressao", result.getString("pressao"));
+                            row.put("velVento", Double.toString(result.getDouble("velVento")));
+                            row.put("chuva", result.getString("chuva"));
+                            row.put("ptoOrvalho", result.getString("ptoOrvalho"));
+                            row.put("umidade", result.getString("umidade"));
+                            row.put("nebulosidade", String.valueOf(result.getDouble("nebulosidade")));
+                            row.put("radiacao", result.getString("radiacao"));
+                            row.put("dirVento", result.getString("dirVento"));
+                            row.put("insolacao", result.getString("insolacao"));
+                            row.put("rajVento", result.getString("rajVento"));
+                            dados.add(row);
+                        }
+                    }
+                }
+
+
+            }
+            return dados;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao resgatar atributo!", e);
+        } finally {
+            try {
+                if (con != null)
+                    con.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                throw new RuntimeException("Erro ao fechar conexão", e);
+            }
+        }
+    }
+
     public ObservableList<Map<String, String>> recuperarDados(
         String tempMaxima,
         String tempMinima,
