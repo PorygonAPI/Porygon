@@ -177,22 +177,32 @@ public class RegistroDAO {
                             String dataHora = result.getTimestamp("data_hora").toString();
                             String tipoArquivo = result.getString("tipo_arquivo");
                             String temp = verificarVariavel(result.getString("temperatura"), tempMaxima, tempMinima);
-                            // String temp = result.getString("temperatura");
+                            String umidade = verificarVariavel(result.getString("umidade"), umiMaxima, umiMinima);
+                            String pressao = verificarVariavel(result.getString("pressao"), presMaxima, presMinima);
+                            String velVento = verificarVariavel(result.getString("velVento"), velVentoMaxima, velVentoMinima);
+                            String dirVento = verificarVariavel(result.getString("dirVento"), dirVentoMaxima, dirVentoMinima);
+                            String nebulosidade = verificarVariavel(result.getString("nebulosidade"), nebuMaxima, nebuMinima);
+                            String ptoOrvalho = verificarVariavel(result.getString("ptoOrvalho"), ptoOrvalhoMaximo, ptoOrvalhoMinimo);
+                            String rajVento = verificarVariavel(result.getString("rajVento"), rajVentoMaximo, rajVentoMinimo);
+                            String insolacao = verificarVariavel(result.getString("Insolacao"), insoMaxima, insoMinima);
+                            String chuva = verificarVariavel(result.getString("chuva"), chuvaMaxima, chuvaMinima);
 
+
+                            // String temp = result.getString("temperatura");
                             // verificarVariavel(temp, )
                             row.put("data_hora", dataHora);
                             row.put("tipo_arquivo", tipoArquivo);
                             row.put("temperatura", temp);
-                            row.put("pressao", result.getString("pressao"));
-                            row.put("velVento", Double.toString(result.getDouble("velVento")));
-                            row.put("chuva", result.getString("chuva"));
-                            row.put("ptoOrvalho", result.getString("ptoOrvalho"));
-                            row.put("umidade", result.getString("umidade"));
-                            row.put("nebulosidade", String.valueOf(result.getDouble("nebulosidade")));
+                            row.put("pressao", pressao);
+                            row.put("velVento", velVento);
+                            row.put("chuva", chuva);
+                            row.put("ptoOrvalho", ptoOrvalho);
+                            row.put("umidade", umidade);
+                            row.put("nebulosidade", nebulosidade);
                             row.put("radiacao", result.getString("radiacao"));
-                            row.put("dirVento", result.getString("dirVento"));
-                            row.put("insolacao", result.getString("insolacao"));
-                            row.put("rajVento", result.getString("rajVento"));
+                            row.put("dirVento", dirVento);
+                            row.put("insolacao", insolacao);
+                            row.put("rajVento", rajVento);
 
                             dados.add(row);
                         }

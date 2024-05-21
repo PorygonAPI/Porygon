@@ -127,7 +127,6 @@
                             <DatePicker fx:id="endDatePicker" prefWidth="200" prefHeight="40" />
                             <Label text="Escolha a cidade: " />
                             <ComboBox fx:id="cityComboBox" prefWidth="200" prefHeight="40" />
-                            <Label text="Escolha o período: " />
                         </HBox>
                         <HBox spacing="20.0" alignment="CENTER">
                             <Button onAction="#gerarrelatorioperiocidade" text="Gerar" prefWidth="100" prefHeight="80" />
