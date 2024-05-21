@@ -270,11 +270,6 @@ public class MainController {
         // return (ObservableValue<String>) new PropertyValueFactory<String,
         // String>(rowData.get("id"));
         // });
-
-        RegistroDAO registroDAO = new RegistroDAO();
-        //
-        ObservableList<Map<String, String>> dados = FXCollections.observableArrayList();
-
         ConfiguracaoDAO configDao = new ConfiguracaoDAO();
 
         String tempMaxima = configDao.recuperarAtributos("tempMaxima");
@@ -320,27 +315,6 @@ public class MainController {
         chuMinField.setText(chuvaMinima);
         // tableViewApurado.getItems().addAll((HashMap<String, String>) data1);
 
-        dados = registroDAO.recuperarDados(tempMaxima,
-                tempMinima,
-                umiMaxima,
-                umiMinima,
-                presMaxima,
-                presMinima,
-                velVentoMaxima,
-                velVentoMinima,
-                nebuMaxima,
-                nebuMinima,
-                dirVentoMaxima,
-                dirVentoMinima,
-                ptoOrvalhoMaximo,
-                ptoOrvalhoMinimo,
-                rajVentoMaximo,
-                rajVentoMinimo,
-                insoMaxima,
-                insoMinima,
-                chuvaMaxima,
-                chuvaMinima);
-        tableViewApurado.setItems(dados);
         System.out.println();
     }
 
@@ -597,7 +571,54 @@ public class MainController {
             Arquivo arquivo = new Arquivo();
             arquivo.setConteudo(selectedFile);
             arquivo.tratar(arquivoId);
+            RegistroDAO registroDAO = new RegistroDAO();
+            //
+            ObservableList<Map<String, String>> dados = FXCollections.observableArrayList();
+            ConfiguracaoDAO configDao = new ConfiguracaoDAO();
 
+            String tempMaxima = configDao.recuperarAtributos("tempMaxima");
+            String tempMinima = configDao.recuperarAtributos("tempMinima");
+            String umiMaxima = configDao.recuperarAtributos("umiMaxima");
+            String umiMinima = configDao.recuperarAtributos("umiMinima");
+            String presMaxima = configDao.recuperarAtributos("presMaxima");
+            String presMinima = configDao.recuperarAtributos("presMinima");
+            String velVentoMaxima = configDao.recuperarAtributos("velVentoMaxima");
+            String velVentoMinima = configDao.recuperarAtributos("velVentoMinima");
+            String nebuMaxima = configDao.recuperarAtributos("nebuMaxima");
+            String nebuMinima = configDao.recuperarAtributos("nebuMinima");
+            String dirVentoMaxima = configDao.recuperarAtributos("dirVentoMaxima");
+            String dirVentoMinima = configDao.recuperarAtributos("dirVentoMinima");
+            String ptoOrvalhoMaximo = configDao.recuperarAtributos("ptoOrvalhoMaximo");
+            String ptoOrvalhoMinimo = configDao.recuperarAtributos("ptoOrvalhoMinimo");
+            String rajVentoMaximo = configDao.recuperarAtributos("rajVentoMaximo");
+            String rajVentoMinimo = configDao.recuperarAtributos("rajVentoMinimo");
+            String insoMaxima = configDao.recuperarAtributos("insoMaxima");
+            String insoMinima = configDao.recuperarAtributos("insoMinima");
+            String chuvaMaxima = configDao.recuperarAtributos("chuvaMaxima");
+            String chuvaMinima = configDao.recuperarAtributos("chuvaMinima");
+
+            registroDAO.updateData(
+                    arquivoId,
+                    tempMaxima,
+                    tempMinima,
+                    umiMaxima,
+                    umiMinima,
+                    presMaxima,
+                    presMinima,
+                    velVentoMaxima,
+                    velVentoMinima,
+                    nebuMaxima,
+                    nebuMinima,
+                    dirVentoMaxima,
+                    dirVentoMinima,
+                    ptoOrvalhoMaximo,
+                    ptoOrvalhoMinimo,
+                    rajVentoMaximo,
+                    rajVentoMinimo,
+                    insoMaxima,
+                    insoMinima,
+                    chuvaMaxima,
+                    chuvaMinima);
             showAlert("Arquivo selecionado!", "Arquivo adicionado com sucesso!",
                     "O arquivo " + selectedFile.getName() + " foi selecionado");
         }

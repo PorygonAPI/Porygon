@@ -103,23 +103,54 @@ public class RegistroDAO {
         }
     }
 
-    private String verificarVariavel(String variavel, String limiteMaior, String limiteMenor) {
-        if (variavel != null && !variavel.trim().isEmpty()) {
-            double variavelParsed = Double.parseDouble(variavel);
-            double limiteMaiorParsed = Double.parseDouble(limiteMaior);
-            double limiteMenorParsed = Double.parseDouble(limiteMenor);
-            if (variavelParsed <= limiteMaiorParsed && variavelParsed >= limiteMenorParsed) {
-                return variavel;
+
+    public void updateSuspectData(int registro, String variavel, String limiteMaior,
+            String limiteMenor, boolean dadoSuspeito) throws SQLException {
+        Connection con = null;
+        try {
+
+            con = getConnection();
+
+            String newSQL = "UPDATE reg_informacao \n" +
+                    "SET dado_suspeito = ? \n" +
+                    "WHERE registro = ? AND nome = ? AND (valor < ? OR valor > ?);";
+            PreparedStatement ist = con.prepareStatement(newSQL);
+            ist.setBoolean(1, dadoSuspeito);
+            ist.setInt(2, registro);
+            ist.setString(3, variavel);
+            ist.setDouble(4, Double.parseDouble(limiteMaior));
+            ist.setDouble(5, Double.parseDouble(limiteMenor));
+            ist.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao atualizar dado suspeito!", e);
+        } finally {
+            try {
+                if (con != null)
+                    con.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                throw new RuntimeException("Erro ao fechar conexão", e);
             }
         }
-        return null;
+    }
+
+    private void verificarVariavel(Connection con, String SQL, int registro, String variavel, String limiteMaior,
+            String limiteMenor) throws SQLException {
+        PreparedStatement ist = con.prepareStatement(SQL);
+        ist.setInt(1, registro);
+        ist.setString(2, variavel);
+        ist.setDouble(3, Double.parseDouble(limiteMaior));
+        ist.setDouble(4, Double.parseDouble(limiteMenor));
+        ist.executeUpdate();
     }
 
     /**
      * Essa função atualiza a lista de dados apurados
+     * 
      * @return ObservableList<Map<String, String>>
      */
-    public ObservableList<Map<String, String>> getDadosApurados(){
+    public ObservableList<Map<String, String>> getDadosApurados() {
         Connection con = null;
         ObservableList<Map<String, String>> dados = FXCollections.observableArrayList();
 
@@ -175,7 +206,6 @@ public class RegistroDAO {
                     }
                 }
 
-
             }
             return dados;
         } catch (SQLException e) {
@@ -194,9 +224,10 @@ public class RegistroDAO {
 
     /**
      * Essa função atualiza a lista de dados suspeitos
+     * 
      * @return ObservableList<Map<String, String>>
      */
-    public ObservableList<Map<String, String>> getDadosSuspeitos(){
+    public ObservableList<Map<String, String>> getDadosSuspeitos() {
         Connection con = null;
         ObservableList<Map<String, String>> dados = FXCollections.observableArrayList();
 
@@ -252,7 +283,6 @@ public class RegistroDAO {
                     }
                 }
 
-
             }
             return dados;
         } catch (SQLException e) {
@@ -269,121 +299,57 @@ public class RegistroDAO {
         }
     }
 
-    public ObservableList<Map<String, String>> recuperarDados(
-        String tempMaxima,
-        String tempMinima,
-        String umiMaxima,
-        String umiMinima,
-        String presMaxima,
-        String presMinima,
-        String velVentoMaxima,
-        String velVentoMinima,
-        String nebuMaxima,
-        String nebuMinima,
-        String dirVentoMaxima,
-        String dirVentoMinima,
-        String ptoOrvalhoMaximo,
-        String ptoOrvalhoMinimo,
-        String rajVentoMaximo,
-        String rajVentoMinimo,
-        String insoMaxima,
-        String insoMinima,
-        String chuvaMaxima,
-        String chuvaMinima
-    ) {
+    public void updateData(
+            int arquivoId,
+            String tempMaxima,
+            String tempMinima,
+            String umiMaxima,
+            String umiMinima,
+            String presMaxima,
+            String presMinima,
+            String velVentoMaxima,
+            String velVentoMinima,
+            String nebuMaxima,
+            String nebuMinima,
+            String dirVentoMaxima,
+            String dirVentoMinima,
+            String ptoOrvalhoMaximo,
+            String ptoOrvalhoMinimo,
+            String rajVentoMaximo,
+            String rajVentoMinimo,
+            String insoMaxima,
+            String insoMinima,
+            String chuvaMaxima,
+            String chuvaMinima) {
         Connection con = null;
         ObservableList<Map<String, String>> dados = FXCollections.observableArrayList();
 
         try {
             con = getConnection();
-            String select_sql = "select * from registro";
+            String select_sql = "select * from registro where arquivo = ?";
             PreparedStatement pst = con.prepareStatement(select_sql);
+            pst.setInt(1, arquivoId);
             ResultSet rs = pst.executeQuery();
             while (rs.next()) {
 
-                String sql = "SELECT r.data_hora,\n" +
-                        "       r.tipo_arquivo,\n" +
-                        "       MAX(CASE WHEN ri.nome = 'tempIns' THEN ri.valor END) AS temperatura,\n" +
-                        "       MAX(CASE WHEN ri.nome = 'pressaoIns' THEN ri.valor END) AS pressao,\n" +
-                        "       MAX(CASE WHEN ri.nome = 'velVento' THEN ri.valor END) AS velVento,\n" +
-                        "       MAX(CASE WHEN ri.nome = 'chuva' THEN ri.valor END) AS chuva,\n" +
-                        "       MAX(CASE WHEN ri.nome = 'ptoOrvalhoIns' THEN ri.valor END) AS ptoOrvalho,\n" +
-                        "       MAX(CASE WHEN ri.nome = 'umiIns' THEN ri.valor END) AS umidade,\n" +
-                        "       MAX(CASE WHEN ri.nome = 'nebulosidade' THEN ri.valor END) AS nebulosidade,\n" +
-                        "       MAX(CASE WHEN ri.nome = 'radiacao' THEN ri.valor END) AS radiacao,\n" +
-                        "       MAX(CASE WHEN ri.nome = 'dirVento' THEN ri.valor END) AS dirVento,\n" +
-                        "       MAX(CASE WHEN ri.nome = 'insolacao' THEN ri.valor END) AS insolacao,\n" +
-                        "       MAX(CASE WHEN ri.nome = 'rajVento' THEN ri.valor END) AS rajVento\n" +
-                        "FROM registro r\n" +
-                        "         LEFT JOIN reg_informacao ri ON r.id = ri.registro\n" +
-                        "where r.id = ?\n" +
-                        "GROUP BY r.arquivo, r.data_hora, r.tipo_arquivo;";
+                String newSQL = "UPDATE reg_informacao \n" +
+                        "SET dado_suspeito = 1 \n" +
+                        "WHERE registro = ? AND nome = ? AND (valor < ? OR valor > ?);";
 
-                try (PreparedStatement ist = con.prepareStatement(sql)) {
-                    ist.setInt(1, rs.getInt("id"));
-
-                    try (ResultSet result = ist.executeQuery()) {
-                        if (result.next()) {
-                            // Registro já existe, retorna o ID
-                            // return rs.getInt("id");
-                            Map<String, String> row = new HashMap<>();
-
-                            String dataHora = result.getTimestamp("data_hora").toString();
-                            String tipoArquivo = result.getString("tipo_arquivo");
-                            String temp = verificarVariavel(result.getString("temperatura"), tempMaxima, tempMinima);
-                            String umidade = verificarVariavel(result.getString("umidade"), umiMaxima, umiMinima);
-                            String pressao = verificarVariavel(result.getString("pressao"), presMaxima, presMinima);
-                            String velVento = verificarVariavel(result.getString("velVento"), velVentoMaxima, velVentoMinima);
-                            String dirVento = verificarVariavel(result.getString("dirVento"), dirVentoMaxima, dirVentoMinima);
-                            String nebulosidade = verificarVariavel(result.getString("nebulosidade"), nebuMaxima, nebuMinima);
-                            String ptoOrvalho = verificarVariavel(result.getString("ptoOrvalho"), ptoOrvalhoMaximo, ptoOrvalhoMinimo);
-                            String rajVento = verificarVariavel(result.getString("rajVento"), rajVentoMaximo, rajVentoMinimo);
-                            String insolacao = verificarVariavel(result.getString("Insolacao"), insoMaxima, insoMinima);
-                            String chuva = verificarVariavel(result.getString("chuva"), chuvaMaxima, chuvaMinima);
+                verificarVariavel(con, newSQL, rs.getInt("id"), "tempIns", tempMinima, tempMaxima);
+                verificarVariavel(con, newSQL, rs.getInt("id"), "pressaoIns", presMaxima, presMinima);
+                verificarVariavel(con, newSQL, rs.getInt("id"), "velVento", velVentoMaxima, velVentoMinima);
+                verificarVariavel(con, newSQL, rs.getInt("id"), "chuva", chuvaMaxima, chuvaMinima);
+                verificarVariavel(con, newSQL, rs.getInt("id"), "ptoOrvalhoIns", ptoOrvalhoMaximo, ptoOrvalhoMinimo);
+                verificarVariavel(con, newSQL, rs.getInt("id"), "umiIns", umiMaxima, umiMinima);
+                verificarVariavel(con, newSQL, rs.getInt("id"), "nebulosidade", nebuMaxima, nebuMinima);
+                verificarVariavel(con, newSQL, rs.getInt("id"), "dirVento", dirVentoMaxima, dirVentoMinima);
+                verificarVariavel(con, newSQL, rs.getInt("id"), "insolacao", insoMaxima, insoMinima);
+                verificarVariavel(con, newSQL, rs.getInt("id"), "rajVento", rajVentoMaximo, rajVentoMinimo);
 
 
-                            // String temp = result.getString("temperatura");
-                            // verificarVariavel(temp, )
-                            row.put("data_hora", dataHora);
-                            row.put("tipo_arquivo", tipoArquivo);
-                            row.put("temperatura", temp);
-                            row.put("pressao", pressao);
-                            row.put("velVento", velVento);
-                            row.put("chuva", chuva);
-                            row.put("ptoOrvalho", ptoOrvalho);
-                            row.put("umidade", umidade);
-                            row.put("nebulosidade", nebulosidade);
-                            row.put("radiacao", result.getString("radiacao"));
-                            row.put("dirVento", dirVento);
-                            row.put("insolacao", insolacao);
-                            row.put("rajVento", rajVento);
-
-                            dados.add(row);
-                        }
-                    }
-                }
-
-                // try (PreparedStatement statement = con.prepareStatement(sql);
-                // ResultSet resultSet = statement.executeQuery()) {
-                //
-                // // Criar uma coluna para cada valor da coluna "chave"
-                // while (resultSet.next()) {
-                // String chave = resultSet.getString("chave");
-                // String valor = resultSet.getString("valor");
-                //
-                // TableColumn<RegistroInformacao, String> column = new TableColumn<>(chave);
-                // column.setCellValueFactory(cellData ->
-                // cellData.getValue().getValorProperty());
-                //
-                // tableView.getColumns().add(column);
-                //
-                // // Adicionar os dados à TableView
-                // tableView.getItems().add(new RegistroInformacao(chave, valor));
-                // }
-                // }
 
             }
-            return dados;
         } catch (SQLException e) {
             e.printStackTrace();
             throw new RuntimeException("Erro ao resgatar atributo!", e);
