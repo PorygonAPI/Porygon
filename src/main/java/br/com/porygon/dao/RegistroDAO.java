@@ -104,22 +104,20 @@ public class RegistroDAO {
     }
 
 
-    public void updateSuspectData(int registro, String variavel, String limiteMaior,
-            String limiteMenor, boolean dadoSuspeito) throws SQLException {
+    public void updateSuspectData(int registro, String nomeVariavel, Double novoValor, boolean dadoSuspeito) throws SQLException {
         Connection con = null;
         try {
 
             con = getConnection();
 
-            String newSQL = "UPDATE reg_informacao \n" +
-                    "SET dado_suspeito = ? \n" +
-                    "WHERE registro = ? AND nome = ? AND (valor < ? OR valor > ?);";
+            String newSQL = "UPDATE reg_informacao\n" +
+                    "    SET dado_suspeito = ? AND valor = ?\n" +
+                    "    WHERE registro = ? AND nome = ?;";
             PreparedStatement ist = con.prepareStatement(newSQL);
             ist.setBoolean(1, dadoSuspeito);
-            ist.setInt(2, registro);
-            ist.setString(3, variavel);
-            ist.setDouble(4, Double.parseDouble(limiteMaior));
-            ist.setDouble(5, Double.parseDouble(limiteMenor));
+            ist.setDouble(2, novoValor);
+            ist.setInt(3, registro);
+            ist.setString(3, nomeVariavel);
             ist.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -142,6 +140,8 @@ public class RegistroDAO {
         ist.setString(2, variavel);
         ist.setDouble(3, Double.parseDouble(limiteMaior));
         ist.setDouble(4, Double.parseDouble(limiteMenor));
+        ist.setInt(5, registro);
+        ist.setString(6, variavel);
         ist.executeUpdate();
     }
 
@@ -265,19 +265,19 @@ public class RegistroDAO {
 
                             String dataHora = result.getTimestamp("data_hora").toString();
                             String tipoArquivo = result.getString("tipo_arquivo");
-                            row.put("data_hora", dataHora);
-                            row.put("tipo_arquivo", tipoArquivo);
-                            row.put("temperatura", result.getString("temperatura"));
-                            row.put("pressao", result.getString("pressao"));
-                            row.put("velVento", Double.toString(result.getDouble("velVento")));
-                            row.put("chuva", result.getString("chuva"));
-                            row.put("ptoOrvalho", result.getString("ptoOrvalho"));
-                            row.put("umidade", result.getString("umidade"));
-                            row.put("nebulosidade", String.valueOf(result.getDouble("nebulosidade")));
-                            row.put("radiacao", result.getString("radiacao"));
-                            row.put("dirVento", result.getString("dirVento"));
-                            row.put("insolacao", result.getString("insolacao"));
-                            row.put("rajVento", result.getString("rajVento"));
+                            row.put("data_hora_sus", dataHora);
+                            row.put("tipo_arquivo_sus", tipoArquivo);
+                            row.put("temperatura_sus", result.getString("temperatura"));
+                            row.put("pressao_sus", result.getString("pressao"));
+                            row.put("velVento_sus", Double.toString(result.getDouble("velVento")));
+                            row.put("chuva_sus", result.getString("chuva"));
+                            row.put("ptoOrvalho_sus", result.getString("ptoOrvalho"));
+                            row.put("umidade_sus", result.getString("umidade"));
+                            row.put("nebulosidade_sus", String.valueOf(result.getDouble("nebulosidade")));
+                            row.put("radiacao_sus", result.getString("radiacao"));
+                            row.put("dirVento_sus", result.getString("dirVento"));
+                            row.put("insolacao_sus", result.getString("insolacao"));
+                            row.put("rajVento_sus", result.getString("rajVento"));
                             dados.add(row);
                         }
                     }
@@ -300,7 +300,7 @@ public class RegistroDAO {
     }
 
     public void updateData(
-            int arquivoId,
+            Integer arquivoId,
             String tempMaxima,
             String tempMinima,
             String umiMaxima,
@@ -325,27 +325,42 @@ public class RegistroDAO {
         ObservableList<Map<String, String>> dados = FXCollections.observableArrayList();
 
         try {
+            String select_sql;
             con = getConnection();
-            String select_sql = "select * from registro where arquivo = ?";
-            PreparedStatement pst = con.prepareStatement(select_sql);
-            pst.setInt(1, arquivoId);
-            ResultSet rs = pst.executeQuery();
+            PreparedStatement pst;
+            ResultSet rs;
+            if( arquivoId == null){
+                select_sql = "select * from registro";
+                pst = con.prepareStatement(select_sql);
+                rs = pst.executeQuery();
+            }else{
+                select_sql = "select * from registro where arquivo = ?";
+                pst = con.prepareStatement(select_sql);
+                pst.setInt(1, arquivoId);
+                rs = pst.executeQuery();
+            }
             while (rs.next()) {
 
-                String newSQL = "UPDATE reg_informacao \n" +
-                        "SET dado_suspeito = 1 \n" +
-                        "WHERE registro = ? AND nome = ? AND (valor < ? OR valor > ?);";
+
+
+                String newSQL = "UPDATE reg_informacao\n" +
+                        "SET dado_suspeito = CASE\n" +
+                        "                        WHEN registro = ? AND nome = ? AND (valor < ? OR valor > ?)\n" +
+                        "                            THEN 1\n" +
+                        "                        ELSE 0\n" +
+                        "                    END\n" +
+                        "WHERE registro = ? AND nome = ?;";
 
                 verificarVariavel(con, newSQL, rs.getInt("id"), "tempIns", tempMinima, tempMaxima);
-                verificarVariavel(con, newSQL, rs.getInt("id"), "pressaoIns", presMaxima, presMinima);
-                verificarVariavel(con, newSQL, rs.getInt("id"), "velVento", velVentoMaxima, velVentoMinima);
-                verificarVariavel(con, newSQL, rs.getInt("id"), "chuva", chuvaMaxima, chuvaMinima);
-                verificarVariavel(con, newSQL, rs.getInt("id"), "ptoOrvalhoIns", ptoOrvalhoMaximo, ptoOrvalhoMinimo);
-                verificarVariavel(con, newSQL, rs.getInt("id"), "umiIns", umiMaxima, umiMinima);
-                verificarVariavel(con, newSQL, rs.getInt("id"), "nebulosidade", nebuMaxima, nebuMinima);
-                verificarVariavel(con, newSQL, rs.getInt("id"), "dirVento", dirVentoMaxima, dirVentoMinima);
-                verificarVariavel(con, newSQL, rs.getInt("id"), "insolacao", insoMaxima, insoMinima);
-                verificarVariavel(con, newSQL, rs.getInt("id"), "rajVento", rajVentoMaximo, rajVentoMinimo);
+                verificarVariavel(con, newSQL, rs.getInt("id"), "pressaoIns", presMinima, presMaxima);
+                verificarVariavel(con, newSQL, rs.getInt("id"), "velVento", velVentoMinima,velVentoMaxima);
+                verificarVariavel(con, newSQL, rs.getInt("id"), "chuva", chuvaMinima, chuvaMaxima);
+                verificarVariavel(con, newSQL, rs.getInt("id"), "ptoOrvalhoIns", ptoOrvalhoMinimo, ptoOrvalhoMaximo);
+                verificarVariavel(con, newSQL, rs.getInt("id"), "umiIns", umiMinima, umiMaxima);
+                verificarVariavel(con, newSQL, rs.getInt("id"), "nebulosidade", nebuMinima, nebuMaxima);
+                verificarVariavel(con, newSQL, rs.getInt("id"), "dirVento", dirVentoMinima, dirVentoMaxima);
+                verificarVariavel(con, newSQL, rs.getInt("id"), "insolacao", insoMinima, insoMaxima);
+                verificarVariavel(con, newSQL, rs.getInt("id"), "rajVento", rajVentoMinimo, rajVentoMaximo);
 
 
 

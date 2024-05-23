@@ -106,7 +106,23 @@
             <Tab text="Climas com dados suspeitos">
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
                 <VBox alignment="CENTER" spacing="15.0">
-                    <ListView fx:id="listViewSuspeito" />
+                    <TableView fx:id="tableViewSuspeito">
+                        <columns>
+                            <TableColumn fx:id="dataHoraSusColumn" text="Data e Hora"/>
+                            <TableColumn fx:id="tipoArquivoSusColumn" text="Tipo Arquivo"/>
+                            <TableColumn fx:id="tempSusColumn" text="Temperatura"/>
+                            <TableColumn fx:id="pressaoSusColumn" text="Pressão"/>
+                            <TableColumn fx:id="velVentoSusColumn" text="Vel. Vento"/>
+                            <TableColumn fx:id="chuvaSusColumn" text="Chuva"/>
+                            <TableColumn fx:id="ptoOrvalhoSusColumn" text="Pto. Orvalho"/>
+                            <TableColumn fx:id="umiSusColumn" text="Umidade"/>
+                            <TableColumn fx:id="nebSusColumn" text="Nebulosidade"/>
+                            <TableColumn fx:id="radSusColumn" text="Radiação"/>
+                            <TableColumn fx:id="dirVentoSusColumn" text="Dir. Vento"/>
+                            <TableColumn fx:id="insolacaoSusColumn" text="Insolação"/>
+                            <TableColumn fx:id="rajVentoSusColumn" text="Raj. Vento"/>
+                        </columns>
+                    </TableView>
                 </VBox>
             </Tab>
             <Tab text="Relatório de Periocidade">
