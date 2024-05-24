@@ -754,8 +754,6 @@ public class MainController {
                escritor.close();
            }
 
-
-
             if(quantidadeRegistrosTempM > 0){
                 FileWriter escritor = new FileWriter(nomeArquivoManual, StandardCharsets.ISO_8859_1, false);
                 escritor.write("Temp.(C);Umi.(%);Pressao(hPa);Vel. Vento(m/s);Dir. Vento(m/s);Nebulosidade(Decimos);Insolacao(h);Chuva(mm)\n");
@@ -774,37 +772,10 @@ public class MainController {
                 //Fecha o recurso de escrita
                 escritor.close();
             }
-
-
-//            System.out.println("mediaTemperatura: " + somaTemp + ", " + quantidadeRegistrosTemp + ", " + mediaTemp);
-//            System.out.println("mediaUmi: " + somaUmi + ", " + quantidadeRegistrosUmi + ", " + mediaUmi);
-//            System.out.println("mediaPtoOrvalho: " + somaPtoOrvalho + ", " + quantidadeRegistrosPtoOrvalho + ", " + mediaPtoOrvalho);
-//            System.out.println("mediaPressao: " + somaPressao + ", " + quantidadeRegistrosPressao + ", " + mediaPressao);
-//            System.out.println("mediaVelVento: " + somaVelVento + ", " + quantidadeRegistrosVelVento + ", " + mediaVelVento);
-//            System.out.println("mediaDirVento: " + somaDirVento + ", " + quantidadeRegistrosDirVento + ", " + mediaDirVento);
-//            System.out.println("mediaRajVento: " + somaRajVento + ", " + quantidadeRegistrosRajVento + ", " + mediaRajVento);
-//            System.out.println("mediaRadiacao: " + somaRadiacao + ", " + quantidadeRegistrosRadiacao + ", " + mediaRadiacao);
-//            System.out.println("mediaChuva: " + somaChuva + ", " + quantidadeRegistrosChuva + ", " + mediaChuva);
-//            System.out.println("mediaUmi: " + somaUmi + ", " + quantidadeRegistrosUmi + ", " + mediaUmi);
-
-//            System.out.println("mediaTemperatura: " + somaTemp + ", " + quantidadeRegistrosTemp + ", " + mediaTemp);
-//            System.out.println("mediaPressao: " + somaPressao + ", " + quantidadeRegistrosPressao + ", " + mediaPressao);
-//            System.out.println("mediaVelVento: " + somaVelVento + ", " + quantidadeRegistrosVelVento + ", " + mediaVelVento);
-//            System.out.println("mediaDirVento: " + somaDirVento + ", " + quantidadeRegistrosDirVento + ", " + mediaDirVento);
-//            System.out.println("mediaNebulosidade: " + somaNebulosidade + ", " + quantidadeRegistrosNebulosidade + ", " + mediaNebulosidade);
-//            System.out.println("mediaInsolacao: " + somaInsolacao + ", " + quantidadeRegistrosInsolacao + ", " + mediaInsolacao);
-//            System.out.println("mediaChuva: " + somaChuva + ", " + quantidadeRegistrosChuva + ", " + mediaChuva);
-
-
-
-
-
-
         }
         catch(IOException e){
             e.printStackTrace();
         }
     }
-
 }
 

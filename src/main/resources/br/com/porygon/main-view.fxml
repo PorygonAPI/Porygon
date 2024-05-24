@@ -103,7 +103,6 @@
                         </columns>
                     </TableView> -->
                         <ListView fx:id="listrelatorio" />
-
                         <HBox spacing="10.0" alignment="CENTER">
                             <Label text="Data inicial: " />
                             <DatePicker fx:id="startDatePicker" prefWidth="200" prefHeight="40" />
@@ -130,7 +129,15 @@
                     </VBox>
                 </content>
             </Tab>
-
+            <Tab text="Relatório Boxplot">
+                <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                    <VBox alignment="CENTER" spacing="10.0">
+                        <ListView fx:id="listViewBoxplot" prefHeight="152.0" prefWidth="378.0" />
+                        <Button fx:id="baixarBoxplot" mnemonicParsing="false" onAction="#baixarBoxplot" text="Baixar Relatorio" />
+                    </VBox>
+                </content>
+            </Tab>
         </tabs>
     </TabPane>
 </VBox>
