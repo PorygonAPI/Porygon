@@ -10,9 +10,14 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import javafx.stage.Window;
 import javafx.util.Callback;
 
@@ -368,11 +373,35 @@ public class MainController {
                 // PARA PEGAR TODOS OS NOMES DAS ROWS, BASTA PESQUISAR "_sus" NO CODIGO QUE ENCONTRARÃO
                 // DEVEM VERIFICAR SE O CAMPO TA VAZIO PARA CONSEGUIR TRATAR E SEGUIR COM AS INTEGRAÇÕES
                 System.out.println("Clicou no registro:" + newValue.get("registro_id_sus"));
+                showPopUp(newValue);
             }
         });
 
-        System.out.println();
     }
+
+        private void showPopUp(Map<String, String> newValue) {
+            try {
+        // Carregar o arquivo FXML
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("popup-view.fxml"));
+        Parent root = loader.load();
+        
+        // Obter o controlador da nova tela
+        PopUpController controller = loader.getController();
+        
+        // Passar os dados da célula para o controlador
+        controller.setCellData(newValue);
+        
+        // Configurar a nova cena e exibir
+        Stage stage = new Stage();
+        stage.setScene(new Scene(root));
+        stage.setTitle("Registro Suspeito");
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.showAndWait();
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+}
+
 
     public String stringify(Double dado) {
         if (dado == null) {
