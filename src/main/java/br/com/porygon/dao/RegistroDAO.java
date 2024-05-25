@@ -104,7 +104,7 @@ public class RegistroDAO {
     }
 
 
-    public void updateSuspectData(int registro, String nomeVariavel, Double novoValor, boolean dadoSuspeito) throws SQLException {
+    public void alterarRegistroSuspeito(int registro, String nomeVariavel, Double novoValor, boolean dadoSuspeito) throws SQLException {
         Connection con = null;
         try {
 
@@ -132,6 +132,59 @@ public class RegistroDAO {
             }
         }
     }
+
+    public void excluirRegistroSuspeito(int registro, String nomeVariavel) throws SQLException {
+        Connection con = null;
+        try {
+            con = getConnection();
+    
+            String deleteSQL = "UPDATE reg_informacao SET valor = NULL WHERE registro = ? AND nome = ?";
+            try (PreparedStatement pst = con.prepareStatement(deleteSQL)) {
+                pst.setInt(1, registro);
+                pst.setString(2, nomeVariavel);
+                pst.executeUpdate();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao excluir dado!", e);
+        } finally {
+            if (con != null) {
+                try {
+                    con.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                    throw new RuntimeException("Erro ao fechar conexão", e);
+                }
+            }
+        }
+    }
+
+    public void restaurarRegistroSuspeito(int registro, String nomeVariavel) throws SQLException {
+        Connection con = null;
+        try {
+            con = getConnection();
+    
+            String manterSQL = "UPDATE reg_informacao SET dado_suspeito = FALSE WHERE registro = ? AND nome = ?";
+            try (PreparedStatement pst = con.prepareStatement(manterSQL)) {
+                pst.setInt(1, registro);
+                pst.setString(2, nomeVariavel);
+                pst.executeUpdate();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao manter dado!", e);
+        } finally {
+            if (con != null) {
+                try {
+                    con.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                    throw new RuntimeException("Erro ao fechar conexão", e);
+                }
+            }
+        }
+    }
+    
 
     private void verificarVariavel(Connection con, String SQL, int registro, String variavel, String limiteMaior,
             String limiteMenor) throws SQLException {

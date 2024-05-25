@@ -9,9 +9,9 @@
     <padding>
         <Insets top="20" right="20" bottom="20" left="20"/>
     </padding>
-    <Button fx:id="btnExcluir" text="Excluir"/>
-    <Button fx:id="btnEditar" text="Editar"/>
-    <Button fx:id="btnManter" text="Manter"/>
-    <TextField fx:id="textField" promptText="Digite o novo valor" visible="false"/>
-    <Button fx:id="btnSalvar" text="Salvar" visible="false"/>
+    <Button fx:id="btExcluir" text="Excluir"/>
+    <Button fx:id="btAlterar" text="Alterar"/>
+    <Button fx:id="btRestaurar" text="Restaurar"/>
+    <TextField fx:id="editarTextField" promptText="Digite o novo valor" visible="false"/>
+    <Button fx:id="btSalvar" text="Salvar" visible="false"/>
 </VBox>

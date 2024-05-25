@@ -373,13 +373,13 @@ public class MainController {
                 // PARA PEGAR TODOS OS NOMES DAS ROWS, BASTA PESQUISAR "_sus" NO CODIGO QUE ENCONTRARÃO
                 // DEVEM VERIFICAR SE O CAMPO TA VAZIO PARA CONSEGUIR TRATAR E SEGUIR COM AS INTEGRAÇÕES
                 System.out.println("Clicou no registro:" + newValue.get("registro_id_sus"));
-                showPopUp(newValue);
+                mostrarPopUp(newValue);
             }
         });
 
     }
 
-        private void showPopUp(Map<String, String> newValue) {
+        private void mostrarPopUp(Map<String, String> newValue) {
             try {
         // Carregar o arquivo FXML
         FXMLLoader loader = new FXMLLoader(getClass().getResource("popup-view.fxml"));

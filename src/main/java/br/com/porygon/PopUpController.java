@@ -1,71 +1,105 @@
 package br.com.porygon;
 
+import br.com.porygon.dao.RegistroDAO;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
+import java.sql.SQLException;
 import java.util.Map;
 
 public class PopUpController {
     private Map<String, String> cellData;
+    private RegistroDAO registroDAO = new RegistroDAO();
 
     @FXML
-    private Button btnExcluir;
+    private Button btExcluir;
 
     @FXML
-    private Button btnEditar;
+    private Button btAlterar;
 
     @FXML
-    private Button btnManter;
+    private Button btRestaurar;
 
     @FXML
-    private Button btnSalvar;
+    private Button btSalvar;
 
     @FXML
-    private TextField textField;
+    private TextField editarTextField;
 
-    public void setCellData(Map<String, String> newValue) {
-        this.cellData = newValue;
+    public void setCellData(Map<String, String> novoValor) {
+        this.cellData = novoValor;
         // Exibir ou usar os dados da célula conforme necessário
     }
 
     @FXML
     public void initialize() {
-        // Inicializar os handlers dos botões
-        btnExcluir.setOnAction(event -> handleExcluir());
-        btnEditar.setOnAction(event -> handleEditar());
-        btnManter.setOnAction(event -> handleManter());
-        btnSalvar.setOnAction(event -> handleSalvar());
+        // Inicializar as ações dos botões
+        btExcluir.setOnAction(event -> Excluir());
+        btAlterar.setOnAction(event -> Alterar());
+        btRestaurar.setOnAction(event -> Restaurar());
+        btSalvar.setOnAction(event -> Salvar());
+        editarTextField.setVisible(false);
+        btSalvar.setVisible(false);
     }
 
-    private void handleExcluir() {
-        // Lógica para excluir o dado da célula
-        System.out.println("Excluir: " + cellData.get("registro_id_sus"));
+    private void Excluir() {
+        String registroIdStr = cellData.get("registro_id_sus");
+        String nomeVariavel = "não_sei_declarar";// Substitua pelo nome da variável correta
+
+        try {
+            int registroId = Integer.parseInt(registroIdStr);
+            registroDAO.excluirRegistroSuspeito(registroId, nomeVariavel);
+            System.out.println("Registro excluído: " + registroId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Adicionar lógica para lidar com erros
+        }
+
         // Fechar a janela
-        ((Stage) btnExcluir.getScene().getWindow()).close();
+        ((Stage) btExcluir.getScene().getWindow()).close();
     }
 
-    private void handleEditar() {
+    private void Alterar() {
         // Tornar o campo de texto e o botão de salvar visíveis
-        textField.setVisible(true);
-        btnSalvar.setVisible(true);
+        editarTextField.setVisible(true);
+        btSalvar.setVisible(true);
     }
 
-    private void handleManter() {
-        // Lógica para manter o dado da célula
-        System.out.println("Manter: " + cellData.get("registro_id_sus"));
+    private void Restaurar() {
+        String registroIdStr = cellData.get("registro_id_sus");
+        String nomeVariavel = "não_sei_declarar"; // Substitua pelo nome da variável correta
+
+        try {
+            int registroId = Integer.parseInt(registroIdStr);
+            registroDAO.restaurarRegistroSuspeito(registroId, nomeVariavel);
+            System.out.println("Registro restaurado: " + registroId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Adicionar lógica para lidar com erros
+        }
+
         // Fechar a janela
-        ((Stage) btnManter.getScene().getWindow()).close();
+        ((Stage) btRestaurar.getScene().getWindow()).close();
     }
 
-    private void handleSalvar() {
-        // Lógica para salvar o novo valor
-        String novoValor = textField.getText();
-        System.out.println("Novo valor: " + novoValor);
-        // Aqui você pode atualizar o dado da célula com o novo valor
+    private void Salvar() {
+        String registroIdStr = cellData.get("registro_id_sus");
+        String nomeVariavel = "não_sei_declarar"; // Substitua pelo nome da variável correta
+        String novoValorStr = editarTextField.getText();
+
+        try {
+            int registroId = Integer.parseInt(registroIdStr);
+            double novoValor = Double.parseDouble(novoValorStr);
+            registroDAO.alterarRegistroSuspeito(registroId, nomeVariavel, novoValor, false);
+            System.out.println("Novo valor salvo: " + novoValor);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Adicionar lógica para lidar com erros
+        }
 
         // Fechar a janela
-        ((Stage) btnSalvar.getScene().getWindow()).close();
+        ((Stage) btSalvar.getScene().getWindow()).close();
     }
 }
