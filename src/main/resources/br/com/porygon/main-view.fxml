@@ -108,6 +108,7 @@
                 <VBox alignment="CENTER" spacing="15.0">
                     <TableView fx:id="tableViewSuspeito">
                         <columns>
+                            <TableColumn fx:id="registroIdSusColumn" text="ID"/>
                             <TableColumn fx:id="dataHoraSusColumn" text="Data e Hora"/>
                             <TableColumn fx:id="tipoArquivoSusColumn" text="Tipo Arquivo"/>
                             <TableColumn fx:id="tempSusColumn" text="Temperatura"/>

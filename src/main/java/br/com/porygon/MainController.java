@@ -140,6 +140,10 @@ public class MainController {
 
     @FXML
     private TableColumn<Map<String, String>, String> tipoArquivoSusColumn;
+
+    @FXML
+    private TableColumn<Map<String, String>, String> registroIdSusColumn;
+
     @FXML
     private TableColumn<Map<String, String>, String> tempSusColumn;
     @FXML
@@ -274,6 +278,7 @@ public class MainController {
         // Fazer esse cara num botão de análise
         dataHoraSusColumn.setCellValueFactory(createCellFactory("data_hora_sus"));
         tipoArquivoSusColumn.setCellValueFactory(createCellFactory("tipo_arquivo_sus"));
+        registroIdSusColumn.setCellValueFactory(createCellFactory("registro_id_sus"));
         tempSusColumn.setCellValueFactory(createCellFactory("temperatura_sus"));
         pressaoSusColumn.setCellValueFactory(createCellFactory("pressao_sus"));
         velVentoSusColumn.setCellValueFactory(createCellFactory("velVento_sus"));
@@ -354,6 +359,17 @@ public class MainController {
         chuMaxField.setText(chuvaMaxima);
         chuMinField.setText(chuvaMinima);
         // tableViewApurado.getItems().addAll((HashMap<String, String>) data1);
+
+
+        tableViewSuspeito.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                // CARLA E NAIRA O EVENTO TA AQUI
+                // AQUI TEM QUE ABRIR O POPUP E TEM POSSIVEIS INFORMAÇÕES SOBRE O DADO SUSPEITO.
+                // PARA PEGAR TODOS OS NOMES DAS ROWS, BASTA PESQUISAR "_sus" NO CODIGO QUE ENCONTRARÃO
+                // DEVEM VERIFICAR SE O CAMPO TA VAZIO PARA CONSEGUIR TRATAR E SEGUIR COM AS INTEGRAÇÕES
+                System.out.println("Clicou no registro:" + newValue.get("registro_id_sus"));
+            }
+        });
 
         System.out.println();
     }

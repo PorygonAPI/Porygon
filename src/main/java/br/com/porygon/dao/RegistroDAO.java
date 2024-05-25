@@ -239,6 +239,7 @@ public class RegistroDAO {
             while (rs.next()) {
 
                 String sql = "SELECT r.data_hora,\n" +
+                        "       r.id AS id,\n"+
                         "       r.tipo_arquivo,\n" +
                         "       MAX(CASE WHEN ri.nome = 'tempIns' THEN ri.valor END) AS temperatura,\n" +
                         "       MAX(CASE WHEN ri.nome = 'pressaoIns' THEN ri.valor END) AS pressao,\n" +
@@ -267,6 +268,7 @@ public class RegistroDAO {
                             String tipoArquivo = result.getString("tipo_arquivo");
                             row.put("data_hora_sus", dataHora);
                             row.put("tipo_arquivo_sus", tipoArquivo);
+                            row.put("registro_id_sus", result.getString("id"));
                             row.put("temperatura_sus", result.getString("temperatura"));
                             row.put("pressao_sus", result.getString("pressao"));
                             row.put("velVento_sus", result.getString("velVento"));
