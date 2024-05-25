@@ -1,5 +1,7 @@
 package br.com.porygon;
 
+import br.com.porygon.dao.RegistroDAO;
+
 import java.time.LocalDate;
 
 public class RegistroAutomatico extends Registro {
@@ -160,5 +162,32 @@ public class RegistroAutomatico extends Registro {
         this.radiacao = radiacao;
         this.chuva = chuva;
         setTemperatura(tempIns);
+    }
+
+    private void verifyIfIsNotNullAndSave(Double value, String name, int regId, RegistroDAO registroDAO) {
+        if(value != null){
+            registroDAO.salvarInformacao(regId, name, value);
+        }
+    }
+
+    public void salvarRegistro(RegistroDAO registroDAO, int regId) {
+
+        verifyIfIsNotNullAndSave(tempIns, "tempIns", regId, registroDAO);
+
+        verifyIfIsNotNullAndSave(umiIns, "umiIns", regId, registroDAO);
+
+        verifyIfIsNotNullAndSave(ptoOrvalhoIns, "ptoOrvalhoIns", regId, registroDAO);
+
+        verifyIfIsNotNullAndSave(pressaoIns, "pressaoIns", regId, registroDAO);
+
+        verifyIfIsNotNullAndSave(getVelVento(), "velVento", regId, registroDAO);
+
+        verifyIfIsNotNullAndSave(getDirVento(), "dirVento", regId, registroDAO);
+
+        verifyIfIsNotNullAndSave(rajVento, "rajVento", regId, registroDAO);
+
+        verifyIfIsNotNullAndSave(radiacao, "radiacao", regId, registroDAO);
+
+        verifyIfIsNotNullAndSave(chuva, "chuva", regId, registroDAO);
     }
 }

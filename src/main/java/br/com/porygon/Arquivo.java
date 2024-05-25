@@ -115,7 +115,6 @@ public class Arquivo {
                                         break;
                                     case 2:
                                         tempIns = Double.parseDouble(split[i].replace(",", "."));
-                                        registroDAO.salvarInformacao(regId, "tempIns", tempIns);
                                         break;
                                     case 3:
                                         tempMax = Double.parseDouble(split[i].replace(",", "."));
@@ -126,7 +125,6 @@ public class Arquivo {
                                         break;
                                     case 5:
                                         umiIns = Double.parseDouble(split[i].replace(",", "."));
-                                        registroDAO.salvarInformacao(regId, "umiIns", umiIns);
                                         break;
                                     case 6:
                                         umiMax = Double.parseDouble(split[i].replace(",", "."));
@@ -136,7 +134,6 @@ public class Arquivo {
                                         break;
                                     case 8:
                                         ptoOrvalhoIns = Double.parseDouble(split[i].replace(",", "."));
-                                        registroDAO.salvarInformacao(regId, "ptoOrvalhoIns", ptoOrvalhoIns);
                                         break;
                                     case 9:
                                         ptoOrvalhoMax = Double.parseDouble(split[i].replace(",", "."));
@@ -146,7 +143,6 @@ public class Arquivo {
                                         break;
                                     case 11:
                                         pressaoIns = Double.parseDouble(split[i].replace(",", "."));
-                                        registroDAO.salvarInformacao(regId, "pressaoIns", pressaoIns);
                                         break;
                                     case 12:
                                         pressaoMax = Double.parseDouble(split[i].replace(",", "."));
@@ -156,23 +152,18 @@ public class Arquivo {
                                         break;
                                     case 14:
                                         velVento = Double.parseDouble(split[i].replace(",", "."));
-                                        registroDAO.salvarInformacao(regId, "velVento", velVento);
                                         break;
                                     case 15:
                                         dirVento = Double.parseDouble(split[i].replace(",", "."));
-                                        registroDAO.salvarInformacao(regId, "dirVento", dirVento);
                                         break;
                                     case 16:
                                         rajVento = Double.parseDouble(split[i].replace(",", "."));
-                                        registroDAO.salvarInformacao(regId, "rajVento", rajVento);
                                         break;
                                     case 17:
                                         radiacao = Double.parseDouble(split[i].replace(",", "."));
-                                        registroDAO.salvarInformacao(regId, "radiacao", radiacao);
                                         break;
                                     case 18:
                                         chuva = Double.parseDouble(split[i].replace(",", "."));
-                                        registroDAO.salvarInformacao(regId, "chuva", chuva);
                                         break;
                                 }
                             }
@@ -184,6 +175,7 @@ public class Arquivo {
                                 ptoOrvalhoIns, ptoOrvalhoMax, ptoOrvalhoMin, pressaoIns, pressaoMax,
                                 pressaoMin, rajVento, radiacao, chuva);
 //                        registros.add(regAutomatico);
+                        regAutomatico.salvarRegistro(registroDAO, regId);
                         line = br.readLine();
                     }
                 } catch (NumberFormatException e) {
@@ -198,6 +190,8 @@ public class Arquivo {
         } else {
             System.out.println("Arquivo manual: - " + fileNamePart[0]);
             // Aqui será salvo os registros MANUAIS
+            RegistroDAO registroMDAO = new RegistroDAO();
+
 
             try {
                 try (BufferedReader br = new BufferedReader(new FileReader(this.conteudo.getPath()))) {
@@ -205,6 +199,8 @@ public class Arquivo {
                     line = br.readLine();
                     while (line != null) {
                         String[] split = line.split(";");
+                        int regMId = registroMDAO.salvarRegistro(convertToTimestamp(split[0].replace("\"", ""), split[1].replace("\"", "")), arquivoId, "Manual");
+
                         LocalDate data = null;
                         String hora = null;
                         Double temp = null;
@@ -268,6 +264,8 @@ public class Arquivo {
                         RegistroManual regManual = new RegistroManual(cidade, data, hora, velVento, dirVento, temp, umi,
                                 pressao,
                                 nebulosidade, insolacao, tempMax, tempMin, chuva);
+
+                                regManual.salvarRegistro(registroMDAO, regMId);
 //                        registros.add(regManual);
                         line = br.readLine();
                     }

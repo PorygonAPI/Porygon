@@ -192,11 +192,11 @@ public class RegistroDAO {
                             row.put("tipo_arquivo", tipoArquivo);
                             row.put("temperatura", result.getString("temperatura"));
                             row.put("pressao", result.getString("pressao"));
-                            row.put("velVento", Double.toString(result.getDouble("velVento")));
+                            row.put("velVento", result.getString("velVento"));
                             row.put("chuva", result.getString("chuva"));
                             row.put("ptoOrvalho", result.getString("ptoOrvalho"));
                             row.put("umidade", result.getString("umidade"));
-                            row.put("nebulosidade", String.valueOf(result.getDouble("nebulosidade")));
+                            row.put("nebulosidade", result.getString("nebulosidade"));
                             row.put("radiacao", result.getString("radiacao"));
                             row.put("dirVento", result.getString("dirVento"));
                             row.put("insolacao", result.getString("insolacao"));
@@ -269,11 +269,11 @@ public class RegistroDAO {
                             row.put("tipo_arquivo_sus", tipoArquivo);
                             row.put("temperatura_sus", result.getString("temperatura"));
                             row.put("pressao_sus", result.getString("pressao"));
-                            row.put("velVento_sus", Double.toString(result.getDouble("velVento")));
+                            row.put("velVento_sus", result.getString("velVento"));
                             row.put("chuva_sus", result.getString("chuva"));
                             row.put("ptoOrvalho_sus", result.getString("ptoOrvalho"));
                             row.put("umidade_sus", result.getString("umidade"));
-                            row.put("nebulosidade_sus", String.valueOf(result.getDouble("nebulosidade")));
+                            row.put("nebulosidade_sus", result.getString("nebulosidade"));
                             row.put("radiacao_sus", result.getString("radiacao"));
                             row.put("dirVento_sus", result.getString("dirVento"));
                             row.put("insolacao_sus", result.getString("insolacao"));
