@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="br.com.porygon.PopUpController" spacing="10" alignment="CENTER">
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+    <Button fx:id="btExcluir" text="Excluir"/>
+    <Button fx:id="btAlterar" text="Alterar"/>
+    <Button fx:id="btRestaurar" text="Restaurar"/>
+    <TextField fx:id="editarTextField" promptText="Digite o novo valor" visible="false"/>
+    <Button fx:id="btSalvar" text="Salvar" visible="false"/>
+</VBox>

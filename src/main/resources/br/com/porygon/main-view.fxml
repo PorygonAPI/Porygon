@@ -84,13 +84,46 @@
             <Tab text="Climas com dados apurados">
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
                 <VBox alignment="CENTER" spacing="15.0">
-                    <ListView fx:id="listViewApurado" />
+                    <TableView fx:id="tableViewApurado">
+                        <columns>
+                            <TableColumn fx:id="dataHoraColumn" text="Data e Hora"/>
+                            <TableColumn fx:id="tipoArquivoColumn" text="Tipo Arquivo"/>
+                            <TableColumn fx:id="tempColumn" text="Temperatura"/>
+                            <TableColumn fx:id="pressaoColumn" text="Pressão"/>
+                            <TableColumn fx:id="velVentoColumn" text="Vel. Vento"/>
+                            <TableColumn fx:id="chuvaColumn" text="Chuva"/>
+                            <TableColumn fx:id="ptoOrvalhoColumn" text="Pto. Orvalho"/>
+                            <TableColumn fx:id="umiColumn" text="Umidade"/>
+                            <TableColumn fx:id="nebColumn" text="Nebulosidade"/>
+                            <TableColumn fx:id="radColumn" text="Radiação"/>
+                            <TableColumn fx:id="dirVentoColumn" text="Dir. Vento"/>
+                            <TableColumn fx:id="insolacaoColumn" text="Insolação"/>
+                            <TableColumn fx:id="rajVentoColumn" text="Raj. Vento"/>
+                        </columns>
+                    </TableView>
                 </VBox>
             </Tab>
             <Tab text="Climas com dados suspeitos">
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
                 <VBox alignment="CENTER" spacing="15.0">
-                    <ListView fx:id="listViewSuspeito" />
+                    <TableView fx:id="tableViewSuspeito">
+                        <columns>
+                            <TableColumn fx:id="registroIdSusColumn" text="ID"/>
+                            <TableColumn fx:id="dataHoraSusColumn" text="Data e Hora"/>
+                            <TableColumn fx:id="tipoArquivoSusColumn" text="Tipo Arquivo"/>
+                            <TableColumn fx:id="tempSusColumn" text="Temperatura"/>
+                            <TableColumn fx:id="pressaoSusColumn" text="Pressão"/>
+                            <TableColumn fx:id="velVentoSusColumn" text="Vel. Vento"/>
+                            <TableColumn fx:id="chuvaSusColumn" text="Chuva"/>
+                            <TableColumn fx:id="ptoOrvalhoSusColumn" text="Pto. Orvalho"/>
+                            <TableColumn fx:id="umiSusColumn" text="Umidade"/>
+                            <TableColumn fx:id="nebSusColumn" text="Nebulosidade"/>
+                            <TableColumn fx:id="radSusColumn" text="Radiação"/>
+                            <TableColumn fx:id="dirVentoSusColumn" text="Dir. Vento"/>
+                            <TableColumn fx:id="insolacaoSusColumn" text="Insolação"/>
+                            <TableColumn fx:id="rajVentoSusColumn" text="Raj. Vento"/>
+                        </columns>
+                    </TableView>
                 </VBox>
             </Tab>
             <Tab text="Relatório de Periocidade">
@@ -111,7 +144,6 @@
                             <DatePicker fx:id="endDatePicker" prefWidth="200" prefHeight="40" />
                             <Label text="Escolha a cidade: " />
                             <ComboBox fx:id="cityComboBox" prefWidth="200" prefHeight="40" />
-                            <Label text="Escolha o período: " />
                         </HBox>
                         <HBox spacing="20.0" alignment="CENTER">
                             <Button onAction="#gerarrelatorioperiocidade" text="Gerar" prefWidth="100" prefHeight="80" />
