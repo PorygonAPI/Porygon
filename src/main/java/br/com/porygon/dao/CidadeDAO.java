@@ -1,5 +1,7 @@
 package br.com.porygon.dao;
 
+import javafx.collections.ObservableList;
+
 import java.sql.*;
 
 public class CidadeDAO {
@@ -15,6 +17,35 @@ public class CidadeDAO {
             System.out.println("Connection to database failed: " + e.getMessage());
         }
         return connection;
+    }
+
+    public void getCidades(ObservableList<String> lista) throws SQLException {
+        Connection con = null;
+        try {
+            con = getConnection();
+
+            String getCidadeSQL = "SELECT * FROM cidade";
+
+            PreparedStatement selectStmt = con.prepareStatement(getCidadeSQL);
+            try (ResultSet rsSelect = selectStmt.executeQuery()){
+                while(rsSelect.next()) {
+                    lista.add(rsSelect.getString("sigla"));
+                }
+
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao resgatar cidade!", e);
+        } finally {
+            try {
+                if (con != null)
+                    con.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                throw new RuntimeException("Erro ao fechar conexão", e);
+            }
+        }
     }
 
     //     Realiza a inserção dos dados lidos no banco
