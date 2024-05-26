@@ -1,19 +1,203 @@
 package br.com.porygon.dao;
 
-import br.com.porygon.Registro;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.control.TableView;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.*;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class RegistroDAO {
     private final String url = "jdbc:mysql://localhost:3306/porygon?useTimezone=true&serverTimezone=UTC";
     private final String username = "porygon";
     private final String password = "pesquisador";
+    ZoneId zoneId = ZoneId.of("America/Sao_Paulo");  // Brasilia time, which is GMT-3 with daylight saving adjustments
+
+    Map<String, String> dictionary = new HashMap<String, String>() {{
+        put("temperatura", """
+                    SELECT temperatura
+                    FROM (
+                             SELECT MAX(ri.valor) AS temperatura
+                             FROM registro r
+                                      LEFT JOIN arquivo a ON r.arquivo = a.id
+                                      LEFT JOIN reg_informacao ri ON r.id = ri.registro
+                             WHERE ri.nome = 'tempIns'
+                               AND ri.valor IS NOT NULL
+                               AND ri.dado_suspeito = false
+                               AND a.cidade = ?
+                               AND (r.data_hora BETWEEN ? AND ?)
+                             GROUP BY r.arquivo, r.data_hora, r.tipo_arquivo
+                         ) AS sub
+                    WHERE temperatura IS NOT NULL;
+                    """);
+        put("pressao", """
+                    SELECT pressao
+                    FROM (
+                             SELECT MAX(ri.valor) AS pressao
+                             FROM registro r
+                                      LEFT JOIN arquivo a ON r.arquivo = a.id
+                                      LEFT JOIN reg_informacao ri ON r.id = ri.registro
+                             WHERE ri.nome = 'pressaoIns'
+                               AND ri.valor IS NOT NULL
+                               AND ri.dado_suspeito = false
+                               AND a.cidade = ?
+                               AND (r.data_hora BETWEEN ? AND ?)
+                             GROUP BY r.arquivo, r.data_hora, r.tipo_arquivo
+                         ) AS sub
+                    WHERE pressao IS NOT NULL;
+                    """);
+        put("velVento", """
+                    SELECT velVento
+                    FROM (
+                             SELECT MAX(ri.valor) AS velVento
+                             FROM registro r
+                                      LEFT JOIN arquivo a ON r.arquivo = a.id
+                                      LEFT JOIN reg_informacao ri ON r.id = ri.registro
+                             WHERE ri.nome = 'velVento'
+                               AND ri.valor IS NOT NULL
+                               AND ri.dado_suspeito = false
+                               AND a.cidade = ?
+                               AND (r.data_hora BETWEEN ? AND ?)
+                             GROUP BY r.arquivo, r.data_hora, r.tipo_arquivo
+                         ) AS sub
+                    WHERE velVento IS NOT NULL;
+                    """);
+        put("chuva", """
+                    SELECT chuva
+                    FROM (
+                             SELECT MAX(ri.valor) AS chuva
+                             FROM registro r
+                                      LEFT JOIN arquivo a ON r.arquivo = a.id
+                                      LEFT JOIN reg_informacao ri ON r.id = ri.registro
+                             WHERE ri.nome = 'chuva'
+                               AND ri.valor IS NOT NULL
+                               AND ri.dado_suspeito = false
+                               AND a.cidade = ?
+                               AND (r.data_hora BETWEEN ? AND ?)
+                             GROUP BY r.arquivo, r.data_hora, r.tipo_arquivo
+                         ) AS sub
+                    WHERE chuva IS NOT NULL;
+                    """);
+        put("ptoOrvalho", """
+                    SELECT ptoOrvalho
+                    FROM (
+                             SELECT MAX(ri.valor) AS ptoOrvalho
+                             FROM registro r
+                                      LEFT JOIN arquivo a ON r.arquivo = a.id
+                                      LEFT JOIN reg_informacao ri ON r.id = ri.registro
+                             WHERE ri.nome = 'ptoOrvalhoIns'
+                               AND ri.valor IS NOT NULL
+                               AND ri.dado_suspeito = false
+                               AND a.cidade = ?
+                               AND (r.data_hora BETWEEN ? AND ?)
+                             GROUP BY r.arquivo, r.data_hora, r.tipo_arquivo
+                         ) AS sub
+                    WHERE ptoOrvalho IS NOT NULL;
+                    """);
+        put("umiIns", """
+                    SELECT umiIns
+                    FROM (
+                             SELECT MAX(ri.valor) AS umiIns
+                             FROM registro r
+                                      LEFT JOIN arquivo a ON r.arquivo = a.id
+                                      LEFT JOIN reg_informacao ri ON r.id = ri.registro
+                             WHERE ri.nome = 'umiIns'
+                               AND ri.valor IS NOT NULL
+                               AND ri.dado_suspeito = false
+                               AND a.cidade = ?
+                               AND (r.data_hora BETWEEN ? AND ?)
+                             GROUP BY r.arquivo, r.data_hora, r.tipo_arquivo
+                         ) AS sub
+                    WHERE umiIns IS NOT NULL;
+                    """);
+        put("nebulosidade", """
+                    SELECT nebulosidade
+                    FROM (
+                             SELECT MAX(ri.valor) AS nebulosidade
+                             FROM registro r
+                                      LEFT JOIN arquivo a ON r.arquivo = a.id
+                                      LEFT JOIN reg_informacao ri ON r.id = ri.registro
+                             WHERE ri.nome = 'nebulosidade'
+                               AND ri.valor IS NOT NULL
+                               AND ri.dado_suspeito = false
+                               AND a.cidade = ?
+                               AND (r.data_hora BETWEEN ? AND ?)
+                             GROUP BY r.arquivo, r.data_hora, r.tipo_arquivo
+                         ) AS sub
+                    WHERE nebulosidade IS NOT NULL;
+                    """);
+        put("radiacao", """
+                    SELECT radiacao
+                    FROM (
+                             SELECT MAX(ri.valor) AS radiacao
+                             FROM registro r
+                                      LEFT JOIN arquivo a ON r.arquivo = a.id
+                                      LEFT JOIN reg_informacao ri ON r.id = ri.registro
+                             WHERE ri.nome = 'radiacao'
+                               AND ri.valor IS NOT NULL
+                               AND ri.dado_suspeito = false
+                               AND a.cidade = ?
+                               AND (r.data_hora BETWEEN ? AND ?)
+                             GROUP BY r.arquivo, r.data_hora, r.tipo_arquivo
+                         ) AS sub
+                    WHERE radiacao IS NOT NULL;
+                    """);
+        put("dirVento", """
+                    SELECT dirVento
+                    FROM (
+                             SELECT MAX(ri.valor) AS dirVento
+                             FROM registro r
+                                      LEFT JOIN arquivo a ON r.arquivo = a.id
+                                      LEFT JOIN reg_informacao ri ON r.id = ri.registro
+                             WHERE ri.nome = 'dirVento'
+                               AND ri.valor IS NOT NULL
+                               AND ri.dado_suspeito = false
+                               AND a.cidade = ?
+                               AND (r.data_hora BETWEEN ? AND ?)
+                             GROUP BY r.arquivo, r.data_hora, r.tipo_arquivo
+                         ) AS sub
+                    WHERE dirVento IS NOT NULL;
+                    """);
+        put("insolacao", """
+                    SELECT insolacao
+                    FROM (
+                             SELECT MAX(ri.valor) AS insolacao
+                             FROM registro r
+                                      LEFT JOIN arquivo a ON r.arquivo = a.id
+                                      LEFT JOIN reg_informacao ri ON r.id = ri.registro
+                             WHERE ri.nome = 'insolacao'
+                               AND ri.valor IS NOT NULL
+                               AND ri.dado_suspeito = false
+                               AND a.cidade = ?
+                               AND (r.data_hora BETWEEN ? AND ?)
+                             GROUP BY r.arquivo, r.data_hora, r.tipo_arquivo
+                         ) AS sub
+                    WHERE insolacao IS NOT NULL;
+                    """);
+        put("rajVento", """
+                    SELECT rajVento
+                    FROM (
+                             SELECT MAX(ri.valor) AS rajVento
+                             FROM registro r
+                                      LEFT JOIN arquivo a ON r.arquivo = a.id
+                                      LEFT JOIN reg_informacao ri ON r.id = ri.registro
+                             WHERE ri.nome = 'rajVento'
+                               AND ri.valor IS NOT NULL
+                               AND ri.dado_suspeito = false
+                               AND a.cidade = ?
+                               AND (r.data_hora BETWEEN ? AND ?)
+                             GROUP BY r.arquivo, r.data_hora, r.tipo_arquivo
+                         ) AS sub
+                    WHERE rajVento IS NOT NULL;
+                    """);
+    }};
+
 
     public Connection getConnection() {
         Connection connection = null;
@@ -103,6 +287,202 @@ public class RegistroDAO {
         }
     }
 
+    public void saveRelatory(String sigla, LocalDate dataInicio, LocalDate dataFim,String csvFilePath) {
+        Connection con = null;
+        ObservableList<Map<String, String>> dados = FXCollections.observableArrayList();
+
+        try{
+        con = getConnection();
+        String filterSQL = """
+                    SELECT r.data_hora,
+                           a.cidade AS cidade,
+                           r.tipo_arquivo,
+                           MAX(CASE WHEN ri.nome = 'tempIns' THEN ri.valor END) AS temperatura,
+                           MAX(CASE WHEN ri.nome = 'pressaoIns' THEN ri.valor END) AS pressao,
+                           MAX(CASE WHEN ri.nome = 'velVento' THEN ri.valor END) AS velVento,
+                           MAX(CASE WHEN ri.nome = 'chuva' THEN ri.valor END) AS chuva,
+                           MAX(CASE WHEN ri.nome = 'ptoOrvalhoIns' THEN ri.valor END) AS ptoOrvalho,
+                           MAX(CASE WHEN ri.nome = 'umiIns' THEN ri.valor END) AS umiIns,
+                           MAX(CASE WHEN ri.nome = 'nebulosidade' THEN ri.valor END) AS nebulosidade,
+                           MAX(CASE WHEN ri.nome = 'radiacao' THEN ri.valor END) AS radiacao,
+                           MAX(CASE WHEN ri.nome = 'dirVento' THEN ri.valor END) AS dirVento,
+                           MAX(CASE WHEN ri.nome = 'insolacao' THEN ri.valor END) AS insolacao,
+                           MAX(CASE WHEN ri.nome = 'rajVento' THEN ri.valor END) AS rajVento
+                    FROM registro r
+                             LEFT JOIN arquivo a ON r.arquivo = a.id
+                             LEFT JOIN reg_informacao ri ON r.id = ri.registro
+                    where ri.dado_suspeito = false and a.cidade = ? and (r.data_hora BETWEEN ? AND ?)
+                    GROUP BY r.arquivo, r.data_hora, r.tipo_arquivo;""";
+        try (PreparedStatement ist = con.prepareStatement(filterSQL)) {
+            Timestamp tmstpInicio = Timestamp.valueOf(dataInicio.atStartOfDay());
+            Timestamp tmstpFim = Timestamp.valueOf(dataFim.atTime(23, 59, 59, 0));
+            System.out.println(tmstpInicio);
+            System.out.println(tmstpFim);
+            ist.setString(1, sigla);
+            ist.setTimestamp(2, tmstpInicio);
+            ist.setTimestamp(3, tmstpFim);
+            FileWriter fileWriter = new FileWriter(csvFilePath);
+
+                try (ResultSet result = ist.executeQuery()) {
+                    // Escreva o cabeçalho
+                    ResultSetMetaData metaData = result.getMetaData();
+                    int columnCount = metaData.getColumnCount();
+                    for (int i = 1; i <= columnCount; i++) {
+                        fileWriter.append(metaData.getColumnLabel(i));
+                        if (i < columnCount) {
+                            fileWriter.append(",");
+                        } else {
+                            fileWriter.append("\n");
+                        }
+                    }
+
+                    // Escreva os dados do ResultSet no arquivo CSV
+                    while (result.next()) {
+                        for (int i = 1; i <= columnCount; i++) {
+                            fileWriter.append(result.getString(i));
+                            if (i < columnCount) {
+                                fileWriter.append(",");
+                            } else {
+                                fileWriter.append("\n");
+                            }
+                        }
+                    }
+
+                    // Feche o FileWriter
+                    fileWriter.close();
+
+                    System.out.println("Os dados foram gravados com sucesso no arquivo CSV.");
+                }
+            }
+        } catch (SQLException | IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao atualizar dado suspeito!", e);
+        } finally {
+            try {
+                if (con != null)
+                    con.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                throw new RuntimeException("Erro ao fechar conexão", e);
+            }
+        }
+    }
+
+
+    public ArrayList<Double> getSpecificData(LocalDate dataInicio, LocalDate dataFim, String nomeTable, String cidadeSigla){
+        Connection con = null;
+        ArrayList<Double> dados = new ArrayList<>();
+        try{
+            con = getConnection();
+            String dataSQL = dictionary.get(nomeTable);
+            try (PreparedStatement ist = con.prepareStatement(dataSQL)) {
+
+                ZonedDateTime startDateTime = dataInicio.atStartOfDay(zoneId);
+                ZonedDateTime endDateTime = dataFim.atTime(23, 59, 59).atZone(zoneId);
+
+                Timestamp tmstpInicio = Timestamp.valueOf(startDateTime.toLocalDateTime());
+                Timestamp tmstpFim = Timestamp.valueOf(endDateTime.toLocalDateTime());
+
+                ist.setString(1, cidadeSigla);
+                ist.setString(2, String.valueOf(tmstpInicio));
+                ist.setString(3, String.valueOf(tmstpFim));
+
+                try (ResultSet result = ist.executeQuery()) {
+                    while (result.next()) {
+                        dados.add(Double.parseDouble(result.getString(nomeTable)));
+                    }
+                }
+            }
+            return dados;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao atualizar dado suspeito!", e);
+        } finally {
+            try {
+                if (con != null)
+                    con.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                throw new RuntimeException("Erro ao fechar conexão", e);
+            }
+        }
+    }
+
+
+    public ObservableList<Map<String, String>> filterBetweenDates(String sigla, LocalDate dataInicio, LocalDate dataFim){
+        Connection con = null;
+        ObservableList<Map<String, String>> dados = FXCollections.observableArrayList();
+
+        try{
+            con = getConnection();
+            String filterSQL = """
+                    SELECT r.data_hora,
+                           a.cidade AS cidade,
+                           r.tipo_arquivo,
+                           MAX(CASE WHEN ri.nome = 'tempIns' THEN ri.valor END) AS temperatura,
+                           MAX(CASE WHEN ri.nome = 'pressaoIns' THEN ri.valor END) AS pressao,
+                           MAX(CASE WHEN ri.nome = 'velVento' THEN ri.valor END) AS velVento,
+                           MAX(CASE WHEN ri.nome = 'chuva' THEN ri.valor END) AS chuva,
+                           MAX(CASE WHEN ri.nome = 'ptoOrvalhoIns' THEN ri.valor END) AS ptoOrvalho,
+                           MAX(CASE WHEN ri.nome = 'umiIns' THEN ri.valor END) AS umiIns,
+                           MAX(CASE WHEN ri.nome = 'nebulosidade' THEN ri.valor END) AS nebulosidade,
+                           MAX(CASE WHEN ri.nome = 'radiacao' THEN ri.valor END) AS radiacao,
+                           MAX(CASE WHEN ri.nome = 'dirVento' THEN ri.valor END) AS dirVento,
+                           MAX(CASE WHEN ri.nome = 'insolacao' THEN ri.valor END) AS insolacao,
+                           MAX(CASE WHEN ri.nome = 'rajVento' THEN ri.valor END) AS rajVento
+                    FROM registro r
+                             LEFT JOIN arquivo a ON r.arquivo = a.id
+                             LEFT JOIN reg_informacao ri ON r.id = ri.registro
+                    where ri.dado_suspeito = false and a.cidade = ? and (r.data_hora BETWEEN ? AND ?)
+                    GROUP BY r.arquivo, r.data_hora, r.tipo_arquivo;""";
+            try (PreparedStatement ist = con.prepareStatement(filterSQL)) {
+                Timestamp tmstpInicio = Timestamp.valueOf(dataInicio.atStartOfDay());
+                Timestamp tmstpFim = Timestamp.valueOf(dataFim.atTime(23, 59, 59, 0));
+                System.out.println(tmstpInicio);
+                System.out.println(tmstpFim);
+                ist.setString(1, sigla);
+                ist.setString(2, String.valueOf(tmstpInicio));
+                ist.setString(3, String.valueOf(tmstpFim));
+
+                try (ResultSet result = ist.executeQuery()) {
+                    while (result.next()) {
+                        Map<String, String> row = new HashMap<>();
+
+                        String dataHora = result.getTimestamp("data_hora").toString();
+                        String tipoArquivo = result.getString("tipo_arquivo");
+                        row.put("data_hora_rel", dataHora);
+                        row.put("tipo_arquivo_rel", tipoArquivo);
+                        row.put("temperatura_rel", result.getString("temperatura"));
+                        row.put("pressao_rel", result.getString("pressao"));
+                        row.put("velVento_rel", result.getString("velVento"));
+                        row.put("chuva_rel", result.getString("chuva"));
+                        row.put("ptoOrvalho_rel", result.getString("ptoOrvalho"));
+                        row.put("umidade_rel", result.getString("umiIns"));
+                        row.put("nebulosidade_rel", result.getString("nebulosidade"));
+                        row.put("radiacao_rel", result.getString("radiacao"));
+                        row.put("dirVento_rel", result.getString("dirVento"));
+                        row.put("insolacao_rel", result.getString("insolacao"));
+                        row.put("rajVento_rel", result.getString("rajVento"));
+                        dados.add(row);
+                    }
+                }
+            }
+            return dados;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao atualizar dado suspeito!", e);
+        } finally {
+            try {
+                if (con != null)
+                    con.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                throw new RuntimeException("Erro ao fechar conexão", e);
+            }
+        }
+
+    }
+
 
     public void alterarRegistroSuspeito(int registro, String nomeVariavel, Double novoValor, boolean dadoSuspeito) throws SQLException {
         Connection con = null;
@@ -111,13 +491,13 @@ public class RegistroDAO {
             con = getConnection();
 
             String newSQL = "UPDATE reg_informacao\n" +
-                    "    SET dado_suspeito = ? AND valor = ?\n" +
+                    "    SET dado_suspeito = ?, valor = ?\n" +
                     "    WHERE registro = ? AND nome = ?;";
             PreparedStatement ist = con.prepareStatement(newSQL);
             ist.setBoolean(1, dadoSuspeito);
             ist.setDouble(2, novoValor);
             ist.setInt(3, registro);
-            ist.setString(3, nomeVariavel);
+            ist.setString(4, nomeVariavel);
             ist.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -138,7 +518,7 @@ public class RegistroDAO {
         try {
             con = getConnection();
     
-            String deleteSQL = "UPDATE reg_informacao SET valor = NULL WHERE registro = ? AND nome = ?";
+            String deleteSQL = "DELETE FROM reg_informacao WHERE registro = ? AND nome = ?";
             try (PreparedStatement pst = con.prepareStatement(deleteSQL)) {
                 pst.setInt(1, registro);
                 pst.setString(2, nomeVariavel);
@@ -340,6 +720,37 @@ public class RegistroDAO {
 
             }
             return dados;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao resgatar atributo!", e);
+        } finally {
+            try {
+                if (con != null)
+                    con.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                throw new RuntimeException("Erro ao fechar conexão", e);
+            }
+        }
+    }
+
+    public Map<String, Double> getDadoSuspeito(int registroId){
+        Connection con = null;
+        try{
+            String select_sql;
+            con = getConnection();
+            PreparedStatement pst;
+            ResultSet rs;
+            select_sql = "select * from reg_informacao where registro = ? and dado_suspeito = 1";
+            pst = con.prepareStatement(select_sql);
+            pst.setInt(1, registroId);
+            Map<String, Double> map = new HashMap<String, Double>();
+
+            rs = pst.executeQuery();
+            while (rs.next()) {
+                map.put(rs.getString("nome"), rs.getDouble("valor"));
+            }
+            return map;
         } catch (SQLException e) {
             e.printStackTrace();
             throw new RuntimeException("Erro ao resgatar atributo!", e);
