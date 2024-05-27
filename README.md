@@ -55,7 +55,7 @@
 > - [x] 04/03 a 08/03 - *Kick-off*
 > - [x] 25/03 a 14/04 - *Primeira Sprint*
 > - [x] 15/04 a 05/05 - *Segunda Sprint*
-> - [ ] 06/05 a 26/05 - *Terceira Sprint*
+> - [x] 06/05 a 26/05 - *Terceira Sprint*
 > - [ ] 27/05 a 16/06 - *Quarta Sprint*
 > - [ ] 27/06 - *Feira de Soluções e Apresentação Final API*
 
