@@ -4,27 +4,29 @@
 -------------------------------------------------------------------------------------------------------------------------------------------------------
 <details>
 <summary>Modelagem de Dados</summary>
+
+### Modelagem de Dados
+
 ![MDG](https://github.com/Porygonn/Porygon/assets/142633184/edfa0ca7-4406-4acd-a426-7c2de39b4e4b)
+
 </details>
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------
 
 <details>
 <summary>Manual de Usuário</summary>
-#
 
-![M1](https://github.com/Porygonn/Porygon/assets/142633184/a261642b-4261-4efa-ac3a-7de34b7e89f1)
-![M2](https://github.com/Porygonn/Porygon/assets/142633184/6bee7706-68a0-4b88-9541-dee275d3b8a3)
-![M3](https://github.com/Porygonn/Porygon/assets/142633184/3794367f-2ce2-4f7a-bb89-3fdd1f217cd0)
-![M4](https://github.com/Porygonn/Porygon/assets/142633184/1ac8edf1-de40-4929-8bc4-6d116eaa6b69)
-![M5](https://github.com/Porygonn/Porygon/assets/142633184/0824a1a5-3ab4-4f6b-8361-b4b2d0787a9a)
-![M6](https://github.com/Porygonn/Porygon/assets/142633184/0dc737e2-ff0f-4f28-81cd-1792ed46c0eb)
-![M7](https://github.com/Porygonn/Porygon/assets/142633184/0541d486-3aee-4ab4-ba49-8b34fd0b5441)
-![M8](https://github.com/Porygonn/Porygon/assets/142633184/6dc78095-399b-46a4-ac4f-17cba40a844f)
-![M9](https://github.com/Porygonn/Porygon/assets/142633184/18fb7746-801d-4b90-9ac1-dcefb1bbddd0)
-![M10](https://github.com/Porygonn/Porygon/assets/142633184/fc53f65f-fae1-46c0-8383-2ab1b3efd17d)
-![M11](https://github.com/Porygonn/Porygon/assets/142633184/16c484fd-fce8-4179-8de3-09c89e29b2bb)
-![M12](https://github.com/Porygonn/Porygon/assets/142633184/07e606e7-26d7-43de-ad99-3bfbb72d0c2c)
+### Manual de Usuário
+
+![W1](https://github.com/Porygonn/Porygon/assets/142633184/427652ac-01cc-489b-bea0-ec928267a718)
+![W2](https://github.com/Porygonn/Porygon/assets/142633184/b035e1df-0c16-462a-834f-38afd726c61c)
+![W3](https://github.com/Porygonn/Porygon/assets/142633184/fe2e6b3f-5768-47ef-b99b-3cd783270826)
+![W4](https://github.com/Porygonn/Porygon/assets/142633184/eb8ce297-35a0-4fca-9620-ffc586167a40)
+![W5](https://github.com/Porygonn/Porygon/assets/142633184/2bb808c9-2b13-46a4-a5fe-45447f3b1d15)
+![W6](https://github.com/Porygonn/Porygon/assets/142633184/0406efc5-2a6e-4d6e-af3c-199075e9317e)
+![W7](https://github.com/Porygonn/Porygon/assets/142633184/7a4b2fad-a0f0-44f2-976d-7f7a0e379f25)
+
+
 </details>
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -69,8 +71,9 @@
 ![S1](https://github.com/Porygonn/Porygon/assets/142633184/ea6abf81-7183-49ab-9c75-6590076e354d)
 ![S1](https://github.com/Porygonn/Porygon/assets/142633184/44ed82fb-37d8-4df1-8fed-3c60ecd9dd8c)
 </details>
+
 -------------------------------------------------------------------------------------------------------------------------------------------------------
--------------------------------------------------------------------------------------------------------------------------------------------------------
+
 <details>
 <summary>Sprint 2</summary>
 
@@ -104,8 +107,9 @@
 ![S2](https://github.com/Porygonn/Porygon/assets/142633184/80fad055-9342-45ba-ae31-c47c0580ac93)
 ![S2](https://github.com/Porygonn/Porygon/assets/142633184/62cf561c-907c-4c89-aa6b-cc60f9e3e016)
 </details>
+
 -------------------------------------------------------------------------------------------------------------------------------------------------------
--------------------------------------------------------------------------------------------------------------------------------------------------------
+
 ## Sprint 3
 
 * Como pesquisador, desejo poder alterar, restaurar e excluir dados irregulares quando necessário, garantindo a precisão, integridade e confiabilidade dos dados para minha pesquisa e assegurando a rastreabilidade dos registros no sistema.
@@ -138,8 +142,6 @@
 
 ![S3](https://github.com/Porygonn/Porygon/assets/142633184/cb13af3c-e777-48df-bd66-311fc551aea3)
 ![S3](https://github.com/Porygonn/Porygon/assets/142633184/e6124ba3-8d93-4781-987f-571315a80c66)
-
-</details>
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------
 
