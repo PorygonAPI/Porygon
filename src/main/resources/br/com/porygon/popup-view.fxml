@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox alignment="CENTER" spacing="10" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/17.0.2-ea" fx:controller="br.com.porygon.PopUpController">
+    <padding>
+        <Insets bottom="20" left="20" right="20" top="20" />
+    </padding>
+   <ComboBox fx:id="comboDadoSuspeito" prefWidth="150.0" />
+    <Button fx:id="btExcluir" text="Excluir" />
+    <Button fx:id="btAlterar" text="Alterar" />
+    <Button fx:id="btRestaurar" text="Restaurar" />
+    <TextField fx:id="editarTextField" promptText="Digite o novo valor" visible="false" />
+    <Button fx:id="btSalvar" text="Salvar" visible="false" />
+</VBox>

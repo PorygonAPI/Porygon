@@ -13,21 +13,39 @@ create table atr_configuracao (
     primary key(id)
 );
 
+create table cidade (
+    sigla varchar(10) primary key,
+    nome varchar(20)
+);
+
+create table estacao (
+    codigo varchar(10) primary key,
+    nome varchar(100)
+);
+
 create table arquivo (
-	id bigint auto_increment primary key, 
-    nome varchar(100) not null, 
-    cidade varchar(10) not null, 
-    estacao varchar(20) not null
+    id bigint auto_increment primary key,
+    cidade varchar(10),
+    estacao varchar(10),
+    foreign key (estacao) references estacao(codigo),
+    foreign key (cidade) references cidade(sigla),
+    unique (cidade, estacao)
 );
 
 create table registro(
-	id bigint auto_increment primary key,
-    data_hora timestamp not null
+    arquivo bigint,
+    id bigint auto_increment primary key,
+    data_hora timestamp not null,
+    tipo_arquivo varchar(20) not null,
+    foreign key(arquivo) references arquivo(id),
+    unique (arquivo, data_hora, tipo_arquivo)
 );
 
 create table reg_informacao(
-	registro bigint,
-	nome varchar(100) not null unique, 
-    valor double not null,
-    foreign key(registro) references registro(id)
+   registro bigint,
+   nome varchar(100),
+   dado_suspeito tinyint(1) default 0 null,
+   valor double not null,
+   foreign key(registro) references registro(id),
+   primary key(registro, nome)
 );

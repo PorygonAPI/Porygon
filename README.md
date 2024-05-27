@@ -55,7 +55,7 @@
 > - [x] 04/03 a 08/03 - *Kick-off*
 > - [x] 25/03 a 14/04 - *Primeira Sprint*
 > - [x] 15/04 a 05/05 - *Segunda Sprint*
-> - [ ] 06/05 a 26/05 - *Terceira Sprint*
+> - [x] 06/05 a 26/05 - *Terceira Sprint*
 > - [ ] 27/05 a 16/06 - *Quarta Sprint*
 > - [ ] 27/06 - *Feira de Soluções e Apresentação Final API*
 
@@ -102,8 +102,9 @@ instalação.
   | Como pesquisador, desejo poder escolher um período específico para a geração do relatório de valor médio das variáveis climáticas por cidade, possibilitando uma análise detalhada das condições climáticas ao longo de um período determinado.  |Essencial|2|
   | Como pesquisador, desejo um relatório de situação que exiba os últimos valores de temperatura, umidade e outras variáveis climáticas relevantes para cada cidade, possibilitando uma compreensão abrangente das condições climáticas. |Essencial|2|
   | Como pesquisador, desejo poder alterar, restaurar e excluir dados irregulares quando necessário, garantindo a precisão, integridade e confiabilidade dos dados para minha pesquisa e assegurando a rastreabilidade dos registros no sistema.|Essencial|3|
-  |Como pesquisador, desejo um relatório que me permita calcular os elementos necessários para plotar um gráfico boxplot com base nos dados de uma estação em uma data específica. Isso me proporcionará uma visualização clara da distribuição e variabilidade dos dados climáticos, facilitando análises detalhadas em minha pesquisa.|Essencial|3|
-  
+  |Como pesquisador, desejo um relatório que me permita calcular os elementos necessários para plotar um gráfico boxplot com base nos dados de uma estação em uma data específica. Isso me proporcionará uma visualização clara da distribuição e variabilidade dos dados climáticos, facilitando análises detalhadas em minha pesquisa.|Essencial|3|   
+  |Como pesquisador, desejo poder visualizar e alterar informações sobre as estações, cidades e unidades de medida para manter meus dados climáticos atualizados e precisos.|Essencial|4|
+
 
 ## Backlog das Sprints
 
@@ -143,6 +144,21 @@ instalação.
  
  <details>
 <summary> SPRINT 3 </summary>
+
+* Criando Tabelas no banco de dados
+* Salvar os dados do Nome do arquivo na tabela () - Salvar nome, estação e cidade.
+* Ler conteudo do arquivo CSV e salvar na tabela ()
+* Apresnetar dados na tela FXML - Dados Suspeitos e dados apurados.
+* Gerar relatorio de cidade com base nos dados da tabela ()
+* Gerar relatorio de periocidade com base nos dados da tabela ()
+* Criar o método excluir, onde deletará permanentemente o registro suspeito;
+* Criar um aviso "pop-up" dizendo que a ação será permanente e irreversível.
+* Caso o registro se mostre coeso, manda-lo para a lista de registro "normais";
+* Criar uma verificação da data e do horário para voltar o registro para o local correto na lista acima.
+* Não terá parâmetro para o pesquisador se basear, "o método matemático não importa para o sistema";
+* Alterar somente o dado "irregular";
+*  Criar uma verificação da data e do horário para voltar o registro para o local correto na lista.
+
 
  </details>
  

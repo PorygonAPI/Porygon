@@ -1,9 +1,16 @@
 package br.com.porygon;
 
+import br.com.porygon.dao.RegistroDAO;
+
 import java.io.*;
+import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.io.File;
+import java.io.IOException;
 
 public class Arquivo {
     private File conteudo;
@@ -16,18 +23,61 @@ public class Arquivo {
         this.conteudo = conteudo;
     }
 
-    public void tratar(List<Registro> registros) {
-        System.out.println("Estou tratando o arquivo - " + this.conteudo.getName());
+
+    // Lê o nome do arquivo
+    // public void tratar() {
+    //    try {
+    //     String nomeArquivo = conteudo.getName();
+    //     // Extrair informações do nome do arquivo
+    //     String[] nomePartes = nomeArquivo.split("_");
+    //     String nome = nomePartes[0];
+    //     String cidade = nomePartes[1];
+    //     String estacao = nomePartes[2].substring(0, nomePartes[2].indexOf(".")); // Remove a extensão .csv
+
+    //     // Criar um objeto Registro com os dados extraídos
+    //     Registro registro = new Registro();
+    //     registro.setNome(nome);
+    //     registro.setCidade(cidade);
+    //     registro.setEstacao(estacao);
+
+    //     // Salvar no banco de dados
+    //     ArquivoDAO arquivoDAO = new ArquivoDAO();
+    //     arquivoDAO.salvarArquivo(registro);
+    // } catch (IOException e) {
+    //     e.printStackTrace();
+    // }
+
+
+    public static Timestamp convertToTimestamp(String dateStr, String timeStr) {
+        // Definindo os formatos de data e hora
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HHmm");
+
+        // Convertendo as strings para LocalDate e LocalTime
+        LocalDate date = LocalDate.parse(dateStr, dateFormatter);
+        LocalTime time = LocalTime.parse(timeStr, timeFormatter);
+
+        // Combinando LocalDate e LocalTime em LocalDateTime
+        LocalDateTime dateTime = LocalDateTime.of(date, time);
+
+        // Convertendo LocalDateTime para Timestamp
+        return Timestamp.valueOf(dateTime);
+    }
+    
+
+    public void tratar(int arquivoId) {
         String[] fileNamePart = this.conteudo.getName().split(".csv")[0].split("_");
         String cidade = fileNamePart[1];
+        RegistroDAO registroDAO = new RegistroDAO();
         if (fileNamePart[0].contains("A")) {
-            System.out.println("Arquivo automtico: - " + fileNamePart[0]);
             try {
                 try (BufferedReader br = new BufferedReader(new FileReader(this.conteudo.getPath()))) {
                     String line = br.readLine();
                     line = br.readLine();
                     while (line != null) {
                         String[] split = line.split(";");
+                        int regId = registroDAO.salvarRegistro(convertToTimestamp(split[0].replace("\"", ""), split[1].replace("\"", "")), arquivoId, "Automático");
+
                         LocalDate data = null;
                         String hora = null;
                         Double tempIns = null;
@@ -51,7 +101,7 @@ public class Arquivo {
                         for (int i = 0; i < split.length; i++) {
                             // Remove as aspas duplas, se existirem, antes de fazer a conversão
                             split[i] = split[i].replace("\"", "");
-                            
+
                             if (!split[i].isEmpty()) {
                                 switch (i) {
                                     case 0:
@@ -68,6 +118,7 @@ public class Arquivo {
                                         break;
                                     case 3:
                                         tempMax = Double.parseDouble(split[i].replace(",", "."));
+
                                         break;
                                     case 4:
                                         tempMin = Double.parseDouble(split[i].replace(",", "."));
@@ -123,7 +174,8 @@ public class Arquivo {
                                 velVento, dirVento, tempIns, tempMax, tempMin, umiIns, umiMax, umiMin,
                                 ptoOrvalhoIns, ptoOrvalhoMax, ptoOrvalhoMin, pressaoIns, pressaoMax,
                                 pressaoMin, rajVento, radiacao, chuva);
-                        registros.add(regAutomatico);
+//                        registros.add(regAutomatico);
+                        regAutomatico.salvarRegistro(registroDAO, regId);
                         line = br.readLine();
                     }
                 } catch (NumberFormatException e) {
@@ -138,6 +190,8 @@ public class Arquivo {
         } else {
             System.out.println("Arquivo manual: - " + fileNamePart[0]);
             // Aqui será salvo os registros MANUAIS
+            RegistroDAO registroMDAO = new RegistroDAO();
+
 
             try {
                 try (BufferedReader br = new BufferedReader(new FileReader(this.conteudo.getPath()))) {
@@ -145,6 +199,8 @@ public class Arquivo {
                     line = br.readLine();
                     while (line != null) {
                         String[] split = line.split(";");
+                        int regMId = registroMDAO.salvarRegistro(convertToTimestamp(split[0].replace("\"", ""), split[1].replace("\"", "")), arquivoId, "Manual");
+
                         LocalDate data = null;
                         String hora = null;
                         Double temp = null;
@@ -208,7 +264,9 @@ public class Arquivo {
                         RegistroManual regManual = new RegistroManual(cidade, data, hora, velVento, dirVento, temp, umi,
                                 pressao,
                                 nebulosidade, insolacao, tempMax, tempMin, chuva);
-                        registros.add(regManual);
+
+                                regManual.salvarRegistro(registroMDAO, regMId);
+//                        registros.add(regManual);
                         line = br.readLine();
                     }
                 } catch (NumberFormatException e) {
