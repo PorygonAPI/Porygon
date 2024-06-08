@@ -267,7 +267,7 @@ public class RegistroDAO {
 
         try {
             con = getConnection();
-            String insert_sql = "INSERT INTO reg_informacao (registro, nome, valor) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE valor = values(valor)";
+            String insert_sql = "INSERT IGNORE INTO reg_informacao (registro, nome, valor) VALUES (?, ?, ?)";
             PreparedStatement pst = con.prepareStatement(insert_sql);
             pst.setInt(1, registro);
             pst.setString(2, nome);
