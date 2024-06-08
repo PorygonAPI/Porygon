@@ -4,7 +4,8 @@ import javafx.collections.ObservableList;
 
 import java.sql.*;
 
-public class CidadeDAO {
+public class EstacaoDAO {
+
     private final String url = "jdbc:mysql://localhost:3306/porygon?useTimezone=true&serverTimezone=UTC";
     private final String username = "porygon";
     private final String password = "pesquisador";
@@ -19,12 +20,12 @@ public class CidadeDAO {
         return connection;
     }
 
-    public void getCidades(ObservableList<String> lista) throws SQLException {
+    public void getStations(ObservableList<String> lista) throws SQLException {
         Connection con = null;
         try {
             con = getConnection();
 
-            String getCidadeSQL = "SELECT * FROM cidade";
+            String getCidadeSQL = "SELECT * FROM estacao";
 
             PreparedStatement selectStmt = con.prepareStatement(getCidadeSQL);
             try (ResultSet rsSelect = selectStmt.executeQuery()){
@@ -49,20 +50,20 @@ public class CidadeDAO {
     }
 
     //     Realiza a inserção dos dados lidos no banco
-    public void updateCidade(String sigla, String cidade) {
+    public void updateEstacao(String codigo, String cidade) {
         Connection con = null;
         int generatedId = -1;
 
         try {
             con = getConnection();
-            String insert_sql = "INSERT INTO cidade (sigla, nome) VALUES (?, ?) on duplicate key update nome = VALUES(nome)";
+            String insert_sql = "INSERT INTO estacao (codigo, nome) VALUES (?, ?) on duplicate key update nome = VALUES(nome)";
             PreparedStatement pst = con.prepareStatement(insert_sql);
-            pst.setString(1, sigla);
+            pst.setString(1, codigo);
             pst.setString(2, cidade);
             pst.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new RuntimeException("Erro ao inserir nova cidade!", e);
+            throw new RuntimeException("Erro ao inserir nova estacao!", e);
         } finally {
             try {
                 if (con != null)
