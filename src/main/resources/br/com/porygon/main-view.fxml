@@ -20,9 +20,6 @@
             <Tab text="Configurações">
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
                 <VBox alignment="CENTER" spacing="10.0">
-                    <Label text="Defina os valores máximos e mínimos de cada variável climática para verificação dos registros." />
-                    <Label text="A definição ocorrerá apenas uma vez e os valores cadastrados serão armazenados e utilizados para as próximas consultas." />
-                    <Label text=" " />
                     <!-- Temperatura e Umidade -->
                     <HBox spacing="10.0">
                         <Label alignment="CENTER_RIGHT" prefHeight="26.0" prefWidth="130.0" text="Temperatura Max:" />
@@ -79,6 +76,28 @@
                         <TextField fx:id="rajVenMinField" prefHeight="26.0" prefWidth="120.0" promptText="Rajada Vento Min" />
                     </HBox>
                     <Button onAction="#verificar" text="Cadastrar" />
+                    <HBox spacing="10.0">
+                        <Label alignment="CENTER_LEFT" prefHeight="26.0" prefWidth="130.0" text="Selecione uma Estação:" />
+                        <ChoiceBox fx:id="estacaoChoiceBox" prefHeight="26.0" prefWidth="120.0" />
+                        <TextField fx:id="atualizeEstacaoTextField" prefHeight="26.0" prefWidth="120.0" promptText="Atualize o nome da estação" />
+                        <Button text="Atualizar Estação" />
+                    </HBox>
+
+                    <!-- Atualização da Cidade -->
+                    <HBox spacing="10.0">
+                        <Label alignment="CENTER_LEFT" prefHeight="26.0" prefWidth="130.0" text="Selecione uma Cidade:" />
+                        <ChoiceBox fx:id="cidadeChoiceBox" prefHeight="26.0" prefWidth="120.0" />
+                        <TextField fx:id="atualizeCidadeTextField" prefHeight="26.0" prefWidth="120.0" promptText="Atualize a cidade" />
+                        <Button text="Atualizar Cidade" />
+                    </HBox>
+
+                    <!-- Atualização da Variável -->
+                    <HBox spacing="10.0">
+                        <Label alignment="CENTER_LEFT" prefHeight="26.0" prefWidth="130.0" text="Selecione uma Variável:" />
+                        <ChoiceBox fx:id="variavelChoiceBox" prefHeight="26.0" prefWidth="120.0" />
+                        <TextField fx:id="atualizeVariavelTextField" prefHeight="26.0" prefWidth="120.0" promptText="Atualize a variável" />
+                        <Button text="Atualizar Variável" />
+                    </HBox>
                 </VBox>
             </Tab>
             <Tab text="Climas com dados apurados">
