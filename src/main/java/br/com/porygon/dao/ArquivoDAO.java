@@ -76,7 +76,7 @@ public class ArquivoDAO {
 
     private static void addOrUpdateStation(String estacaoSigla, Connection con) throws SQLException {
         String getEstacaoSQL = "SELECT codigo FROM estacao WHERE codigo = ?";
-        String setEstacaoSQL = "INSERT INTO estacao (codigo) VALUES (?)";
+        String setEstacaoSQL = "INSERT INTO estacao (codigo, nome) VALUES (?, ?)";
 
         PreparedStatement selectStationStmt = con.prepareStatement(getEstacaoSQL);
         selectStationStmt.setString(1, estacaoSigla);
@@ -84,6 +84,7 @@ public class ArquivoDAO {
             if(!rsSelect.next()){
                 PreparedStatement insertStationStmt = con.prepareStatement(setEstacaoSQL);
                 insertStationStmt.setString(1, estacaoSigla);
+                insertStationStmt.setString(2, estacaoSigla);
                 insertStationStmt.executeUpdate();
             }
         }
@@ -91,7 +92,7 @@ public class ArquivoDAO {
 
     private static void addOrUpdateCity(String cidadeSigla, Connection con) throws SQLException {
         String getCidadeSQL = "SELECT sigla FROM cidade WHERE sigla = ?";
-        String setCidadeSQL = "INSERT INTO cidade (sigla) VALUES (?)";
+        String setCidadeSQL = "INSERT INTO cidade (sigla, cidade) VALUES (?, ?)";
 
         PreparedStatement selectStmt = con.prepareStatement(getCidadeSQL);
         selectStmt.setString(1, cidadeSigla);
@@ -99,6 +100,7 @@ public class ArquivoDAO {
             if(!rsSelect.next()){
                 PreparedStatement insertStmt = con.prepareStatement(setCidadeSQL);
                 insertStmt.setString(1, cidadeSigla);
+                insertStmt.setString(2, cidadeSigla);
                 insertStmt.executeUpdate();
             }
         }
