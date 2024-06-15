@@ -3,6 +3,8 @@ package br.com.porygon.dao;
 import javafx.collections.ObservableList;
 
 import java.sql.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ConfiguracaoDAO {
     private final String url = "jdbc:mysql://localhost:3306/porygon?useTimezone=true&serverTimezone=UTC";
@@ -38,6 +40,37 @@ public class ConfiguracaoDAO {
         } catch (SQLException e) {
             e.printStackTrace();
             throw new RuntimeException("Erro ao resgatar atributo!", e);
+        } finally {
+            try {
+                if (con != null)
+                    con.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                throw new RuntimeException("Erro ao fechar conexão", e);
+            }
+        }
+    }
+
+    public  Map<String, String> getUnidadesAndUpdateColumn() throws SQLException {
+        Connection con = null;
+        try {
+            con = getConnection();
+
+            String getUnidadesSQL = "SELECT * FROM unidade_configuracao";
+            Map<String, String> row = new HashMap<>();
+
+            PreparedStatement selectStmt = con.prepareStatement(getUnidadesSQL);
+            try (ResultSet rsSelect = selectStmt.executeQuery()){
+                while(rsSelect.next()) {
+                    row.put(rsSelect.getString("nome"), rsSelect.getString("valor"));
+                }
+
+            }
+            return row;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao resgatar unidades!", e);
         } finally {
             try {
                 if (con != null)
@@ -129,13 +162,13 @@ public class ConfiguracaoDAO {
         Connection con = null;
         try {
             con = getConnection();
-            String select_sql = "select * from unidade_configuracao where nome = (?)";
+            String select_sql = "select * from unidade_configuracao where valor = (?)";
             PreparedStatement pst = con.prepareStatement(select_sql);
             pst.setString(1, nome);
             ResultSet rs = pst.executeQuery();
             String valor = null;
             while(rs.next()) {
-                valor = rs.getString("valor");
+                valor = rs.getString("nome");
             }
             return valor;
         } catch (SQLException e) {

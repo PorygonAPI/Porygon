@@ -28,10 +28,11 @@ public class RegistroDAO {
                              FROM registro r
                                       LEFT JOIN arquivo a ON r.arquivo = a.id
                                       LEFT JOIN reg_informacao ri ON r.id = ri.registro
+                                      LEFT JOIN estacao e ON a.estacao = e.codigo
                              WHERE ri.nome = 'tempIns'
                                AND ri.valor IS NOT NULL
                                AND ri.dado_suspeito = false
-                               AND a.estacao = ?
+                               AND e.nome = ?
                                AND (r.data_hora BETWEEN ? AND ?)
                              GROUP BY r.arquivo, r.data_hora, r.tipo_arquivo
                          ) AS sub
@@ -44,10 +45,11 @@ public class RegistroDAO {
                              FROM registro r
                                       LEFT JOIN arquivo a ON r.arquivo = a.id
                                       LEFT JOIN reg_informacao ri ON r.id = ri.registro
+                                      LEFT JOIN estacao e ON a.estacao = e.codigo
                              WHERE ri.nome = 'pressaoIns'
                                AND ri.valor IS NOT NULL
                                AND ri.dado_suspeito = false
-                               AND a.estacao = ?
+                               AND e.nome = ?
                                AND (r.data_hora BETWEEN ? AND ?)
                              GROUP BY r.arquivo, r.data_hora, r.tipo_arquivo
                          ) AS sub
@@ -60,10 +62,11 @@ public class RegistroDAO {
                              FROM registro r
                                       LEFT JOIN arquivo a ON r.arquivo = a.id
                                       LEFT JOIN reg_informacao ri ON r.id = ri.registro
+                                      LEFT JOIN estacao e ON a.estacao = e.codigo
                              WHERE ri.nome = 'velVento'
                                AND ri.valor IS NOT NULL
                                AND ri.dado_suspeito = false
-                               AND a.estacao = ?
+                               AND e.nome = ?
                                AND (r.data_hora BETWEEN ? AND ?)
                              GROUP BY r.arquivo, r.data_hora, r.tipo_arquivo
                          ) AS sub
@@ -76,10 +79,11 @@ public class RegistroDAO {
                              FROM registro r
                                       LEFT JOIN arquivo a ON r.arquivo = a.id
                                       LEFT JOIN reg_informacao ri ON r.id = ri.registro
+                                      LEFT JOIN estacao e ON a.estacao = e.codigo
                              WHERE ri.nome = 'chuva'
                                AND ri.valor IS NOT NULL
                                AND ri.dado_suspeito = false
-                               AND a.estacao = ?
+                               AND e.nome = ?
                                AND (r.data_hora BETWEEN ? AND ?)
                              GROUP BY r.arquivo, r.data_hora, r.tipo_arquivo
                          ) AS sub
@@ -92,10 +96,11 @@ public class RegistroDAO {
                              FROM registro r
                                       LEFT JOIN arquivo a ON r.arquivo = a.id
                                       LEFT JOIN reg_informacao ri ON r.id = ri.registro
+                                      LEFT JOIN estacao e ON a.estacao = e.codigo
                              WHERE ri.nome = 'ptoOrvalhoIns'
                                AND ri.valor IS NOT NULL
                                AND ri.dado_suspeito = false
-                               AND a.estacao = ?
+                               AND e.nome = ?
                                AND (r.data_hora BETWEEN ? AND ?)
                              GROUP BY r.arquivo, r.data_hora, r.tipo_arquivo
                          ) AS sub
@@ -108,10 +113,11 @@ public class RegistroDAO {
                              FROM registro r
                                       LEFT JOIN arquivo a ON r.arquivo = a.id
                                       LEFT JOIN reg_informacao ri ON r.id = ri.registro
+                                      LEFT JOIN estacao e ON a.estacao = e.codigo
                              WHERE ri.nome = 'umiIns'
                                AND ri.valor IS NOT NULL
                                AND ri.dado_suspeito = false
-                               AND a.estacao = ?
+                               AND e.nome = ?
                                AND (r.data_hora BETWEEN ? AND ?)
                              GROUP BY r.arquivo, r.data_hora, r.tipo_arquivo
                          ) AS sub
@@ -124,10 +130,11 @@ public class RegistroDAO {
                              FROM registro r
                                       LEFT JOIN arquivo a ON r.arquivo = a.id
                                       LEFT JOIN reg_informacao ri ON r.id = ri.registro
+                                      LEFT JOIN estacao e ON a.estacao = e.codigo
                              WHERE ri.nome = 'nebulosidade'
                                AND ri.valor IS NOT NULL
                                AND ri.dado_suspeito = false
-                               AND a.estacao = ?
+                               AND e.nome = ?
                                AND (r.data_hora BETWEEN ? AND ?)
                              GROUP BY r.arquivo, r.data_hora, r.tipo_arquivo
                          ) AS sub
@@ -140,10 +147,11 @@ public class RegistroDAO {
                              FROM registro r
                                       LEFT JOIN arquivo a ON r.arquivo = a.id
                                       LEFT JOIN reg_informacao ri ON r.id = ri.registro
+                                      LEFT JOIN estacao e ON a.estacao = e.codigo
                              WHERE ri.nome = 'radiacao'
                                AND ri.valor IS NOT NULL
                                AND ri.dado_suspeito = false
-                               AND a.estacao = ?
+                               AND e.nome = ?
                                AND (r.data_hora BETWEEN ? AND ?)
                              GROUP BY r.arquivo, r.data_hora, r.tipo_arquivo
                          ) AS sub
@@ -156,10 +164,11 @@ public class RegistroDAO {
                              FROM registro r
                                       LEFT JOIN arquivo a ON r.arquivo = a.id
                                       LEFT JOIN reg_informacao ri ON r.id = ri.registro
+                                      LEFT JOIN estacao e ON a.estacao = e.codigo
                              WHERE ri.nome = 'dirVento'
                                AND ri.valor IS NOT NULL
                                AND ri.dado_suspeito = false
-                               AND a.estacao = ?
+                               AND e.nome = ?
                                AND (r.data_hora BETWEEN ? AND ?)
                              GROUP BY r.arquivo, r.data_hora, r.tipo_arquivo
                          ) AS sub
@@ -172,10 +181,11 @@ public class RegistroDAO {
                              FROM registro r
                                       LEFT JOIN arquivo a ON r.arquivo = a.id
                                       LEFT JOIN reg_informacao ri ON r.id = ri.registro
+                                      LEFT JOIN estacao e ON a.estacao = e.codigo
                              WHERE ri.nome = 'insolacao'
                                AND ri.valor IS NOT NULL
                                AND ri.dado_suspeito = false
-                               AND a.estacao = ?
+                               AND e.nome = ?
                                AND (r.data_hora BETWEEN ? AND ?)
                              GROUP BY r.arquivo, r.data_hora, r.tipo_arquivo
                          ) AS sub
@@ -188,10 +198,11 @@ public class RegistroDAO {
                              FROM registro r
                                       LEFT JOIN arquivo a ON r.arquivo = a.id
                                       LEFT JOIN reg_informacao ri ON r.id = ri.registro
+                                      LEFT JOIN estacao e ON a.estacao = e.codigo
                              WHERE ri.nome = 'rajVento'
                                AND ri.valor IS NOT NULL
                                AND ri.dado_suspeito = false
-                               AND a.estacao = ?
+                               AND e.nome = ?
                                AND (r.data_hora BETWEEN ? AND ?)
                              GROUP BY r.arquivo, r.data_hora, r.tipo_arquivo
                          ) AS sub
@@ -311,8 +322,9 @@ public class RegistroDAO {
                            MAX(CASE WHEN ri.nome = 'rajVento' THEN ri.valor END) AS rajVento
                     FROM registro r
                              LEFT JOIN arquivo a ON r.arquivo = a.id
+                             LEFT JOIN cidade c ON a.cidade = c.sigla
                              LEFT JOIN reg_informacao ri ON r.id = ri.registro
-                    where ri.dado_suspeito = false and a.cidade = ? and (r.data_hora BETWEEN ? AND ?)
+                    where ri.dado_suspeito = false and c.nome = ? and (r.data_hora BETWEEN ? AND ?)
                     GROUP BY r.arquivo, r.data_hora, r.tipo_arquivo;""";
             try (PreparedStatement ist = con.prepareStatement(filterSQL)) {
                 Timestamp tmstpInicio = Timestamp.valueOf(dataInicio.atStartOfDay());
@@ -437,9 +449,10 @@ public class RegistroDAO {
                         registro r
                         LEFT JOIN arquivo a ON r.arquivo = a.id
                         LEFT JOIN reg_informacao ri ON r.id = ri.registro
+                        LEFT JOIN cidade c ON a.cidade = c.sigla
                         WHERE
                         ri.dado_suspeito = false AND
-                        a.cidade = ?
+                        c.nome = ?
                         GROUP BY
                         a.cidade, a.estacao, r.arquivo, r.data_hora, r.tipo_arquivo
                         )
@@ -465,7 +478,8 @@ public class RegistroDAO {
                         rn = 1;""";
             try (PreparedStatement ist = con.prepareStatement(filterSQL)) {
 
-                ist.setString(1, cidadeEscolhida);;
+                ist.setString(1, cidadeEscolhida);
+                ;
 
                 try (ResultSet result = ist.executeQuery()) {
                     while (result.next()) {
@@ -528,7 +542,8 @@ public class RegistroDAO {
                     FROM registro r
                              LEFT JOIN arquivo a ON r.arquivo = a.id
                              LEFT JOIN reg_informacao ri ON r.id = ri.registro
-                    where ri.dado_suspeito = false and a.cidade = ? and (r.data_hora BETWEEN ? AND ?)
+                             LEFT JOIN cidade c ON a.cidade = c.sigla
+                    where ri.dado_suspeito = false and c.nome = ? and (r.data_hora BETWEEN ? AND ?)
                     GROUP BY r.arquivo, r.data_hora, r.tipo_arquivo;""";
             try (PreparedStatement ist = con.prepareStatement(filterSQL)) {
                 Timestamp tmstpInicio = Timestamp.valueOf(dataInicio.atStartOfDay());

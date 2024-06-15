@@ -195,8 +195,6 @@ public class MainController {
     @FXML
     private TableColumn<Map<String, String>, String> rajVentoColumn;
 
-    
-
     @FXML
     private TableView<Map<String, String>> tableViewRelatorioSituacional;
 
@@ -275,7 +273,6 @@ public class MainController {
     private TextField atualizarEstacaoTextField;
     @FXML
     private Button atualizarEstacaoButton;
-    private EstacaoDAO estacaoDAO;
     private ObservableList<String> estacaoList;
     @FXML
     private ChoiceBox<String> variavelChoiceBox;
@@ -283,11 +280,14 @@ public class MainController {
     private TextField atualizarValorTextField;
     @FXML
     private Button atualizarValorButton;
-    private ConfiguracaoDAO configuracaoDAO;
     private ObservableList<String> variavelList;
 
     @FXML
     private ComboBox<String> cityComboBox;
+
+    @FXML
+    private ComboBox<String> citySitComboBox;
+
 
     @FXML
     private ComboBox<String> estacaoComboBoxPlot;
@@ -306,14 +306,6 @@ public class MainController {
 
     @FXML
     private ListView<String> listViewRelatorio;
-
-    // Listas
-    List<Registro> registros = new ArrayList<Registro>(); // Lista de registros geral, gerada a partir do upload do
-    // arquivo .csv
-    List<Registro> dadoSuspeito = new ArrayList<Registro>(); // Lista de registros suspeitos, gerada após a execução do
-    // método verificarRegistros
-    List<Registro> dadoApurado = new ArrayList<Registro>(); // Lista de registros apurados, gerada a execução do método
-    List<Registro> dadosNulos = new ArrayList<Registro>(); // Lista de registros apurados, gerada a execução do método
 
     String[] cidadesLista = {};
 
@@ -397,6 +389,8 @@ public class MainController {
     EstacaoDAO estacaoDAO = new EstacaoDAO();
     RegistroDAO registroDAO = new RegistroDAO();
 
+    ConfiguracaoDAO configuracaoDAO = new ConfiguracaoDAO();
+
     private Callback<TableColumn.CellDataFeatures<Map<String, String>, String>, ObservableValue<String>> createCellFactory(
             String columnName) {
         return param -> {
@@ -405,14 +399,74 @@ public class MainController {
         };
     }
 
+    private void iterateColumn(TableColumn<Map<String, String>, String>[] colunas, String unidade) {
+        for (TableColumn<Map<String, String>, String> coluna : colunas) {
+            coluna.setText(unidade);
+        }
+    }
+
+    public void updateColumnName() throws SQLException {
+        Map<String, String> row;
+        row = configuracaoDAO.getUnidadesAndUpdateColumn();
+        for (Map.Entry<String, String> unidade : row.entrySet()) {
+
+            // System.out.println("Chave: " + entry.getKey() + ", Valor: " +
+            // entry.getValue());
+            TableColumn[] variaveis = new TableColumn[0];
+            switch (unidade.getKey()) {
+                case "temperatura":
+                    variaveis = new TableColumn[] { tempColumn, tempRelColumn, tempSusColumn, tempSitColumn };
+                    break;
+                case "rajVento":
+                    variaveis = new TableColumn[] { rajVentoColumn, rajVentoRelColumn, rajVentoSusColumn,
+                            rajVentoSitColumn };
+                    break;
+                case "insolacao":
+                    variaveis = new TableColumn[] { insolacaoColumn, insolacaoRelColumn, insolacaoSusColumn,
+                            insolacaoSitColumn };
+                    break;
+                case "pressao":
+                    variaveis = new TableColumn[] { pressaoColumn, pressaoRelColumn, pressaoSusColumn, pressaoSitColumn };
+                    break;
+                case "radiacao":
+                    variaveis = new TableColumn[] { radColumn, radRelColumn, radSusColumn, radSitColumn };
+                    break;
+                case "umiIns":
+                    variaveis = new TableColumn[] { umiColumn, umiRelColumn, umiSusColumn, umiSitColumn };
+                    break;
+                case "dirVento":
+                    variaveis = new TableColumn[] { dirVentoColumn, dirVentoRelColumn, dirVentoSusColumn, dirVentoSitColumn };
+                    break;
+                case "velVento":
+                    variaveis = new TableColumn[] { velVentoColumn, velVentoRelColumn, velVentoSusColumn, velVentoSitColumn };
+                    break;
+                case "nebulosidade":
+                    variaveis = new TableColumn[] { nebColumn, nebRelColumn, nebSusColumn, nebSitColumn };
+                    break;
+                case "ptoOrvalho":
+                    variaveis = new TableColumn[] { ptoOrvalhoColumn, ptoOrvalhoRelColumn, ptoOrvalhoSusColumn, ptoOrvalhoSitColumn };
+                    break;
+                case "chuva":
+                    variaveis = new TableColumn[] { chuvaColumn, chuvaRelColumn, chuvaSusColumn, chuvaSitColumn };
+                    break;
+
+            }
+            iterateColumn(variaveis, unidade.getValue());
+
+        }
+        System.out.println(row);
+    }
+
     public void initialize() throws SQLException {
         ObservableList<String> cidades = FXCollections.observableArrayList();
         ObservableList<String> estacoes = FXCollections.observableArrayList();
 
         estacaoDAO.getEstacoes(estacoes);
         cidadeDAO.getCidades(cidades);
+        updateColumnName();
 
         cityComboBox.setItems(cidades);
+        citySitComboBox.setItems(cidades);
         estacaoComboBoxPlot.setItems(estacoes);
 
         dadoBoxPlot.setCellValueFactory(createCellFactory("dado_registro"));
@@ -436,7 +490,6 @@ public class MainController {
         dirVentoRelColumn.setCellValueFactory(createCellFactory("dirVento_rel"));
         insolacaoRelColumn.setCellValueFactory(createCellFactory("insolacao_rel"));
         rajVentoRelColumn.setCellValueFactory(createCellFactory("rajVento_rel"));
-
 
         dataHoraSitColumn.setCellValueFactory(createCellFactory("data_hora_sit"));
         tempSitColumn.setCellValueFactory(createCellFactory("temperatura_sit"));
@@ -569,7 +622,7 @@ public class MainController {
         estacaoDAO = new EstacaoDAO();
         estacaoList = FXCollections.observableArrayList();
         try {
-            estacaoDAO.getStations(estacaoList);
+            estacaoDAO.getEstacoes(estacaoList);
             estacaoChoiceBox.setItems(estacaoList);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -587,7 +640,6 @@ public class MainController {
         atualizarValorButton.setOnAction(event -> atualizarValor());
     }
 
-
     private void atualizarCidade() {
         String sigla = cidadeChoiceBox.getValue();
         String novoNome = atualizarCidadeTextField.getText();
@@ -600,7 +652,7 @@ public class MainController {
                 cidadeChoiceBox.setItems(cidadeList);
                 atualizarCidadeTextField.clear();
 
-            Alert alert = new Alert(AlertType.INFORMATION);
+                Alert alert = new Alert(AlertType.INFORMATION);
                 alert.setTitle("Atualização Concluída");
                 alert.setHeaderText(null);
                 alert.setContentText("Cidade atualizada com sucesso!");
@@ -614,14 +666,14 @@ public class MainController {
                 alert.showAndWait();
             }
         } else {
-                // Caso o novo valor seja vazio ou nulo
-                Alert alert = new Alert(AlertType.WARNING);
-                alert.setTitle("Campo Vazio");
-                alert.setHeaderText(null);
-                alert.setContentText("Por favor, insira um nome válido.");
-                alert.showAndWait();
-            }
+            // Caso o novo valor seja vazio ou nulo
+            Alert alert = new Alert(AlertType.WARNING);
+            alert.setTitle("Campo Vazio");
+            alert.setHeaderText(null);
+            alert.setContentText("Por favor, insira um nome válido.");
+            alert.showAndWait();
         }
+    }
 
     private void atualizarEstacao() {
         String codigo = estacaoChoiceBox.getValue();
@@ -631,7 +683,7 @@ public class MainController {
             try {
                 estacaoDAO.updateEstacao(codigo, novoNome);
                 estacaoChoiceBox.getItems().clear();
-                estacaoDAO.getStations(estacaoList);
+                estacaoDAO.getEstacoes(estacaoList);
                 estacaoChoiceBox.setItems(estacaoList);
                 atualizarEstacaoTextField.clear();
 
@@ -649,14 +701,14 @@ public class MainController {
                 alert.showAndWait();
             }
         } else {
-                // Caso o novo valor seja vazio ou nulo
-                Alert alert = new Alert(AlertType.WARNING);
-                alert.setTitle("Campo Vazio");
-                alert.setHeaderText(null);
-                alert.setContentText("Por favor, insira um nome válido.");
-                alert.showAndWait();
-            }
+            // Caso o novo valor seja vazio ou nulo
+            Alert alert = new Alert(AlertType.WARNING);
+            alert.setTitle("Campo Vazio");
+            alert.setHeaderText(null);
+            alert.setContentText("Por favor, insira um nome válido.");
+            alert.showAndWait();
         }
+    }
 
     private void atualizarValor() {
         String nomeVariavel = variavelChoiceBox.getValue();
@@ -664,11 +716,13 @@ public class MainController {
 
         if (nomeVariavel != null && !novoValor.isEmpty()) {
             try {
-                configuracaoDAO.updateUnidade(nomeVariavel, novoValor);
+                String variavel = configuracaoDAO.colunaVariavel(nomeVariavel);
+                configuracaoDAO.updateUnidade(variavel, novoValor);
                 variavelChoiceBox.getItems().clear();
                 configuracaoDAO.getUnidades(variavelList);
                 variavelChoiceBox.setItems(variavelList);
                 atualizarValorTextField.clear();
+                updateColumnName();
 
                 Alert alert = new Alert(AlertType.INFORMATION);
                 alert.setTitle("Atualização Concluída");
@@ -684,15 +738,14 @@ public class MainController {
                 alert.showAndWait();
             }
         } else {
-                // Caso o novo valor seja vazio ou nulo
-                Alert alert = new Alert(AlertType.WARNING);
-                alert.setTitle("Campo Vazio");
-                alert.setHeaderText(null);
-                alert.setContentText("Por favor, insira um valor válido.");
-                alert.showAndWait();
-            }
+            // Caso o novo valor seja vazio ou nulo
+            Alert alert = new Alert(AlertType.WARNING);
+            alert.setTitle("Campo Vazio");
+            alert.setHeaderText(null);
+            alert.setContentText("Por favor, insira um valor válido.");
+            alert.showAndWait();
         }
-    
+    }
 
     private void mostrarPopUp(Map<String, Double> dadosSupeitos, int registroId) {
         if (modalStage == null || !modalStage.isShowing()) {
@@ -749,7 +802,7 @@ public class MainController {
     }
 
     private void showAlert(String title, String header, String content) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle(title);
         alert.setHeaderText(header);
         alert.setContentText(content);
@@ -765,7 +818,7 @@ public class MainController {
     @FXML
     protected void selectFilesClick(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
-        FileChooser.ExtensionFilter extensionFilter = new FileChooser.ExtensionFilter("CSV files (*.csv)", "*.csv");
+        ExtensionFilter extensionFilter = new ExtensionFilter("CSV files (*.csv)", "*.csv");
         fileChooser.setTitle("Escolha um arquivo");
         fileChooser.getExtensionFilters().add(extensionFilter);
 
@@ -1115,7 +1168,7 @@ public class MainController {
                 }
 
                 // Exibindo mensagem de sucesso
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                Alert alert = new Alert(AlertType.INFORMATION);
                 alert.setTitle("Sucesso");
                 alert.setHeaderText(null);
                 alert.setContentText("Relatório salvo com sucesso!");
@@ -1123,7 +1176,7 @@ public class MainController {
             }
         } else {
             // Exibindo mensagem de erro caso alguma informação esteja faltando
-            Alert alert = new Alert(Alert.AlertType.ERROR);
+            Alert alert = new Alert(AlertType.ERROR);
             alert.setTitle("Erro");
             alert.setHeaderText(null);
             alert.setContentText("Por favor, selecione a estação e o intervalo de datas.");
@@ -1161,7 +1214,7 @@ public class MainController {
             // tableViewBoxPlot.setItems(dadosRelatorio);
         } else {
             // Exibir mensagem de erro se os campos não estiverem preenchidos
-            Alert alert = new Alert(Alert.AlertType.ERROR);
+            Alert alert = new Alert(AlertType.ERROR);
             alert.setTitle("Erro");
             alert.setHeaderText("Por favor, selecione a cidade e as datas inicial e final.");
             alert.showAndWait();
@@ -1180,13 +1233,12 @@ public class MainController {
             filtrarRegistrosPorDia(cidadeEscolhida, date, dataInicial, dataFinal);
         } else {
             // Exibir mensagem de erro se os campos não estiverem preenchidos
-            Alert alert = new Alert(Alert.AlertType.ERROR);
+            Alert alert = new Alert(AlertType.ERROR);
             alert.setTitle("Erro");
             alert.setHeaderText("Por favor, selecione a cidade e as datas inicial e final.");
             alert.showAndWait();
         }
     }
-
 
     private void filtrarRegistrosPorCidade(String cidadeEscolhida) {
         // listrelatorio.getItems().add("Cidade: " + cidadeEscolhida + " | Período: " +
@@ -1207,7 +1259,7 @@ public class MainController {
             filtrarRegistrosPorCidade(cidadeEscolhida);
         } else {
             // Exibir mensagem de erro se os campos não estiverem preenchidos
-            Alert alert = new Alert(Alert.AlertType.ERROR);
+            Alert alert = new Alert(AlertType.ERROR);
             alert.setTitle("Erro");
             alert.setHeaderText("Por favor, selecione a cidade e as datas inicial e final.");
             alert.showAndWait();
@@ -1226,7 +1278,6 @@ public class MainController {
         tableViewRelatorio.setItems(dadosRelatorio);
     }
 
-
     @FXML
     public void exportarrelatorioperiocidade(ActionEvent actionEvent) throws IOException {
         String cidadeEscolhida = cityComboBox.getValue();
@@ -1237,24 +1288,25 @@ public class MainController {
             // Configurar o FileChooser para escolher o local e o nome do arquivo
             FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("Salvar Relatório");
-            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV Files", "*.csv"));
+            fileChooser.getExtensionFilters().add(new ExtensionFilter("CSV Files", "*.csv"));
 
             // Mostrar a janela para escolher o local e o nome do arquivo
             File file = fileChooser.showSaveDialog(null);
 
             if (file != null) {
-                // Chamar o método saveRelatory do registroDAO com o caminho do arquivo escolhido
+                // Chamar o método saveRelatory do registroDAO com o caminho do arquivo
+                // escolhido
                 registroDAO.saveRelatory(cidadeEscolhida, dataInicial, dataFinal, file.getAbsolutePath());
 
                 // Exibir mensagem de sucesso
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                Alert alert = new Alert(AlertType.INFORMATION);
                 alert.setTitle("Sucesso");
                 alert.setHeaderText(null);
                 alert.setContentText("Relatório salvo com sucesso!");
                 alert.showAndWait();
             } else {
                 // Caso o usuário tenha cancelado a escolha do arquivo
-                Alert alert = new Alert(Alert.AlertType.ERROR);
+                Alert alert = new Alert(AlertType.ERROR);
                 alert.setTitle("Erro");
                 alert.setHeaderText(null);
                 alert.setContentText("Operação de exportação cancelada pelo usuário.");
@@ -1262,7 +1314,7 @@ public class MainController {
             }
         } else {
             // Exibir mensagem de erro se alguma informação estiver faltando
-            Alert alert = new Alert(Alert.AlertType.ERROR);
+            Alert alert = new Alert(AlertType.ERROR);
             alert.setTitle("Erro");
             alert.setHeaderText("Por favor, selecione a cidade e as datas inicial e final.");
             alert.showAndWait();
