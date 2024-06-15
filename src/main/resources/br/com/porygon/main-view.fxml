@@ -202,6 +202,34 @@
                     </VBox>
                 </content>
             </Tab>
+             <Tab text="Relatório Situacional">
+                <content>
+                    <VBox spacing="15.0" alignment="CENTER">
+                        <TableView fx:id="tableViewRelatorioSituacional">
+                            <columns>
+                                <TableColumn fx:id="dataHoraSitColumn" text="Data e Hora"/>
+                                <TableColumn fx:id="tempSitColumn" text="Temperatura"/>
+                                <TableColumn fx:id="pressaoSitColumn" text="Pressão"/>
+                                <TableColumn fx:id="velVentoSitColumn" text="Vel. Vento"/>
+                                <TableColumn fx:id="chuvaSitColumn" text="Chuva"/>
+                                <TableColumn fx:id="ptoOrvalhoSitColumn" text="Pto. Orvalho"/>
+                                <TableColumn fx:id="umiSitColumn" text="Umidade"/>
+                                <TableColumn fx:id="nebSitColumn" text="Nebulosidade"/>
+                                <TableColumn fx:id="radSitColumn" text="Radiação"/>
+                                <TableColumn fx:id="dirVentoSitColumn" text="Dir. Vento"/>
+                                <TableColumn fx:id="insolacaoSitColumn" text="Insolação"/>
+                                <TableColumn fx:id="rajVentoSitColumn" text="Raj. Vento"/>
+                            </columns>
+                        </TableView>
+
+                        <HBox spacing="10.0" alignment="CENTER">
+                            <Label text="Cidade: " />
+                            <ComboBox fx:id="cityComboBox" prefWidth="200" prefHeight="40" />
+                            <Button onAction="#gerarRelatorio" text="Gerar" prefWidth="100" prefHeight="40" />
+                        </HBox>
+                    </VBox>
+                </content>
+            </Tab>
 
         </tabs>
     </TabPane>

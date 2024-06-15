@@ -194,6 +194,37 @@ public class MainController {
     @FXML
     private TableColumn<Map<String, String>, String> rajVentoColumn;
 
+    
+
+    @FXML
+    private TableView<Map<String, String>> tableViewRelatorioSituacional;
+
+    @FXML
+    private TableColumn<Map<String, String>, String> dataHoraSitColumn;
+
+    @FXML
+    private TableColumn<Map<String, String>, String> tempSitColumn;
+    @FXML
+    private TableColumn<Map<String, String>, String> pressaoSitColumn;
+    @FXML
+    private TableColumn<Map<String, String>, String> velVentoSitColumn;
+    @FXML
+    private TableColumn<Map<String, String>, String> chuvaSitColumn;
+    @FXML
+    private TableColumn<Map<String, String>, String> ptoOrvalhoSitColumn;
+    @FXML
+    private TableColumn<Map<String, String>, String> umiSitColumn;
+    @FXML
+    private TableColumn<Map<String, String>, String> nebSitColumn;
+    @FXML
+    private TableColumn<Map<String, String>, String> radSitColumn;
+    @FXML
+    private TableColumn<Map<String, String>, String> dirVentoSitColumn;
+    @FXML
+    private TableColumn<Map<String, String>, String> insolacaoSitColumn;
+    @FXML
+    private TableColumn<Map<String, String>, String> rajVentoSitColumn;
+
     @FXML
     private TableView<Map<String, String>> tableViewSuspeito;
 
@@ -379,6 +410,20 @@ public class MainController {
         dirVentoRelColumn.setCellValueFactory(createCellFactory("dirVento_rel"));
         insolacaoRelColumn.setCellValueFactory(createCellFactory("insolacao_rel"));
         rajVentoRelColumn.setCellValueFactory(createCellFactory("rajVento_rel"));
+
+
+        dataHoraSitColumn.setCellValueFactory(createCellFactory("data_hora_sit"));
+        tempSitColumn.setCellValueFactory(createCellFactory("temperatura_sit"));
+        pressaoSitColumn.setCellValueFactory(createCellFactory("pressao_sit"));
+        velVentoSitColumn.setCellValueFactory(createCellFactory("velVento_sit"));
+        chuvaSitColumn.setCellValueFactory(createCellFactory("chuva_sit"));
+        ptoOrvalhoSitColumn.setCellValueFactory(createCellFactory("ptoOrvalho_sit"));
+        umiSitColumn.setCellValueFactory(createCellFactory("umidade_sit"));
+        nebSitColumn.setCellValueFactory(createCellFactory("nebulosidade_sit"));
+        radSitColumn.setCellValueFactory(createCellFactory("radiacao_sit"));
+        dirVentoSitColumn.setCellValueFactory(createCellFactory("dirVento_sit"));
+        insolacaoSitColumn.setCellValueFactory(createCellFactory("insolacao_sit"));
+        rajVentoSitColumn.setCellValueFactory(createCellFactory("rajVento_sit"));
 
         // Fazer esse cara num botão de análise
         dataHoraSusColumn.setCellValueFactory(createCellFactory("data_hora_sus"));
@@ -978,6 +1023,33 @@ public class MainController {
         }
     }
 
+
+    private void filtrarRegistrosPorCidade(String cidadeEscolhida) {
+        // listrelatorio.getItems().add("Cidade: " + cidadeEscolhida + " | Período: " +
+        // dataInicial + " a " + dataFinal);
+        ObservableList<Map<String, String>> dadosRelatorio = FXCollections.observableArrayList();
+
+        dadosRelatorio = registroDAO.filterSituationalRelatory(cidadeEscolhida);
+
+        tableViewRelatorioSituacional.setItems(dadosRelatorio);
+    }
+
+    @FXML
+    public void gerarRelatorio() {
+        String cidadeEscolhida = cityComboBox.getValue();
+
+        // Verifica se as datas foram selecionadas
+        if (cidadeEscolhida != null) {
+            filtrarRegistrosPorCidade(cidadeEscolhida);
+        } else {
+            // Exibir mensagem de erro se os campos não estiverem preenchidos
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erro");
+            alert.setHeaderText("Por favor, selecione a cidade e as datas inicial e final.");
+            alert.showAndWait();
+        }
+    }
+
     // Método para filtrar os registros para um dia específico e cidade
     private void filtrarRegistrosPorDia(String cidadeEscolhida, LocalDate data, LocalDate dataInicial,
             LocalDate dataFinal) {
@@ -990,19 +1062,48 @@ public class MainController {
         tableViewRelatorio.setItems(dadosRelatorio);
     }
 
-    // Exportar dados CSV
-    public void exportarrelatorioperiocidade(@SuppressWarnings("exports") ActionEvent actionEvent) throws IOException {
-        String desktopPath = System.getProperty("user.home") + "/Documents/";
-        String nomeArquivo = desktopPath + "RelatorioRegistro.csv";
 
+    @FXML
+    public void exportarrelatorioperiocidade(ActionEvent actionEvent) throws IOException {
         String cidadeEscolhida = cityComboBox.getValue();
         LocalDate dataInicial = startDatePicker.getValue();
         LocalDate dataFinal = endDatePicker.getValue();
 
-        registroDAO.saveRelatory(cidadeEscolhida, dataInicial, dataFinal, nomeArquivo);
+        if (cidadeEscolhida != null && dataInicial != null && dataFinal != null) {
+            // Configurar o FileChooser para escolher o local e o nome do arquivo
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Salvar Relatório");
+            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV Files", "*.csv"));
+
+            // Mostrar a janela para escolher o local e o nome do arquivo
+            File file = fileChooser.showSaveDialog(null);
+
+            if (file != null) {
+                // Chamar o método saveRelatory do registroDAO com o caminho do arquivo escolhido
+                registroDAO.saveRelatory(cidadeEscolhida, dataInicial, dataFinal, file.getAbsolutePath());
+
+                // Exibir mensagem de sucesso
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Sucesso");
+                alert.setHeaderText(null);
+                alert.setContentText("Relatório salvo com sucesso!");
+                alert.showAndWait();
+            } else {
+                // Caso o usuário tenha cancelado a escolha do arquivo
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Erro");
+                alert.setHeaderText(null);
+                alert.setContentText("Operação de exportação cancelada pelo usuário.");
+                alert.showAndWait();
+            }
+        } else {
+            // Exibir mensagem de erro se alguma informação estiver faltando
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erro");
+            alert.setHeaderText("Por favor, selecione a cidade e as datas inicial e final.");
+            alert.showAndWait();
+        }
     }
-    // Preciso fazer um novo botão para gerar o relatorio na tela
-    // Preciso fazer a parte do relatorio Manual
 
     String desktopPath = System.getProperty("user.home") + "/Documents/";
     String nomeArquivo = desktopPath + "RelatorioRegistro.csv";

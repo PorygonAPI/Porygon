@@ -17,10 +17,11 @@ public class RegistroDAO {
     private final String url = "jdbc:mysql://localhost:3306/porygon?useTimezone=true&serverTimezone=UTC";
     private final String username = "porygon";
     private final String password = "pesquisador";
-    ZoneId zoneId = ZoneId.of("America/Sao_Paulo");  // Brasilia time, which is GMT-3 with daylight saving adjustments
+    ZoneId zoneId = ZoneId.of("America/Sao_Paulo"); // Brasilia time, which is GMT-3 with daylight saving adjustments
 
-    Map<String, String> dictionary = new HashMap<String, String>() {{
-        put("temperatura", """
+    Map<String, String> dictionary = new HashMap<String, String>() {
+        {
+            put("temperatura", """
                     SELECT temperatura
                     FROM (
                              SELECT MAX(ri.valor) AS temperatura
@@ -36,7 +37,7 @@ public class RegistroDAO {
                          ) AS sub
                     WHERE temperatura IS NOT NULL;
                     """);
-        put("pressao", """
+            put("pressao", """
                     SELECT pressao
                     FROM (
                              SELECT MAX(ri.valor) AS pressao
@@ -52,7 +53,7 @@ public class RegistroDAO {
                          ) AS sub
                     WHERE pressao IS NOT NULL;
                     """);
-        put("velVento", """
+            put("velVento", """
                     SELECT velVento
                     FROM (
                              SELECT MAX(ri.valor) AS velVento
@@ -68,7 +69,7 @@ public class RegistroDAO {
                          ) AS sub
                     WHERE velVento IS NOT NULL;
                     """);
-        put("chuva", """
+            put("chuva", """
                     SELECT chuva
                     FROM (
                              SELECT MAX(ri.valor) AS chuva
@@ -84,7 +85,7 @@ public class RegistroDAO {
                          ) AS sub
                     WHERE chuva IS NOT NULL;
                     """);
-        put("ptoOrvalho", """
+            put("ptoOrvalho", """
                     SELECT ptoOrvalho
                     FROM (
                              SELECT MAX(ri.valor) AS ptoOrvalho
@@ -100,7 +101,7 @@ public class RegistroDAO {
                          ) AS sub
                     WHERE ptoOrvalho IS NOT NULL;
                     """);
-        put("umiIns", """
+            put("umiIns", """
                     SELECT umiIns
                     FROM (
                              SELECT MAX(ri.valor) AS umiIns
@@ -116,7 +117,7 @@ public class RegistroDAO {
                          ) AS sub
                     WHERE umiIns IS NOT NULL;
                     """);
-        put("nebulosidade", """
+            put("nebulosidade", """
                     SELECT nebulosidade
                     FROM (
                              SELECT MAX(ri.valor) AS nebulosidade
@@ -132,7 +133,7 @@ public class RegistroDAO {
                          ) AS sub
                     WHERE nebulosidade IS NOT NULL;
                     """);
-        put("radiacao", """
+            put("radiacao", """
                     SELECT radiacao
                     FROM (
                              SELECT MAX(ri.valor) AS radiacao
@@ -148,7 +149,7 @@ public class RegistroDAO {
                          ) AS sub
                     WHERE radiacao IS NOT NULL;
                     """);
-        put("dirVento", """
+            put("dirVento", """
                     SELECT dirVento
                     FROM (
                              SELECT MAX(ri.valor) AS dirVento
@@ -164,7 +165,7 @@ public class RegistroDAO {
                          ) AS sub
                     WHERE dirVento IS NOT NULL;
                     """);
-        put("insolacao", """
+            put("insolacao", """
                     SELECT insolacao
                     FROM (
                              SELECT MAX(ri.valor) AS insolacao
@@ -180,7 +181,7 @@ public class RegistroDAO {
                          ) AS sub
                     WHERE insolacao IS NOT NULL;
                     """);
-        put("rajVento", """
+            put("rajVento", """
                     SELECT rajVento
                     FROM (
                              SELECT MAX(ri.valor) AS rajVento
@@ -196,8 +197,8 @@ public class RegistroDAO {
                          ) AS sub
                     WHERE rajVento IS NOT NULL;
                     """);
-    }};
-
+        }
+    };
 
     public Connection getConnection() {
         Connection connection = null;
@@ -287,13 +288,13 @@ public class RegistroDAO {
         }
     }
 
-    public void saveRelatory(String sigla, LocalDate dataInicio, LocalDate dataFim,String csvFilePath) {
+    public void saveRelatory(String sigla, LocalDate dataInicio, LocalDate dataFim, String csvFilePath) {
         Connection con = null;
         ObservableList<Map<String, String>> dados = FXCollections.observableArrayList();
 
-        try{
-        con = getConnection();
-        String filterSQL = """
+        try {
+            con = getConnection();
+            String filterSQL = """
                     SELECT r.data_hora,
                            a.cidade AS cidade,
                            r.tipo_arquivo,
@@ -313,15 +314,15 @@ public class RegistroDAO {
                              LEFT JOIN reg_informacao ri ON r.id = ri.registro
                     where ri.dado_suspeito = false and a.cidade = ? and (r.data_hora BETWEEN ? AND ?)
                     GROUP BY r.arquivo, r.data_hora, r.tipo_arquivo;""";
-        try (PreparedStatement ist = con.prepareStatement(filterSQL)) {
-            Timestamp tmstpInicio = Timestamp.valueOf(dataInicio.atStartOfDay());
-            Timestamp tmstpFim = Timestamp.valueOf(dataFim.atTime(23, 59, 59, 0));
-            System.out.println(tmstpInicio);
-            System.out.println(tmstpFim);
-            ist.setString(1, sigla);
-            ist.setTimestamp(2, tmstpInicio);
-            ist.setTimestamp(3, tmstpFim);
-            FileWriter fileWriter = new FileWriter(csvFilePath);
+            try (PreparedStatement ist = con.prepareStatement(filterSQL)) {
+                Timestamp tmstpInicio = Timestamp.valueOf(dataInicio.atStartOfDay());
+                Timestamp tmstpFim = Timestamp.valueOf(dataFim.atTime(23, 59, 59, 0));
+                System.out.println(tmstpInicio);
+                System.out.println(tmstpFim);
+                ist.setString(1, sigla);
+                ist.setTimestamp(2, tmstpInicio);
+                ist.setTimestamp(3, tmstpFim);
+                FileWriter fileWriter = new FileWriter(csvFilePath);
 
                 try (ResultSet result = ist.executeQuery()) {
                     // Escreva o cabeçalho
@@ -367,12 +368,12 @@ public class RegistroDAO {
             }
         }
     }
-   
 
-    public ArrayList<Double> getSpecificData(LocalDate dataInicio, LocalDate dataFim, String nomeTable, String estacaoSigla){
+    public ArrayList<Double> getSpecificData(LocalDate dataInicio, LocalDate dataFim, String nomeTable,
+            String estacaoSigla) {
         Connection con = null;
         ArrayList<Double> dados = new ArrayList<>();
-        try{
+        try {
             con = getConnection();
             String dataSQL = dictionary.get(nomeTable);
             try (PreparedStatement ist = con.prepareStatement(dataSQL)) {
@@ -408,12 +409,106 @@ public class RegistroDAO {
         }
     }
 
+    public ObservableList<Map<String, String>> filterSituationalRelatory(String cidadeEscolhida) {
+        Connection con = null;
+        ObservableList<Map<String, String>> dados = FXCollections.observableArrayList();
+        try {
+            con = getConnection();
+            String filterSQL = """
+                    WITH dados_numerados AS (
+                        SELECT
+                        r.data_hora,
+                        a.estacao,
+                        a.cidade AS cidade,
+                        r.tipo_arquivo,
+                        MAX(CASE WHEN ri.nome = 'tempIns' THEN ri.valor END) AS temperatura,
+                        MAX(CASE WHEN ri.nome = 'pressaoIns' THEN ri.valor END) AS pressao,
+                        MAX(CASE WHEN ri.nome = 'velVento' THEN ri.valor END) AS velVento,
+                        MAX(CASE WHEN ri.nome = 'chuva' THEN ri.valor END) AS chuva,
+                        MAX(CASE WHEN ri.nome = 'ptoOrvalhoIns' THEN ri.valor END) AS ptoOrvalho,
+                        MAX(CASE WHEN ri.nome = 'umiIns' THEN ri.valor END) AS umiIns,
+                        MAX(CASE WHEN ri.nome = 'nebulosidade' THEN ri.valor END) AS nebulosidade,
+                        MAX(CASE WHEN ri.nome = 'radiacao' THEN ri.valor END) AS radiacao,
+                        MAX(CASE WHEN ri.nome = 'dirVento' THEN ri.valor END) AS dirVento,
+                        MAX(CASE WHEN ri.nome = 'insolacao' THEN ri.valor END) AS insolacao,
+                        MAX(CASE WHEN ri.nome = 'rajVento' THEN ri.valor END) AS rajVento,
+                        ROW_NUMBER() OVER (PARTITION BY a.cidade, a.estacao ORDER BY r.data_hora DESC) AS rn
+                        FROM
+                        registro r
+                        LEFT JOIN arquivo a ON r.arquivo = a.id
+                        LEFT JOIN reg_informacao ri ON r.id = ri.registro
+                        WHERE
+                        ri.dado_suspeito = false AND
+                        a.cidade = ?
+                        GROUP BY
+                        a.cidade, a.estacao, r.arquivo, r.data_hora, r.tipo_arquivo
+                        )
+                        SELECT
+                        data_hora,
+                        estacao,
+                        cidade,
+                        tipo_arquivo,
+                        temperatura,
+                        pressao,
+                        velVento,
+                        chuva,
+                        ptoOrvalho,
+                        umiIns,
+                        nebulosidade,
+                        radiacao,
+                        dirVento,
+                        insolacao,
+                        rajVento
+                        FROM
+                        dados_numerados
+                        WHERE
+                        rn = 1;""";
+            try (PreparedStatement ist = con.prepareStatement(filterSQL)) {
 
-    public ObservableList<Map<String, String>> filterBetweenDates(String sigla, LocalDate dataInicio, LocalDate dataFim){
+                ist.setString(1, cidadeEscolhida);;
+
+                try (ResultSet result = ist.executeQuery()) {
+                    while (result.next()) {
+                        Map<String, String> row = new HashMap<>();
+
+                        String dataHora = result.getTimestamp("data_hora").toString();
+                        row.put("data_hora_sit", dataHora);
+                        row.put("temperatura_sit", result.getString("temperatura"));
+                        row.put("pressao_sit", result.getString("pressao"));
+                        row.put("velVento_sit", result.getString("velVento"));
+                        row.put("chuva_sit", result.getString("chuva"));
+                        row.put("ptoOrvalho_sit", result.getString("ptoOrvalho"));
+                        row.put("umidade_sit", result.getString("umiIns"));
+                        row.put("nebulosidade_sit", result.getString("nebulosidade"));
+                        row.put("radiacao_sit", result.getString("radiacao"));
+                        row.put("dirVento_sit", result.getString("dirVento"));
+                        row.put("insolacao_sit", result.getString("insolacao"));
+                        row.put("rajVento_sit", result.getString("rajVento"));
+                        dados.add(row);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Erro!", e);
+        } finally {
+            try {
+                if (con != null)
+                    con.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                throw new RuntimeException("Erro ao fechar conexão", e);
+            }
+        }
+        return dados;
+    }
+
+    public ObservableList<Map<String, String>> filterBetweenDates(String sigla, LocalDate dataInicio,
+            LocalDate dataFim) {
         Connection con = null;
         ObservableList<Map<String, String>> dados = FXCollections.observableArrayList();
 
-        try{
+        try {
             con = getConnection();
             String filterSQL = """
                     SELECT r.data_hora,
@@ -483,8 +578,8 @@ public class RegistroDAO {
 
     }
 
-
-    public void alterarRegistroSuspeito(int registro, String nomeVariavel, Double novoValor, boolean dadoSuspeito) throws SQLException {
+    public void alterarRegistroSuspeito(int registro, String nomeVariavel, Double novoValor, boolean dadoSuspeito)
+            throws SQLException {
         Connection con = null;
         try {
 
@@ -517,7 +612,7 @@ public class RegistroDAO {
         Connection con = null;
         try {
             con = getConnection();
-    
+
             String deleteSQL = "DELETE FROM reg_informacao WHERE registro = ? AND nome = ?";
             try (PreparedStatement pst = con.prepareStatement(deleteSQL)) {
                 pst.setInt(1, registro);
@@ -543,7 +638,7 @@ public class RegistroDAO {
         Connection con = null;
         try {
             con = getConnection();
-    
+
             String manterSQL = "UPDATE reg_informacao SET dado_suspeito = FALSE WHERE registro = ? AND nome = ?";
             try (PreparedStatement pst = con.prepareStatement(manterSQL)) {
                 pst.setInt(1, registro);
@@ -564,7 +659,6 @@ public class RegistroDAO {
             }
         }
     }
-    
 
     private void verificarVariavel(Connection con, String SQL, int registro, String variavel, String limiteMaior,
             String limiteMenor) throws SQLException {
@@ -672,7 +766,7 @@ public class RegistroDAO {
             while (rs.next()) {
 
                 String sql = "SELECT r.data_hora,\n" +
-                        "       r.id AS id,\n"+
+                        "       r.id AS id,\n" +
                         "       r.tipo_arquivo,\n" +
                         "       MAX(CASE WHEN ri.nome = 'tempIns' THEN ri.valor END) AS temperatura,\n" +
                         "       MAX(CASE WHEN ri.nome = 'pressaoIns' THEN ri.valor END) AS pressao,\n" +
@@ -734,9 +828,9 @@ public class RegistroDAO {
         }
     }
 
-    public Map<String, Double> getDadoSuspeito(int registroId){
+    public Map<String, Double> getDadoSuspeito(int registroId) {
         Connection con = null;
-        try{
+        try {
             String select_sql;
             con = getConnection();
             PreparedStatement pst;
@@ -795,19 +889,17 @@ public class RegistroDAO {
             con = getConnection();
             PreparedStatement pst;
             ResultSet rs;
-            if( arquivoId == null){
+            if (arquivoId == null) {
                 select_sql = "select * from registro";
                 pst = con.prepareStatement(select_sql);
                 rs = pst.executeQuery();
-            }else{
+            } else {
                 select_sql = "select * from registro where arquivo = ?";
                 pst = con.prepareStatement(select_sql);
                 pst.setInt(1, arquivoId);
                 rs = pst.executeQuery();
             }
             while (rs.next()) {
-
-
 
                 String newSQL = "UPDATE reg_informacao\n" +
                         "SET dado_suspeito = CASE\n" +
@@ -819,7 +911,7 @@ public class RegistroDAO {
 
                 verificarVariavel(con, newSQL, rs.getInt("id"), "tempIns", tempMinima, tempMaxima);
                 verificarVariavel(con, newSQL, rs.getInt("id"), "pressaoIns", presMinima, presMaxima);
-                verificarVariavel(con, newSQL, rs.getInt("id"), "velVento", velVentoMinima,velVentoMaxima);
+                verificarVariavel(con, newSQL, rs.getInt("id"), "velVento", velVentoMinima, velVentoMaxima);
                 verificarVariavel(con, newSQL, rs.getInt("id"), "chuva", chuvaMinima, chuvaMaxima);
                 verificarVariavel(con, newSQL, rs.getInt("id"), "ptoOrvalhoIns", ptoOrvalhoMinimo, ptoOrvalhoMaximo);
                 verificarVariavel(con, newSQL, rs.getInt("id"), "umiIns", umiMinima, umiMaxima);
@@ -827,8 +919,6 @@ public class RegistroDAO {
                 verificarVariavel(con, newSQL, rs.getInt("id"), "dirVento", dirVentoMinima, dirVentoMaxima);
                 verificarVariavel(con, newSQL, rs.getInt("id"), "insolacao", insoMinima, insoMaxima);
                 verificarVariavel(con, newSQL, rs.getInt("id"), "rajVento", rajVentoMinimo, rajVentoMaximo);
-
-
 
             }
         } catch (SQLException e) {
