@@ -169,9 +169,9 @@ public class PopUpController {
 
         // Cria um alerta de confirmação
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Confirmação");
-        alert.setHeaderText("Restaurar Dado");
-        alert.setContentText("Tem certeza que deseja restaurar o dado?");
+        alert.setTitle("Confirmação para Restaurar Dado");
+        alert.setHeaderText("Tem certeza que deseja restaurar o dado?");
+        alert.setContentText("Esta ação não pode ser desfeita.");
 
         // Mostra o alerta e espera pela resposta do usuário
         alert.showAndWait().ifPresent(result -> {
@@ -201,8 +201,8 @@ public class PopUpController {
         // Criar um Alerta de confirmação
         Alert alerta = new Alert(Alert.AlertType.CONFIRMATION);
         alerta.setTitle("Confirmação");
-        alerta.setHeaderText("Salvar Alteração");
-        alerta.setContentText("Tem certeza que deseja salvar a alteração?");
+        alerta.setHeaderText("Tem certeza que deseja salvar essa alteração?");
+        alerta.setContentText("Esta ação não pode ser desfeita.");
 
         // Configurar o tipo modal para bloquear interações com outras janelas
         alerta.initModality(Modality.APPLICATION_MODAL);
