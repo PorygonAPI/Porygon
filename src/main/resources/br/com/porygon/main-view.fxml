@@ -221,7 +221,7 @@
                     </VBox>
                 </content>
             </Tab>
-            <Tab text="BoxPlot">
+            <Tab text="Relatório BoxPlot">
                 <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
                     <VBox alignment="CENTER" spacing="10.0">
@@ -278,6 +278,7 @@
                             <Label text="Cidade: " />
                             <ComboBox fx:id="citySitComboBox" prefWidth="200" prefHeight="40" />
                             <Button onAction="#gerarRelatorio" text="Gerar" prefWidth="100" prefHeight="40" />
+                            <Button onAction="#baixarRelatorio" prefHeight="40" prefWidth="100" text="Exportar" />
                         </HBox>
                     </VBox>
                 </content>

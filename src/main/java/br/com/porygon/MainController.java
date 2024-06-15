@@ -1252,7 +1252,7 @@ public class MainController {
 
     @FXML
     public void gerarRelatorio() {
-        String cidadeEscolhida = cityComboBox.getValue();
+        String cidadeEscolhida = citySitComboBox.getValue();
 
         // Verifica se as datas foram selecionadas
         if (cidadeEscolhida != null) {
@@ -1327,95 +1327,63 @@ public class MainController {
     String nomeArquivoManual = desktopPath + "RelatorioRegistroManual.csv";
 
     // Modulo para adiconar os registros ao arquivo CSV
+    // Modulo para adiconar os registros ao arquivo CSV
+    @FXML
     public void baixarRelatorio() {
-        try {
-            // Verificar se o aquivo já existe
-            boolean arquivoExiste = new File(nomeArquivo).exists();
-            // Abre o escritor para adicionar dados ao arquivo
-            // if(!arquivoExiste){
-            // if(registros instanceof RegistroAutomatico){
-            // escritor.write("Temp.(C);Umi.(%);Pto Orvalho(C);Pressao(hPa);Vel.
-            // Vento(m/s);Dir. Vento(m/s);Raj. Vento(m/s);Radiacao(KJ/m²);Chuva(mm)\n");
-            // }
-            // else{
-            // escritor.write("Temp.(C);Umi.(%);Pressao(hPa);Vel. Vento(m/s);Dir.
-            // Vento(m/s);Nebulosidade(Decimos);Insolacao(h);Chuva(mm)\n");
-            // }
-            // }
+        // Permitir ao usuário escolher o local e o nome do arquivo
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Salvar Relatório");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV Files", "*.csv"));
+        File selectedFile = fileChooser.showSaveDialog(null);
 
-            if (quantidadeRegistrosTemp > 0) {
-                FileWriter escritor = new FileWriter(nomeArquivo, StandardCharsets.ISO_8859_1, false);
-                escritor.write(
-                        "Temp.(C);Umi.(%);Pto Orvalho(C);Pressao(hPa);Vel. Vento(m/s);Dir. Vento(m/s);Raj. Vento(m/s);Radiacao(KJ/m²);Chuva(mm)\n");
+        if (selectedFile != null) {
+            try {
+                // Abre o escritor para adicionar dados ao arquivo
+                if (quantidadeRegistrosTemp > 0) {
+                    try (FileWriter escritor = new FileWriter(selectedFile, StandardCharsets.ISO_8859_1, false)) {
+                        escritor.write(
+                                "Temp.(C);Umi.(%);Pto Orvalho(C);Pressao(hPa);Vel. Vento(m/s);Dir. Vento(m/s);Raj. Vento(m/s);Radiacao(KJ/m²);Chuva(mm)\n");
 
-                escritor.write(String.format("%.2f", mediaTemp) + ";" + String.format("%.2f", mediaUmi) + ";"
-                        + String.format("%.2f", mediaPtoOrvalho) + ";" + String.format("%.2f", mediaPressao) + ";"
-                        + String.format("%.2f", mediaVelVento) + ";" + String.format("%.2f", mediaDirVento) + ";"
-                        + String.format("%.2f", mediaRajVento) + ";" + String.format("%.2f", mediaRadiacao) + ";"
-                        + String.format("%.2f", mediaChuva) + ";" + "\n");
-                escritor.write("\n");
-                // Escreve todos os dados do Buffer no arquivo
-                escritor.flush();
+                        escritor.write(String.format("%.2f", mediaTemp) + ";" + String.format("%.2f", mediaUmi) + ";"
+                                + String.format("%.2f", mediaPtoOrvalho) + ";" + String.format("%.2f", mediaPressao) + ";"
+                                + String.format("%.2f", mediaVelVento) + ";" + String.format("%.2f", mediaDirVento) + ";"
+                                + String.format("%.2f", mediaRajVento) + ";" + String.format("%.2f", mediaRadiacao) + ";"
+                                + String.format("%.2f", mediaChuva) + ";" + "\n");
+                        escritor.write("\n");
+                        escritor.flush();
+                    }
+                }
 
-                // Fecha o recurso de escrita
-                escritor.close();
+                if (quantidadeRegistrosTempM > 0) {
+                    try (FileWriter escritor = new FileWriter(selectedFile, StandardCharsets.ISO_8859_1, true)) { // Append to the same file
+                        escritor.write(
+                                "Temp.(C);Umi.(%);Pressao(hPa);Vel. Vento(m/s);Dir. Vento(m/s);Nebulosidade(Decimos);Insolacao(h);Chuva(mm)\n");
+                        escritor.write(String.format("%.2f", mediaTempM) + ";" + String.format("%.2f", mediaUmiM) + ";"
+                                + String.format("%.2f", mediaPressaoM) + ";" + String.format("%.2f", mediaVelVentoM) + ";"
+                                + String.format("%.2f", mediaDirVentoM) + ";" + String.format("%.2f", mediaNebulosidadeM) + ";"
+                                + String.format("%.2f", mediaInsolacaoM) + ";" + String.format("%.2f", mediaChuvaM) + ";"
+                                + "\n");
+                        escritor.write("\n");
+                        escritor.flush();
+                    }
+                }
+
+                // Mensagem de sucesso
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Sucesso");
+                alert.setHeaderText("Relatório gerado com sucesso!");
+                alert.setContentText("O relatório foi salvo");
+                alert.showAndWait();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                // Mensagem de erro ao salvar o arquivo
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Erro");
+                alert.setHeaderText("Erro ao salvar o relatório.");
+                alert.setContentText("Ocorreu um erro ao tentar salvar o relatório. Tente novamente.");
+                alert.showAndWait();
             }
-
-            if (quantidadeRegistrosTempM > 0) {
-                FileWriter escritor = new FileWriter(nomeArquivoManual, StandardCharsets.ISO_8859_1, false);
-                escritor.write(
-                        "Temp.(C);Umi.(%);Pressao(hPa);Vel. Vento(m/s);Dir. Vento(m/s);Nebulosidade(Decimos);Insolacao(h);Chuva(mm)\n");
-                escritor.write(String.format("%.2f", mediaTempM) + ";" + String.format("%.2f", mediaUmiM) + ";"
-                        + String.format("%.2f", mediaPressaoM) + ";" + String.format("%.2f", mediaVelVentoM) + ";"
-                        + String.format("%.2f", mediaDirVentoM) + ";" + String.format("%.2f", mediaNebulosidadeM) + ";"
-                        + String.format("%.2f", mediaInsolacaoM) + ";" + String.format("%.2f", mediaChuvaM) + ";"
-                        + "\n");
-                escritor.write("\n");
-                // Escreve todos os dados do Buffer no arquivo
-                escritor.flush();
-
-                // Fecha o recurso de escrita
-                escritor.close();
-            }
-
-            // System.out.println("mediaTemperatura: " + somaTemp + ", " +
-            // quantidadeRegistrosTemp + ", " + mediaTemp);
-            // System.out.println("mediaUmi: " + somaUmi + ", " + quantidadeRegistrosUmi +
-            // ", " + mediaUmi);
-            // System.out.println("mediaPtoOrvalho: " + somaPtoOrvalho + ", " +
-            // quantidadeRegistrosPtoOrvalho + ", " + mediaPtoOrvalho);
-            // System.out.println("mediaPressao: " + somaPressao + ", " +
-            // quantidadeRegistrosPressao + ", " + mediaPressao);
-            // System.out.println("mediaVelVento: " + somaVelVento + ", " +
-            // quantidadeRegistrosVelVento + ", " + mediaVelVento);
-            // System.out.println("mediaDirVento: " + somaDirVento + ", " +
-            // quantidadeRegistrosDirVento + ", " + mediaDirVento);
-            // System.out.println("mediaRajVento: " + somaRajVento + ", " +
-            // quantidadeRegistrosRajVento + ", " + mediaRajVento);
-            // System.out.println("mediaRadiacao: " + somaRadiacao + ", " +
-            // quantidadeRegistrosRadiacao + ", " + mediaRadiacao);
-            // System.out.println("mediaChuva: " + somaChuva + ", " +
-            // quantidadeRegistrosChuva + ", " + mediaChuva);
-            // System.out.println("mediaUmi: " + somaUmi + ", " + quantidadeRegistrosUmi +
-            // ", " + mediaUmi);
-
-            // System.out.println("mediaTemperatura: " + somaTemp + ", " +
-            // quantidadeRegistrosTemp + ", " + mediaTemp);
-            // System.out.println("mediaPressao: " + somaPressao + ", " +
-            // quantidadeRegistrosPressao + ", " + mediaPressao);
-            // System.out.println("mediaVelVento: " + somaVelVento + ", " +
-            // quantidadeRegistrosVelVento + ", " + mediaVelVento);
-            // System.out.println("mediaDirVento: " + somaDirVento + ", " +
-            // quantidadeRegistrosDirVento + ", " + mediaDirVento);
-            // System.out.println("mediaNebulosidade: " + somaNebulosidade + ", " +
-            // quantidadeRegistrosNebulosidade + ", " + mediaNebulosidade);
-            // System.out.println("mediaInsolacao: " + somaInsolacao + ", " +
-            // quantidadeRegistrosInsolacao + ", " + mediaInsolacao);
-            // System.out.println("mediaChuva: " + somaChuva + ", " +
-            // quantidadeRegistrosChuva + ", " + mediaChuva);
-
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 }

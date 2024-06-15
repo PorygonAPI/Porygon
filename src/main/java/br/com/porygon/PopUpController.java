@@ -131,6 +131,8 @@ public class PopUpController {
                 int registroId = Integer.parseInt(registroIdStr);
                 registroDAO.excluirRegistroSuspeito(registroId, nomeVariavel);
                 System.out.println("Registro excluído: " + registroId);
+                ((Stage) btExcluir.getScene().getWindow()).close();
+
             } catch (SQLException e) {
                 e.printStackTrace();
                 // Adicionar lógica para lidar com erros
