@@ -1,5 +1,7 @@
 package br.com.porygon.dao;
 
+import javafx.collections.ObservableList;
+
 import java.sql.*;
 
 public class ConfiguracaoDAO {
@@ -46,6 +48,59 @@ public class ConfiguracaoDAO {
             }
         }
     }
+
+    public void getUnidades(ObservableList<String> lista) throws SQLException {
+        Connection con = null;
+        try {
+            con = getConnection();
+
+            String getUnidadesSQL = "SELECT * FROM unidade_configuracao";
+
+            PreparedStatement selectStmt = con.prepareStatement(getUnidadesSQL);
+            try (ResultSet rsSelect = selectStmt.executeQuery()){
+                while(rsSelect.next()) {
+                    lista.add(rsSelect.getString("valor"));
+                }
+
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao resgatar unidades!", e);
+        } finally {
+            try {
+                if (con != null)
+                    con.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                throw new RuntimeException("Erro ao fechar conexão", e);
+            }
+        }
+    }
+
+    public void updateUnidade(String nome, String valor) {
+        Connection con = null;
+        try {
+            con = getConnection();
+            String insert_sql = "INSERT INTO unidade_configuracao (nome, valor) VALUES (?, ?) on duplicate key update valor = VALUES(valor)";
+            PreparedStatement pst = con.prepareStatement(insert_sql);
+            pst.setString(1, nome);
+            pst.setString(2, valor);
+            pst.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao atualizar unidade!", e);
+        } finally {
+            try {
+                if (con != null)
+                    con.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                throw new RuntimeException("Erro ao fechar conexão", e);
+            }
+        }
+    }
+
 
     public void adicionarAtributo(String nome, double valor){
         Connection con = null;
