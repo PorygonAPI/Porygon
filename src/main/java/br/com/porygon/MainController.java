@@ -17,6 +17,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Alert.AlertType;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -243,6 +244,14 @@ public class MainController {
     private Button atualizarEstacaoButton;
     private EstacaoDAO estacaoDAO;
     private ObservableList<String> estacaoList;
+    @FXML
+    private ChoiceBox<String> variavelChoiceBox;
+    @FXML
+    private TextField atualizarValorTextField;
+    @FXML
+    private Button atualizarValorButton;
+    private ConfiguracaoDAO configuracaoDAO;
+    private ObservableList<String> variavelList;
 
     @FXML
     private ComboBox<String> cityComboBox;
@@ -516,7 +525,18 @@ public class MainController {
             e.printStackTrace();
         }
         atualizarEstacaoButton.setOnAction(event -> atualizarEstacao());
+
+        configuracaoDAO = new ConfiguracaoDAO();
+        variavelList = FXCollections.observableArrayList();
+        try {
+            configuracaoDAO.getUnidades(variavelList);
+            variavelChoiceBox.setItems(variavelList);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        atualizarValorButton.setOnAction(event -> atualizarValor());
     }
+
 
     private void atualizarCidade() {
         String sigla = cidadeChoiceBox.getValue();
@@ -525,17 +545,33 @@ public class MainController {
         if (sigla != null && !novoNome.isEmpty()) {
             try {
                 cidadeDAO.updateCidade(sigla, novoNome);
-                // Optionally, update the list or give user feedback
                 cidadeChoiceBox.getItems().clear();
                 cidadeDAO.getCidades(cidadeList);
                 cidadeChoiceBox.setItems(cidadeList);
                 atualizarCidadeTextField.clear();
+
+            Alert alert = new Alert(AlertType.INFORMATION);
+                alert.setTitle("Atualização Concluída");
+                alert.setHeaderText(null);
+                alert.setContentText("Cidade atualizada com sucesso!");
+                alert.showAndWait();
             } catch (SQLException e) {
                 e.printStackTrace();
-                // Handle the exception (show an error message to the user, etc.)
+                Alert alert = new Alert(AlertType.ERROR);
+                alert.setTitle("Erro ao Atualizar");
+                alert.setHeaderText(null);
+                alert.setContentText("Ocorreu um erro ao atualizar a cidade: " + e.getMessage());
+                alert.showAndWait();
+            }
+        } else {
+                // Caso o novo valor seja vazio ou nulo
+                Alert alert = new Alert(AlertType.WARNING);
+                alert.setTitle("Campo Vazio");
+                alert.setHeaderText(null);
+                alert.setContentText("Por favor, insira um nome válido.");
+                alert.showAndWait();
             }
         }
-    }
 
     private void atualizarEstacao() {
         String codigo = estacaoChoiceBox.getValue();
@@ -548,12 +584,65 @@ public class MainController {
                 estacaoDAO.getStations(estacaoList);
                 estacaoChoiceBox.setItems(estacaoList);
                 atualizarEstacaoTextField.clear();
+
+                Alert alert = new Alert(AlertType.INFORMATION);
+                alert.setTitle("Atualização Concluída");
+                alert.setHeaderText(null);
+                alert.setContentText("Estação atualizada com sucesso!");
+                alert.showAndWait();
             } catch (SQLException e) {
                 e.printStackTrace();
-                // Handle the exception (show an error message to the user, etc.)
+                Alert alert = new Alert(AlertType.ERROR);
+                alert.setTitle("Erro ao Atualizar");
+                alert.setHeaderText(null);
+                alert.setContentText("Ocorreu um erro ao atualizar a estação: " + e.getMessage());
+                alert.showAndWait();
+            }
+        } else {
+                // Caso o novo valor seja vazio ou nulo
+                Alert alert = new Alert(AlertType.WARNING);
+                alert.setTitle("Campo Vazio");
+                alert.setHeaderText(null);
+                alert.setContentText("Por favor, insira um nome válido.");
+                alert.showAndWait();
             }
         }
-    }
+
+    private void atualizarValor() {
+        String nomeVariavel = variavelChoiceBox.getValue();
+        String novoValor = atualizarValorTextField.getText();
+
+        if (nomeVariavel != null && !novoValor.isEmpty()) {
+            try {
+                configuracaoDAO.updateUnidade(nomeVariavel, novoValor);
+                variavelChoiceBox.getItems().clear();
+                configuracaoDAO.getUnidades(variavelList);
+                variavelChoiceBox.setItems(variavelList);
+                atualizarValorTextField.clear();
+
+                Alert alert = new Alert(AlertType.INFORMATION);
+                alert.setTitle("Atualização Concluída");
+                alert.setHeaderText(null);
+                alert.setContentText("Valor atualizado com sucesso!");
+                alert.showAndWait();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                Alert alert = new Alert(AlertType.ERROR);
+                alert.setTitle("Erro ao Atualizar");
+                alert.setHeaderText(null);
+                alert.setContentText("Ocorreu um erro ao atualizar o valor: " + e.getMessage());
+                alert.showAndWait();
+            }
+        } else {
+                // Caso o novo valor seja vazio ou nulo
+                Alert alert = new Alert(AlertType.WARNING);
+                alert.setTitle("Campo Vazio");
+                alert.setHeaderText(null);
+                alert.setContentText("Por favor, insira um valor válido.");
+                alert.showAndWait();
+            }
+        }
+    
 
     private void mostrarPopUp(Map<String, Double> dadosSupeitos, int registroId) {
         if (modalStage == null || !modalStage.isShowing()) {

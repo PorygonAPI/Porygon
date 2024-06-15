@@ -125,4 +125,30 @@ public class ConfiguracaoDAO {
             }
         }
     }
+    public String colunaVariavel(String nome) {
+        Connection con = null;
+        try {
+            con = getConnection();
+            String select_sql = "select * from unidade_configuracao where nome = (?)";
+            PreparedStatement pst = con.prepareStatement(select_sql);
+            pst.setString(1, nome);
+            ResultSet rs = pst.executeQuery();
+            String valor = null;
+            while(rs.next()) {
+                valor = rs.getString("valor");
+            }
+            return valor;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao resgatar atributo!", e);
+        } finally {
+            try {
+                if (con != null)
+                    con.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                throw new RuntimeException("Erro ao fechar conexão", e);
+            }
+        }
+    }
 }
