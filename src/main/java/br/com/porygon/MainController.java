@@ -6,6 +6,7 @@ import br.com.porygon.dao.CidadeDAO;
 import br.com.porygon.dao.ConfiguracaoDAO;
 import br.com.porygon.dao.EstacaoDAO;
 import br.com.porygon.dao.RegistroDAO;
+import javafx.beans.binding.StringExpression;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -19,6 +20,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
@@ -193,6 +195,37 @@ public class MainController {
     @FXML
     private TableColumn<Map<String, String>, String> rajVentoColumn;
 
+    
+
+    @FXML
+    private TableView<Map<String, String>> tableViewRelatorioSituacional;
+
+    @FXML
+    private TableColumn<Map<String, String>, String> dataHoraSitColumn;
+
+    @FXML
+    private TableColumn<Map<String, String>, String> tempSitColumn;
+    @FXML
+    private TableColumn<Map<String, String>, String> pressaoSitColumn;
+    @FXML
+    private TableColumn<Map<String, String>, String> velVentoSitColumn;
+    @FXML
+    private TableColumn<Map<String, String>, String> chuvaSitColumn;
+    @FXML
+    private TableColumn<Map<String, String>, String> ptoOrvalhoSitColumn;
+    @FXML
+    private TableColumn<Map<String, String>, String> umiSitColumn;
+    @FXML
+    private TableColumn<Map<String, String>, String> nebSitColumn;
+    @FXML
+    private TableColumn<Map<String, String>, String> radSitColumn;
+    @FXML
+    private TableColumn<Map<String, String>, String> dirVentoSitColumn;
+    @FXML
+    private TableColumn<Map<String, String>, String> insolacaoSitColumn;
+    @FXML
+    private TableColumn<Map<String, String>, String> rajVentoSitColumn;
+
     @FXML
     private TableView<Map<String, String>> tableViewSuspeito;
 
@@ -257,13 +290,13 @@ public class MainController {
     private ComboBox<String> cityComboBox;
 
     @FXML
+    private ComboBox<String> estacaoComboBoxPlot;
+
+    @FXML
     private DatePicker startDatePicker;
 
     @FXML
     private DatePicker endDatePicker;
-
-    @FXML
-    private ComboBox<String> cityComboBoxBoxPlot;
 
     @FXML
     private DatePicker startDatePickerBoxPlot;
@@ -361,6 +394,7 @@ public class MainController {
     int quantidadeRegistrosChuvaM = 0;
     double mediaChuvaM = 0.0;
     CidadeDAO cidadeDAO = new CidadeDAO();
+    EstacaoDAO estacaoDAO = new EstacaoDAO();
     RegistroDAO registroDAO = new RegistroDAO();
 
     private Callback<TableColumn.CellDataFeatures<Map<String, String>, String>, ObservableValue<String>> createCellFactory(
@@ -373,11 +407,13 @@ public class MainController {
 
     public void initialize() throws SQLException {
         ObservableList<String> cidades = FXCollections.observableArrayList();
+        ObservableList<String> estacoes = FXCollections.observableArrayList();
 
+        estacaoDAO.getEstacoes(estacoes);
         cidadeDAO.getCidades(cidades);
 
         cityComboBox.setItems(cidades);
-        cityComboBoxBoxPlot.setItems(cidades);
+        estacaoComboBoxPlot.setItems(estacoes);
 
         dadoBoxPlot.setCellValueFactory(createCellFactory("dado_registro"));
         q1BoxPlot.setCellValueFactory(createCellFactory("q1"));
@@ -400,6 +436,20 @@ public class MainController {
         dirVentoRelColumn.setCellValueFactory(createCellFactory("dirVento_rel"));
         insolacaoRelColumn.setCellValueFactory(createCellFactory("insolacao_rel"));
         rajVentoRelColumn.setCellValueFactory(createCellFactory("rajVento_rel"));
+
+
+        dataHoraSitColumn.setCellValueFactory(createCellFactory("data_hora_sit"));
+        tempSitColumn.setCellValueFactory(createCellFactory("temperatura_sit"));
+        pressaoSitColumn.setCellValueFactory(createCellFactory("pressao_sit"));
+        velVentoSitColumn.setCellValueFactory(createCellFactory("velVento_sit"));
+        chuvaSitColumn.setCellValueFactory(createCellFactory("chuva_sit"));
+        ptoOrvalhoSitColumn.setCellValueFactory(createCellFactory("ptoOrvalho_sit"));
+        umiSitColumn.setCellValueFactory(createCellFactory("umidade_sit"));
+        nebSitColumn.setCellValueFactory(createCellFactory("nebulosidade_sit"));
+        radSitColumn.setCellValueFactory(createCellFactory("radiacao_sit"));
+        dirVentoSitColumn.setCellValueFactory(createCellFactory("dirVento_sit"));
+        insolacaoSitColumn.setCellValueFactory(createCellFactory("insolacao_sit"));
+        rajVentoSitColumn.setCellValueFactory(createCellFactory("rajVento_sit"));
 
         // Fazer esse cara num botão de análise
         dataHoraSusColumn.setCellValueFactory(createCellFactory("data_hora_sus"));
@@ -887,15 +937,12 @@ public class MainController {
     }
 
     public Map<String, String> addBoxPlotData(LocalDate dataInicial, LocalDate dataFinal, String tipoDado,
-            String cidadeEscolhida) {
-        ArrayList<Double> valores = registroDAO.getSpecificData(dataInicial, dataFinal, tipoDado, cidadeEscolhida);
+            String estacaoEscolhida) {
+        ArrayList<Double> valores = registroDAO.getSpecificData(dataInicial, dataFinal, tipoDado, estacaoEscolhida);
         DecimalFormat df = new DecimalFormat("#.00");
 
         if (!valores.isEmpty()) {
-            double[] valoresArray = new double[valores.size()];
-            for (int i = 0; i < valores.size(); i++) {
-                valoresArray[i] = valores.get(i);
-            }
+            double[] valoresArray = valores.stream().mapToDouble(Double::doubleValue).toArray();
             RelatorioBoxplot boxplot = RelatorioBoxplot.calculateSummaryStatistics(valoresArray);
 
             Map<String, String> row = new HashMap<>();
@@ -919,143 +966,177 @@ public class MainController {
             row.put("out", "Nao possui");
             return row;
         }
-
     }
 
     @FXML
-    public void baixarRelatorioBoxPlot() throws IOException {
-        String cidadeEscolhida = cityComboBoxBoxPlot.getValue();
+    private void baixarRelatorioBoxPlot() throws IOException {
+        String estacaoEscolhida = estacaoComboBoxPlot.getValue();
         LocalDate dataInicial = startDatePickerBoxPlot.getValue();
         LocalDate dataFinal = endDatePickerBoxPlot.getValue();
-        if (cidadeEscolhida != null && dataInicial != null && dataFinal != null) {
-            FileWriter escritor = new FileWriter(nomeArquivoBoxPlot, StandardCharsets.ISO_8859_1, false);
-            escritor.write(
-                    "Primeiro Quartil (Q1);Mediana (Q2);Terceiro Quartil (Q3);Limite Inferior;Limite Superior;Outliers;\n");
-            Map<String, String> rowTemp = addBoxPlotData(dataInicial, dataFinal, "temperatura", cidadeEscolhida);
-            escritor.write(
-                    rowTemp.get("dado_registro")+ ";" +
-                    rowTemp.get("q1") + ";" +
-                    rowTemp.get("q2") + ";" +
-                    rowTemp.get("q3") + ";" +
-                    rowTemp.get("li") + ";" +
-                    rowTemp.get("ls") + ";" +
-                    rowTemp.get("out") + ";" + "\n");
 
-            Map<String, String> rowPressao = addBoxPlotData(dataInicial, dataFinal, "pressao", cidadeEscolhida);
-            escritor.write(
-                    rowPressao.get("dado_registro")+ ";" +        
-                    rowPressao.get("q1") + ";" +
-                    rowPressao.get("q2") + ";" +
-                    rowPressao.get("q3") + ";" +
-                    rowPressao.get("li") + ";" +
-                    rowPressao.get("ls") + ";" +
-                    rowPressao.get("out") + ";" + "\n");
+        if (estacaoEscolhida != null && dataInicial != null && dataFinal != null) {
+            // Utilizando o FileChooser para escolher o local e nome do arquivo
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Salvar Relatório BoxPlot");
+            fileChooser.getExtensionFilters().add(new ExtensionFilter("CSV Files", "*.csv"));
 
-            Map<String, String> rowVelVento = addBoxPlotData(dataInicial, dataFinal, "velVento", cidadeEscolhida);
-            escritor.write(
-                    rowVelVento.get("dado_registro")+ ";" +
-                    rowVelVento.get("q1") + ";" +
-                    rowVelVento.get("q2") + ";" +
-                    rowVelVento.get("q3") + ";" +
-                    rowVelVento.get("li") + ";" +
-                    rowVelVento.get("ls") + ";" +
-                    rowVelVento.get("out") + ";" + "\n");
+            // Abrindo a janela para escolher o local e o nome do arquivo
+            File file = fileChooser.showSaveDialog(null);
 
-            Map<String, String> rowChuva = addBoxPlotData(dataInicial, dataFinal, "chuva", cidadeEscolhida);
-            escritor.write( 
-                    rowChuva.get("dado_registro")+ ";" +
-                    rowChuva.get("q1") + ";" +
-                    rowChuva.get("q2") + ";" +
-                    rowChuva.get("q3") + ";" +
-                    rowChuva.get("li") + ";" +
-                    rowChuva.get("ls") + ";" +
-                    rowChuva.get("out") + ";" + "\n");
+            if (file != null) {
+                try (FileWriter escritor = new FileWriter(file, StandardCharsets.ISO_8859_1, false)) {
+                    escritor.write(
+                            "Primeiro Quartil (Q1);Mediana (Q2);Terceiro Quartil (Q3);Limite Inferior;Limite Superior;Outliers;\n");
 
-            Map<String, String> rowPtoOrvalho = addBoxPlotData(dataInicial, dataFinal, "ptoOrvalho", cidadeEscolhida);
-            escritor.write( 
-                    rowPtoOrvalho.get("dado_registro")+ ";" +
-                    rowPtoOrvalho.get("q1") + ";" +
-                    rowPtoOrvalho.get("q2") + ";" +
-                    rowPtoOrvalho.get("q3") + ";" +
-                    rowPtoOrvalho.get("li") + ";" +
-                    rowPtoOrvalho.get("ls") + ";" +
-                    rowPtoOrvalho.get("out") + ";" + "\n");
+                    Map<String, String> rowTemp = addBoxPlotData(dataInicial, dataFinal, "temperatura",
+                            estacaoEscolhida);
+                    escritor.write(
+                            rowTemp.get("dado_registro") + ";" +
+                                    rowTemp.get("q1") + ";" +
+                                    rowTemp.get("q2") + ";" +
+                                    rowTemp.get("q3") + ";" +
+                                    rowTemp.get("li") + ";" +
+                                    rowTemp.get("ls") + ";" +
+                                    rowTemp.get("out") + ";" + "\n");
 
-            Map<String, String> rowUmi = addBoxPlotData(dataInicial, dataFinal, "umiIns", cidadeEscolhida);
-            escritor.write( 
-                    rowUmi.get("dado_registro")+ ";" +
-                    rowUmi.get("q1") + ";" +
-                    rowUmi.get("q2") + ";" +
-                    rowUmi.get("q3") + ";" +
-                    rowUmi.get("li") + ";" +
-                    rowUmi.get("ls") + ";" +
-                    rowUmi.get("out") + ";" + "\n");
+                    Map<String, String> rowPressao = addBoxPlotData(dataInicial, dataFinal, "pressao",
+                            estacaoEscolhida);
+                    escritor.write(
+                            rowPressao.get("dado_registro") + ";" +
+                                    rowPressao.get("q1") + ";" +
+                                    rowPressao.get("q2") + ";" +
+                                    rowPressao.get("q3") + ";" +
+                                    rowPressao.get("li") + ";" +
+                                    rowPressao.get("ls") + ";" +
+                                    rowPressao.get("out") + ";" + "\n");
 
-            Map<String, String> rowNebulosidade = addBoxPlotData(dataInicial, dataFinal, "nebulosidade",
-                    cidadeEscolhida);
-            escritor.write(
-                    rowNebulosidade.get("dado_registro")+ ";" + 
-                    rowNebulosidade.get("q1") + ";" +
-                    rowNebulosidade.get("q2") + ";" +
-                    rowNebulosidade.get("q3") + ";" +
-                    rowNebulosidade.get("li") + ";" +
-                    rowNebulosidade.get("ls") + ";" +
-                    rowNebulosidade.get("out") + ";" + "\n");
+                    Map<String, String> rowVelVento = addBoxPlotData(dataInicial, dataFinal, "velVento",
+                            estacaoEscolhida);
+                    escritor.write(
+                            rowVelVento.get("dado_registro") + ";" +
+                                    rowVelVento.get("q1") + ";" +
+                                    rowVelVento.get("q2") + ";" +
+                                    rowVelVento.get("q3") + ";" +
+                                    rowVelVento.get("li") + ";" +
+                                    rowVelVento.get("ls") + ";" +
+                                    rowVelVento.get("out") + ";" + "\n");
 
-            Map<String, String> rowRadiacao = addBoxPlotData(dataInicial, dataFinal, "radiacao", cidadeEscolhida);
-            escritor.write(
-                    rowRadiacao.get("dado_registro")+ ";" +
-                    rowRadiacao.get("q1") + ";" +
-                    rowRadiacao.get("q2") + ";" +
-                    rowRadiacao.get("q3") + ";" +
-                    rowRadiacao.get("li") + ";" +
-                    rowRadiacao.get("ls") + ";" +
-                    rowRadiacao.get("out") + ";" + "\n");
+                    Map<String, String> rowChuva = addBoxPlotData(dataInicial, dataFinal, "chuva", estacaoEscolhida);
+                    escritor.write(
+                            rowChuva.get("dado_registro") + ";" +
+                                    rowChuva.get("q1") + ";" +
+                                    rowChuva.get("q2") + ";" +
+                                    rowChuva.get("q3") + ";" +
+                                    rowChuva.get("li") + ";" +
+                                    rowChuva.get("ls") + ";" +
+                                    rowChuva.get("out") + ";" + "\n");
 
-            Map<String, String> rowDirVento = addBoxPlotData(dataInicial, dataFinal, "dirVento", cidadeEscolhida);
-            escritor.write( 
-                    rowDirVento.get("dado_registro")+ ";" +
-                    rowDirVento.get("q1") + ";" +
-                    rowDirVento.get("q2") + ";" +
-                    rowDirVento.get("q3") + ";" +
-                    rowDirVento.get("li") + ";" +
-                    rowDirVento.get("ls") + ";" +
-                    rowDirVento.get("out") + ";" + "\n");
+                    Map<String, String> rowPtoOrvalho = addBoxPlotData(dataInicial, dataFinal, "ptoOrvalho",
+                            estacaoEscolhida);
+                    escritor.write(
+                            rowPtoOrvalho.get("dado_registro") + ";" +
+                                    rowPtoOrvalho.get("q1") + ";" +
+                                    rowPtoOrvalho.get("q2") + ";" +
+                                    rowPtoOrvalho.get("q3") + ";" +
+                                    rowPtoOrvalho.get("li") + ";" +
+                                    rowPtoOrvalho.get("ls") + ";" +
+                                    rowPtoOrvalho.get("out") + ";" + "\n");
 
-            Map<String, String> rowInsolacao = addBoxPlotData(dataInicial, dataFinal, "insolacao", cidadeEscolhida);
-            escritor.write(
-                    rowInsolacao.get("dado_registro")+ ";" + 
-                    rowInsolacao.get("q1") + ";" +
-                    rowInsolacao.get("q2") + ";" +
-                    rowInsolacao.get("q3") + ";" +
-                    rowInsolacao.get("li") + ";" +
-                    rowInsolacao.get("ls") + ";" +
-                    rowInsolacao.get("out") + ";" + "\n");
+                    Map<String, String> rowUmi = addBoxPlotData(dataInicial, dataFinal, "umiIns", estacaoEscolhida);
+                    escritor.write(
+                            rowUmi.get("dado_registro") + ";" +
+                                    rowUmi.get("q1") + ";" +
+                                    rowUmi.get("q2") + ";" +
+                                    rowUmi.get("q3") + ";" +
+                                    rowUmi.get("li") + ";" +
+                                    rowUmi.get("ls") + ";" +
+                                    rowUmi.get("out") + ";" + "\n");
 
-            Map<String, String> rowRajVento = addBoxPlotData(dataInicial, dataFinal, "rajVento", cidadeEscolhida);
-            escritor.write(
-                    rowRajVento.get("dado_registro")+ ";" + 
-                    rowRajVento.get("q1") + ";" +
-                    rowRajVento.get("q2") + ";" +
-                    rowRajVento.get("q3") + ";" +
-                    rowRajVento.get("li") + ";" +
-                    rowRajVento.get("ls") + ";" +
-                    rowRajVento.get("out") + ";" + "\n");
+                    Map<String, String> rowNebulosidade = addBoxPlotData(dataInicial, dataFinal, "nebulosidade",
+                            estacaoEscolhida);
+                    escritor.write(
+                            rowNebulosidade.get("dado_registro") + ";" +
+                                    rowNebulosidade.get("q1") + ";" +
+                                    rowNebulosidade.get("q2") + ";" +
+                                    rowNebulosidade.get("q3") + ";" +
+                                    rowNebulosidade.get("li") + ";" +
+                                    rowNebulosidade.get("ls") + ";" +
+                                    rowNebulosidade.get("out") + ";" + "\n");
 
-            // Escreve todos os dados do Buffer no arquivo
-            escritor.flush();
+                    Map<String, String> rowRadiacao = addBoxPlotData(dataInicial, dataFinal, "radiacao",
+                            estacaoEscolhida);
+                    escritor.write(
+                            rowRadiacao.get("dado_registro") + ";" +
+                                    rowRadiacao.get("q1") + ";" +
+                                    rowRadiacao.get("q2") + ";" +
+                                    rowRadiacao.get("q3") + ";" +
+                                    rowRadiacao.get("li") + ";" +
+                                    rowRadiacao.get("ls") + ";" +
+                                    rowRadiacao.get("out") + ";" + "\n");
 
-            // Fecha o recurso de escrita
-            escritor.close();
+                    Map<String, String> rowDirVento = addBoxPlotData(dataInicial, dataFinal, "dirVento",
+                            estacaoEscolhida);
+                    escritor.write(
+                            rowDirVento.get("dado_registro") + ";" +
+                                    rowDirVento.get("q1") + ";" +
+                                    rowDirVento.get("q2") + ";" +
+                                    rowDirVento.get("q3") + ";" +
+                                    rowDirVento.get("li") + ";" +
+                                    rowDirVento.get("ls") + ";" +
+                                    rowDirVento.get("out") + ";" + "\n");
+
+                    Map<String, String> rowInsolacao = addBoxPlotData(dataInicial, dataFinal, "insolacao",
+                            estacaoEscolhida);
+                    escritor.write(
+                            rowInsolacao.get("dado_registro") + ";" +
+                                    rowInsolacao.get("q1") + ";" +
+                                    rowInsolacao.get("q2") + ";" +
+                                    rowInsolacao.get("q3") + ";" +
+                                    rowInsolacao.get("li") + ";" +
+                                    rowInsolacao.get("ls") + ";" +
+                                    rowInsolacao.get("out") + ";" + "\n");
+
+                    Map<String, String> rowRajVento = addBoxPlotData(dataInicial, dataFinal, "rajVento",
+                            estacaoEscolhida);
+                    escritor.write(
+                            rowRajVento.get("dado_registro") + ";" +
+                                    rowRajVento.get("q1") + ";" +
+                                    rowRajVento.get("q2") + ";" +
+                                    rowRajVento.get("q3") + ";" +
+                                    rowRajVento.get("li") + ";" +
+                                    rowRajVento.get("ls") + ";" +
+                                    rowRajVento.get("out") + ";" + "\n");
+
+                    // Escreve todos os dados do Buffer no arquivo
+                    escritor.flush();
+
+                    // Fecha o recurso de escrita
+                    escritor.close();
+                }
+
+                // Exibindo mensagem de sucesso
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Sucesso");
+                alert.setHeaderText(null);
+                alert.setContentText("Relatório salvo com sucesso!");
+                alert.showAndWait();
+            }
+        } else {
+            // Exibindo mensagem de erro caso alguma informação esteja faltando
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erro");
+            alert.setHeaderText(null);
+            alert.setContentText("Por favor, selecione a estação e o intervalo de datas.");
+            alert.showAndWait();
         }
     }
 
     @FXML
     public void gerarRelatorioBoxPlot() {
-        String cidadeEscolhida = cityComboBoxBoxPlot.getValue();
+        String estacaoEscolhida = estacaoComboBoxPlot.getValue();
         LocalDate dataInicial = startDatePickerBoxPlot.getValue();
         LocalDate dataFinal = endDatePickerBoxPlot.getValue();
-        if (cidadeEscolhida != null && dataInicial != null && dataFinal != null) {
+        if (estacaoEscolhida != null && dataInicial != null && dataFinal != null) {
 
             // System.out.println(registroDAO.getSpecificData(dataInicial, dataFinal,
             // "temperatura", cidadeEscolhida));
@@ -1063,17 +1144,17 @@ public class MainController {
             // "temperatura", cidadeEscolhida));
 
             ObservableList<Map<String, String>> dados = FXCollections.observableArrayList();
-            dados.add(addBoxPlotData(dataInicial, dataFinal, "temperatura", cidadeEscolhida));
-            dados.add(addBoxPlotData(dataInicial, dataFinal, "pressao", cidadeEscolhida));
-            dados.add(addBoxPlotData(dataInicial, dataFinal, "velVento", cidadeEscolhida));
-            dados.add(addBoxPlotData(dataInicial, dataFinal, "chuva", cidadeEscolhida));
-            dados.add(addBoxPlotData(dataInicial, dataFinal, "ptoOrvalho", cidadeEscolhida));
-            dados.add(addBoxPlotData(dataInicial, dataFinal, "umiIns", cidadeEscolhida));
-            dados.add(addBoxPlotData(dataInicial, dataFinal, "nebulosidade", cidadeEscolhida));
-            dados.add(addBoxPlotData(dataInicial, dataFinal, "radiacao", cidadeEscolhida));
-            dados.add(addBoxPlotData(dataInicial, dataFinal, "dirVento", cidadeEscolhida));
-            dados.add(addBoxPlotData(dataInicial, dataFinal, "insolacao", cidadeEscolhida));
-            dados.add(addBoxPlotData(dataInicial, dataFinal, "rajVento", cidadeEscolhida));
+            dados.add(addBoxPlotData(dataInicial, dataFinal, "temperatura", estacaoEscolhida));
+            dados.add(addBoxPlotData(dataInicial, dataFinal, "pressao", estacaoEscolhida));
+            dados.add(addBoxPlotData(dataInicial, dataFinal, "velVento", estacaoEscolhida));
+            dados.add(addBoxPlotData(dataInicial, dataFinal, "chuva", estacaoEscolhida));
+            dados.add(addBoxPlotData(dataInicial, dataFinal, "ptoOrvalho", estacaoEscolhida));
+            dados.add(addBoxPlotData(dataInicial, dataFinal, "umiIns", estacaoEscolhida));
+            dados.add(addBoxPlotData(dataInicial, dataFinal, "nebulosidade", estacaoEscolhida));
+            dados.add(addBoxPlotData(dataInicial, dataFinal, "radiacao", estacaoEscolhida));
+            dados.add(addBoxPlotData(dataInicial, dataFinal, "dirVento", estacaoEscolhida));
+            dados.add(addBoxPlotData(dataInicial, dataFinal, "insolacao", estacaoEscolhida));
+            dados.add(addBoxPlotData(dataInicial, dataFinal, "rajVento", estacaoEscolhida));
 
             tableViewBoxPlot.setItems(dados);
 
@@ -1106,6 +1187,33 @@ public class MainController {
         }
     }
 
+
+    private void filtrarRegistrosPorCidade(String cidadeEscolhida) {
+        // listrelatorio.getItems().add("Cidade: " + cidadeEscolhida + " | Período: " +
+        // dataInicial + " a " + dataFinal);
+        ObservableList<Map<String, String>> dadosRelatorio = FXCollections.observableArrayList();
+
+        dadosRelatorio = registroDAO.filterSituationalRelatory(cidadeEscolhida);
+
+        tableViewRelatorioSituacional.setItems(dadosRelatorio);
+    }
+
+    @FXML
+    public void gerarRelatorio() {
+        String cidadeEscolhida = cityComboBox.getValue();
+
+        // Verifica se as datas foram selecionadas
+        if (cidadeEscolhida != null) {
+            filtrarRegistrosPorCidade(cidadeEscolhida);
+        } else {
+            // Exibir mensagem de erro se os campos não estiverem preenchidos
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erro");
+            alert.setHeaderText("Por favor, selecione a cidade e as datas inicial e final.");
+            alert.showAndWait();
+        }
+    }
+
     // Método para filtrar os registros para um dia específico e cidade
     private void filtrarRegistrosPorDia(String cidadeEscolhida, LocalDate data, LocalDate dataInicial,
             LocalDate dataFinal) {
@@ -1118,19 +1226,48 @@ public class MainController {
         tableViewRelatorio.setItems(dadosRelatorio);
     }
 
-    // Exportar dados CSV
-    public void exportarrelatorioperiocidade(@SuppressWarnings("exports") ActionEvent actionEvent) throws IOException {
-        String desktopPath = System.getProperty("user.home") + "/Documents/";
-        String nomeArquivo = desktopPath + "RelatorioRegistro.csv";
 
+    @FXML
+    public void exportarrelatorioperiocidade(ActionEvent actionEvent) throws IOException {
         String cidadeEscolhida = cityComboBox.getValue();
         LocalDate dataInicial = startDatePicker.getValue();
         LocalDate dataFinal = endDatePicker.getValue();
 
-        registroDAO.saveRelatory(cidadeEscolhida, dataInicial, dataFinal, nomeArquivo);
+        if (cidadeEscolhida != null && dataInicial != null && dataFinal != null) {
+            // Configurar o FileChooser para escolher o local e o nome do arquivo
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Salvar Relatório");
+            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV Files", "*.csv"));
+
+            // Mostrar a janela para escolher o local e o nome do arquivo
+            File file = fileChooser.showSaveDialog(null);
+
+            if (file != null) {
+                // Chamar o método saveRelatory do registroDAO com o caminho do arquivo escolhido
+                registroDAO.saveRelatory(cidadeEscolhida, dataInicial, dataFinal, file.getAbsolutePath());
+
+                // Exibir mensagem de sucesso
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Sucesso");
+                alert.setHeaderText(null);
+                alert.setContentText("Relatório salvo com sucesso!");
+                alert.showAndWait();
+            } else {
+                // Caso o usuário tenha cancelado a escolha do arquivo
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Erro");
+                alert.setHeaderText(null);
+                alert.setContentText("Operação de exportação cancelada pelo usuário.");
+                alert.showAndWait();
+            }
+        } else {
+            // Exibir mensagem de erro se alguma informação estiver faltando
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erro");
+            alert.setHeaderText("Por favor, selecione a cidade e as datas inicial e final.");
+            alert.showAndWait();
+        }
     }
-    // Preciso fazer um novo botão para gerar o relatorio na tela
-    // Preciso fazer a parte do relatorio Manual
 
     String desktopPath = System.getProperty("user.home") + "/Documents/";
     String nomeArquivo = desktopPath + "RelatorioRegistro.csv";

@@ -20,14 +20,14 @@ public class EstacaoDAO {
         return connection;
     }
 
-    public void getStations(ObservableList<String> lista) throws SQLException {
+    public void getEstacoes(ObservableList<String> lista) throws SQLException {
         Connection con = null;
         try {
             con = getConnection();
 
-            String getCidadeSQL = "SELECT * FROM estacao";
+            String getEstacaoSQL = "SELECT * FROM estacao";
 
-            PreparedStatement selectStmt = con.prepareStatement(getCidadeSQL);
+            PreparedStatement selectStmt = con.prepareStatement(getEstacaoSQL);
             try (ResultSet rsSelect = selectStmt.executeQuery()){
                 while(rsSelect.next()) {
                     lista.add(rsSelect.getString("nome"));
