@@ -4,6 +4,7 @@ import br.com.porygon.dao.ArquivoDAO;
 // import javafx.collections.ObservableList;
 import br.com.porygon.dao.CidadeDAO;
 import br.com.porygon.dao.ConfiguracaoDAO;
+import br.com.porygon.dao.EstacaoDAO;
 import br.com.porygon.dao.RegistroDAO;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
@@ -225,6 +226,23 @@ public class MainController {
     private TableColumn<Map<String, String>, String> insolacaoSusColumn;
     @FXML
     private TableColumn<Map<String, String>, String> rajVentoSusColumn;
+
+    // Atributos da tela de configuração de cidades, estações e variáveis
+    @FXML
+    private ChoiceBox<String> cidadeChoiceBox;
+    @FXML
+    private TextField atualizarCidadeTextField;
+    @FXML
+    private Button atualizarCidadeButton;
+    private ObservableList<String> cidadeList;
+    @FXML
+    private ChoiceBox<String> estacaoChoiceBox;
+    @FXML
+    private TextField atualizarEstacaoTextField;
+    @FXML
+    private Button atualizarEstacaoButton;
+    private EstacaoDAO estacaoDAO;
+    private ObservableList<String> estacaoList;
 
     @FXML
     private ComboBox<String> cityComboBox;
@@ -477,6 +495,64 @@ public class MainController {
             }
         });
 
+        // Configuração de cidades, estações e variáveis
+        // Carregar as cidades na lista suspensa
+        cidadeDAO = new CidadeDAO();
+        cidadeList = FXCollections.observableArrayList();
+        try {
+            cidadeDAO.getCidades(cidadeList);
+            cidadeChoiceBox.setItems(cidadeList);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        atualizarCidadeButton.setOnAction(event -> atualizarCidade());
+
+        estacaoDAO = new EstacaoDAO();
+        estacaoList = FXCollections.observableArrayList();
+        try {
+            estacaoDAO.getStations(estacaoList);
+            estacaoChoiceBox.setItems(estacaoList);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        atualizarEstacaoButton.setOnAction(event -> atualizarEstacao());
+    }
+
+    private void atualizarCidade() {
+        String sigla = cidadeChoiceBox.getValue();
+        String novoNome = atualizarCidadeTextField.getText();
+
+        if (sigla != null && !novoNome.isEmpty()) {
+            try {
+                cidadeDAO.updateCidade(sigla, novoNome);
+                // Optionally, update the list or give user feedback
+                cidadeChoiceBox.getItems().clear();
+                cidadeDAO.getCidades(cidadeList);
+                cidadeChoiceBox.setItems(cidadeList);
+                atualizarCidadeTextField.clear();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                // Handle the exception (show an error message to the user, etc.)
+            }
+        }
+    }
+
+    private void atualizarEstacao() {
+        String codigo = estacaoChoiceBox.getValue();
+        String novoNome = atualizarEstacaoTextField.getText();
+
+        if (codigo != null && !novoNome.isEmpty()) {
+            try {
+                estacaoDAO.updateEstacao(codigo, novoNome);
+                estacaoChoiceBox.getItems().clear();
+                estacaoDAO.getStations(estacaoList);
+                estacaoChoiceBox.setItems(estacaoList);
+                atualizarEstacaoTextField.clear();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                // Handle the exception (show an error message to the user, etc.)
+            }
+        }
     }
 
     private void mostrarPopUp(Map<String, Double> dadosSupeitos, int registroId) {
@@ -1064,5 +1140,4 @@ public class MainController {
             e.printStackTrace();
         }
     }
-
 }

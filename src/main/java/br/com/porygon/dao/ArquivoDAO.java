@@ -92,7 +92,7 @@ public class ArquivoDAO {
 
     private static void addOrUpdateCity(String cidadeSigla, Connection con) throws SQLException {
         String getCidadeSQL = "SELECT sigla FROM cidade WHERE sigla = ?";
-        String setCidadeSQL = "INSERT INTO cidade (sigla, cidade) VALUES (?, ?)";
+        String setCidadeSQL = "INSERT INTO cidade (sigla, nome) VALUES (?, ?)";
 
         PreparedStatement selectStmt = con.prepareStatement(getCidadeSQL);
         selectStmt.setString(1, cidadeSigla);

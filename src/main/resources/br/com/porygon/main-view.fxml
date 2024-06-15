@@ -1,41 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ChoiceBox?>
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.DatePicker?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Tab?>
-<?import javafx.scene.control.TabPane?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<VBox prefHeight="693.0" prefWidth="1082.0" spacing="20.0" style="-fx-background-color: #FFFAFA;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.porygon.MainController">
+<VBox prefHeight="798.0" prefWidth="1125.0" spacing="20.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.porygon.MainController">
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>
     <HBox spacing="10.0" />
-   <Label text="Nome do programa">
+   <Label text="Meteorygon">
       <font>
          <Font size="30.0" />
       </font>
    </Label>
-    <Label fx:id="selectedFilesLabel" />
-     <Button onAction="#selectFilesClick" text="Insira um arquivo" />
-    <Button alignment="CENTER" contentDisplay="CENTER" onAction="#updateLists" text="Atualizar registros" />
-    <TabPane prefHeight="428.0" prefWidth="1042.0" style="-fx-background-color: #FFFAFA;" tabClosingPolicy="UNAVAILABLE">
+    <Button onAction="#selectFilesClick" text="Insira um arquivo" />
+    <Button onAction="#updateLists" text="Atualizar registros" />
+    <TabPane maxHeight="630.0" maxWidth="1086.0" minHeight="300.0" minWidth="700.0" prefHeight="575.0" prefWidth="1086.0" tabClosingPolicy="UNAVAILABLE" tabMaxHeight="500.0" tabMaxWidth="500.0">
         <tabs>
             <Tab text="Configurações">
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
                     <VBox prefHeight="399.0" prefWidth="1042.0" spacing="10.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
                         <!-- Cabeçalho de informações -->
-                        <Label style="-fx-font-size: 16px; -fx-font-weight: bold;" text="Insira os parâmetros para validação" />
+                        <Label alignment="CENTER" contentDisplay="CENTER" graphicTextGap="0.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="26.0" prefWidth="1070.0" text="Insira abaixo os valores máximos e mínimos para cada variável climática" textAlignment="CENTER">
+                  <opaqueInsets>
+                     <Insets />
+                  </opaqueInsets>
+                  <font>
+                     <Font name="System Bold" size="16.0" />
+                  </font></Label>
+               <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="22.0" prefWidth="1069.0" text="Os valores já cadastrados podem ser alterados a qualquer momento. Altere a máxima e/ou a mínima da variável desejada e clique novamente em &quot;Cadastrar&quot;" textAlignment="CENTER">
+                  <font>
+                     <Font name="System Bold Italic" size="11.0" />
+                  </font>
+               </Label>
                     <!-- Temperatura e Umidade -->
                     <HBox spacing="10.0">
                         <Label alignment="CENTER_RIGHT" prefHeight="26.0" prefWidth="130.0" text="Temperatura Max:" />
@@ -93,32 +92,45 @@
                     </HBox>
                     <HBox alignment="CENTER" prefHeight="25.0" prefWidth="739.0">
                   <children>
-                           <Button contentDisplay="CENTER" onAction="#verificar" prefHeight="26.0" prefWidth="200.0" style="-fx-background-color: #72BE44; -fx-text-fill= white -fx-font-size: 17px;" text="Cadastrar" />
+                           <Button contentDisplay="CENTER" onAction="#verificar" prefHeight="26.0" prefWidth="200.0" text="Cadastrar">
+                        <HBox.margin>
+                           <Insets bottom="10.0" top="15.0" />
+                        </HBox.margin>
+                     </Button>
                   </children>
                     </HBox>
-                        <Label alignment="CENTER" style="-fx-font-size: 16px; -fx-font-weight: bold;" text="Selecione as informações desejadas para a geração de relatórios" />
+                        <Label alignment="CENTER" prefHeight="26.0" prefWidth="1073.0" text="Configure abaixo os nomes das estações metereológicas, cidades e variáveis climáticas" textAlignment="CENTER">
+                  <VBox.margin>
+                     <Insets bottom="10.0" />
+                  </VBox.margin>
+                  <font>
+                     <Font name="System Bold" size="16.0" />
+                  </font></Label>
                     <HBox alignment="CENTER" spacing="10.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
-                        <Label alignment="CENTER" prefHeight="26.0" prefWidth="200.0" text="Selecione uma Estação:" />
+                        <Label alignment="CENTER_RIGHT" prefHeight="26.0" prefWidth="128.0" text="Selecione uma Estação:" textAlignment="RIGHT" />
                         <ChoiceBox fx:id="estacaoChoiceBox" prefHeight="26.0" prefWidth="200.0" />
-                        <TextField fx:id="atualizeEstacaoTextField" prefHeight="26.0" prefWidth="200.0" promptText="Atualize o nome da estação" />
-                        <Button prefHeight="26.0" prefWidth="200.0" text="Atualizar Estação" />
+                        <TextField fx:id="atualizarEstacaoTextField" prefHeight="26.0" prefWidth="200.0" promptText="Atualize o nome da estação" />
+                        <Button fx:id="atualizarEstacaoButton" prefHeight="26.0" prefWidth="200.0" text="Atualizar Estação" />
                     </HBox>
                             
                     <!-- Atualização da Cidade -->
                     <HBox alignment="CENTER" spacing="10.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
-                        <Label alignment="CENTER" prefHeight="26.0" prefWidth="200.0" text="Selecione uma Cidade:" />
+                        <Label alignment="CENTER_RIGHT" prefHeight="26.0" prefWidth="128.0" text="Selecione uma Cidade:" />
                         <ChoiceBox fx:id="cidadeChoiceBox" prefHeight="26.0" prefWidth="200.0" />
-                        <TextField fx:id="atualizeCidadeTextField" prefHeight="26.0" prefWidth="200.0" promptText="Atualize a cidade" />
-                        <Button prefHeight="26.0" prefWidth="200.0" text="Atualizar Cidade" />
+                        <TextField fx:id="atualizarCidadeTextField" prefHeight="26.0" prefWidth="200.0" promptText="Atualize a cidade" />
+                        <Button fx:id="atualizarCidadeButton" prefHeight="26.0" prefWidth="200.0" text="Atualizar Cidade"/>
                     </HBox>
 
                     <!-- Atualização da Variável -->
                     <HBox alignment="CENTER" spacing="10.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
-                        <Label alignment="CENTER" prefHeight="26.0" prefWidth="200.0" text="Selecione uma Variável:" />
+                        <Label alignment="CENTER_RIGHT" prefHeight="26.0" prefWidth="128.0" text="Selecione uma Variável:" />
                         <ChoiceBox fx:id="variavelChoiceBox" prefHeight="26.0" prefWidth="200.0" />
                         <TextField fx:id="atualizeVariavelTextField" prefHeight="26.0" prefWidth="200.0" promptText="Atualize a variável" />
                         <Button prefHeight="26.0" prefWidth="200.0" text="Atualizar Variável" />
                     </HBox>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
                 </VBox>
             </Tab>
             <Tab text="Climas com dados apurados">
@@ -168,7 +180,7 @@
             </Tab>
             <Tab text="Relatório de Periocidade">
                 <content>
-                    <VBox alignment="CENTER" spacing="15.0">
+                    <VBox alignment="CENTER" spacing="10.0">
                     <!-- <TableView fx:id="tableRelatorio">
                         <columns>
                             <TableColumn text="Hora" fx:id="horaColumn" />
@@ -195,16 +207,16 @@
 
                         <HBox alignment="CENTER" spacing="10.0">
                             <Label text="Data inicial: " />
-                            <DatePicker fx:id="startDatePicker" prefHeight="40" prefWidth="200" />
+                            <DatePicker fx:id="startDatePicker" prefHeight="26" prefWidth="200" />
                             <Label text="Data final: " />
-                            <DatePicker fx:id="endDatePicker" prefHeight="40" prefWidth="200" />
+                            <DatePicker fx:id="endDatePicker" prefHeight="26" prefWidth="200" />
                             <Label text="Escolha a cidade: " />
-                            <ComboBox fx:id="cityComboBox" prefHeight="40" prefWidth="200" />
+                            <ComboBox fx:id="cityComboBox" prefHeight="26" prefWidth="200" />
                         </HBox>
                         <HBox alignment="CENTER" spacing="20.0">
-                            <Button onAction="#gerarrelatorioperiocidade" prefHeight="80" prefWidth="100" text="Gerar" />
+                            <Button onAction="#gerarrelatorioperiocidade" prefHeight="26" prefWidth="100" text="Gerar" />
 
-                            <Button onAction="#exportarrelatorioperiocidade" prefHeight="80" prefWidth="100" text="Exportar" />
+                            <Button onAction="#exportarrelatorioperiocidade" prefHeight="26" prefWidth="100" text="Exportar" />
                         </HBox>
                     </VBox>
                 </content>
@@ -228,16 +240,16 @@
 
                         <HBox alignment="CENTER" spacing="10.0">
                             <Label text="Data inicial: " />
-                            <DatePicker fx:id="startDatePickerBoxPlot" prefHeight="40" prefWidth="200" />
+                            <DatePicker fx:id="startDatePickerBoxPlot" prefHeight="26" prefWidth="200" />
                             <Label text="Data final: " />
-                            <DatePicker fx:id="endDatePickerBoxPlot" prefHeight="40" prefWidth="200" />
+                            <DatePicker fx:id="endDatePickerBoxPlot" prefHeight="26" prefWidth="200" />
                             <Label text="Escolha a cidade: " />
-                            <ComboBox fx:id="cityComboBoxBoxPlot" prefHeight="40" prefWidth="200" />
+                            <ComboBox fx:id="cityComboBoxBoxPlot" prefHeight="26" prefWidth="200" />
                         </HBox>
                         <HBox alignment="CENTER" spacing="20.0">
-                            <Button onAction="#gerarRelatorioBoxPlot" prefHeight="80" prefWidth="100" text="Gerar" />
+                            <Button onAction="#gerarRelatorioBoxPlot" prefHeight="26" prefWidth="100" text="Gerar" />
 
-                            <Button onAction="#baixarRelatorioBoxPlot" prefHeight="80" prefWidth="100" text="Exportar" />
+                            <Button onAction="#baixarRelatorioBoxPlot" prefHeight="26" prefWidth="100" text="Exportar" />
                         </HBox>
                     </VBox>
                 </content>
