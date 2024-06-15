@@ -10,6 +10,8 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.stage.Modality;
+
 
 import java.sql.SQLException;
 import java.util.Map;
@@ -176,21 +178,35 @@ public class PopUpController {
     }
 
     private void salvar() {
-        String registroIdStr = String.valueOf(registroId) ;
+        String registroIdStr = String.valueOf(registroId);
         String nomeVariavel = comboDadoSuspeito.getValue().toString(); // Substitua pelo nome da variável correta
         String novoValorStr = editarTextField.getText();
 
-        try {
-            int registroId = Integer.parseInt(registroIdStr);
-            double novoValor = Double.parseDouble(novoValorStr);
-            registroDAO.alterarRegistroSuspeito(registroId, nomeVariavel, novoValor, false);
-            System.out.println("Novo valor salvo: " + novoValor);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            // Adicionar lógica para lidar com erros
-        }
-        mainController.visualizarListas();
-        // Fechar a janela
-        ((Stage) btSalvar.getScene().getWindow()).close();
+        // Criar um Alerta de confirmação
+        Alert alerta = new Alert(Alert.AlertType.CONFIRMATION);
+        alerta.setTitle("Confirmação");
+        alerta.setHeaderText("Salvar Alteração");
+        alerta.setContentText("Tem certeza que deseja salvar a alteração?");
+
+        // Configurar o tipo modal para bloquear interações com outras janelas
+        alerta.initModality(Modality.APPLICATION_MODAL);
+
+        // Mostrar o alerta e esperar pela resposta do usuário
+        alerta.showAndWait().ifPresent(resposta -> {
+            if (resposta == ButtonType.OK) {
+                try {
+                    int registroId = Integer.parseInt(registroIdStr);
+                    double novoValor = Double.parseDouble(novoValorStr);
+                    registroDAO.alterarRegistroSuspeito(registroId, nomeVariavel, novoValor, false);
+                    System.out.println("Novo valor salvo: " + novoValor);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                    // Adicionar lógica para lidar com erros
+                }
+                mainController.visualizarListas();
+                // Fechar a janela
+                ((Stage) btSalvar.getScene().getWindow()).close();
+            }
+        });
     }
 }
