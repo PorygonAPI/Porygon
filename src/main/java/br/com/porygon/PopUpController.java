@@ -65,12 +65,35 @@ public class PopUpController {
     @FXML
     public void initialize() {
         // Inicializar as ações dos botões
+        btSalvar.setVisible(false);
+        editarTextField.setVisible(false);
+
+        // Desabilitar botões até que um item seja selecionado na lista suspensa
+        btExcluir.setDisable(true);
+        btAlterar.setDisable(true);
+        btRestaurar.setDisable(true);
+
+        // Adicionar listener para a seleção da lista suspensa
+        comboDadoSuspeito.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                btExcluir.setDisable(false);
+                btAlterar.setDisable(false);
+                btRestaurar.setDisable(false);
+            } else {
+                btExcluir.setDisable(true);
+                btAlterar.setDisable(true);
+                btRestaurar.setDisable(true);
+            }
+        });
+
+        editarTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            // Implementar validações ou lógica adicional, se necessário
+        });
+
         btExcluir.setOnAction(event -> excluir());
         btAlterar.setOnAction(event -> alterar());
         btRestaurar.setOnAction(event -> restaurar());
         btSalvar.setOnAction(event -> salvar());
-        editarTextField.setVisible(false);
-        btSalvar.setVisible(false);
     }
 
     private void excluir() {
