@@ -160,21 +160,33 @@ public class PopUpController {
     }
 
     private void restaurar() {
-        String registroIdStr = String.valueOf(registroId) ;
+        String registroIdStr = String.valueOf(registroId);
         String nomeVariavel = comboDadoSuspeito.getValue().toString(); // Substitua pelo nome da variável correta
 
-        try {
-            int registroId = Integer.parseInt(registroIdStr);
-            registroDAO.restaurarRegistroSuspeito(registroId, nomeVariavel);
-            System.out.println("Registro restaurado: " + registroId);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            // Adicionar lógica para lidar com erros
-        }
-        mainController.visualizarListas();
+        // Cria um alerta de confirmação
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmação");
+        alert.setHeaderText("Restaurar Dado");
+        alert.setContentText("Tem certeza que deseja restaurar o dado?");
 
-        // Fechar a janela
-        ((Stage) btRestaurar.getScene().getWindow()).close();
+        // Mostra o alerta e espera pela resposta do usuário
+        alert.showAndWait().ifPresent(result -> {
+            if (result == ButtonType.OK) {
+                try {
+                    int registroId = Integer.parseInt(registroIdStr);
+                    registroDAO.restaurarRegistroSuspeito(registroId, nomeVariavel);
+                    System.out.println("Registro restaurado: " + registroId);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                    // Adicionar lógica para lidar com erros
+                }
+                mainController.visualizarListas();
+
+                // Fechar a janela
+                ((Stage) btRestaurar.getScene().getWindow()).close();
+            }
+            // Se o usuário clicar em Cancelar, nada acontece e o método retorna sem fazer nada
+        });
     }
 
     private void salvar() {
