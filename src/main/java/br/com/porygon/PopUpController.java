@@ -118,6 +118,21 @@ public class PopUpController {
         // Tornar o campo de texto e o botão de salvar visíveis
         editarTextField.setVisible(true);
         btSalvar.setVisible(true);
+
+        // Desabilitar inicialmente o botão salvar
+        btSalvar.setDisable(true);
+
+        // Adicionar um listener para monitorar as alterações no texto do campo editarTextField
+        editarTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            // Verificar se o novo valor (newValue) não está vazio
+            if (!newValue.trim().isEmpty()) {
+                // Se não estiver vazio, habilitar o botão salvar
+                btSalvar.setDisable(false);
+            } else {
+                // Se estiver vazio, desabilitar o botão salvar
+                btSalvar.setDisable(true);
+            }
+        });
     }
 
     private void restaurar() {
