@@ -8,6 +8,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 
 import java.sql.SQLException;
 import java.util.Map;
@@ -97,20 +99,40 @@ public class PopUpController {
     }
 
     private void excluir() {
-        String registroIdStr = String.valueOf(registroId) ;
+        String registroIdStr = String.valueOf(registroId);
         String nomeVariavel = comboDadoSuspeito.getValue().toString(); // Substitua pelo nome da variável correta
 
-        try {
-            int registroId = Integer.parseInt(registroIdStr);
-            registroDAO.excluirRegistroSuspeito(registroId, nomeVariavel);
-            System.out.println("Registro excluído: " + registroId);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            // Adicionar lógica para lidar com erros
-        }
-        mainController.visualizarListas();
+        // Criar um Alert para confirmar a exclusão
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmação de exclusão");
+        alert.setHeaderText("Tem certeza que deseja excluir este registro?");
+        alert.setContentText("Esta ação não pode ser desfeita.");
 
-        // Fechar a janela
+        // Opção de botões do Alert
+        ButtonType buttonTypeConfirmar = new ButtonType("Confirmar");
+        ButtonType buttonTypeCancelar = new ButtonType("Cancelar");
+        alert.getButtonTypes().setAll(buttonTypeConfirmar, buttonTypeCancelar);
+
+        // Exibir o Alert e aguardar a resposta do usuário
+        alert.showAndWait().ifPresent(buttonType -> {
+            if (buttonType == buttonTypeConfirmar) {
+                // Se o usuário confirmar, prosseguir com a exclusão
+                try {
+                    int registroId = Integer.parseInt(registroIdStr);
+                    registroDAO.excluirRegistroSuspeito(registroId, nomeVariavel);
+                    System.out.println("Registro excluído: " + registroId);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                    // Adicionar lógica para lidar com erros
+                }
+                mainController.visualizarListas();
+            } else {
+                // Se o usuário cancelar, não fazer nada
+                System.out.println("Exclusão cancelada pelo usuário.");
+            }
+        });
+
+        // Fechar a janela (se necessário)
         ((Stage) btExcluir.getScene().getWindow()).close();
     }
 
