@@ -462,6 +462,8 @@ public class MainController {
         ObservableList<String> estacoes = FXCollections.observableArrayList();
 
         estacaoDAO.getEstacoes(estacoes);
+        estacaoComboBoxPlot.setItems(estacoes);
+
         cidadeDAO.getCidades(cidades);
         updateColumnName();
 
@@ -651,6 +653,10 @@ public class MainController {
                 cidadeDAO.getCidades(cidadeList);
                 cidadeChoiceBox.setItems(cidadeList);
                 atualizarCidadeTextField.clear();
+                ObservableList<String> cidades = FXCollections.observableArrayList();
+                cidadeDAO.getCidades(cidades);
+
+                estacaoComboBoxPlot.setItems(cidades);
 
                 Alert alert = new Alert(AlertType.INFORMATION);
                 alert.setTitle("Atualização Concluída");
@@ -686,6 +692,10 @@ public class MainController {
                 estacaoDAO.getEstacoes(estacaoList);
                 estacaoChoiceBox.setItems(estacaoList);
                 atualizarEstacaoTextField.clear();
+                ObservableList<String> estacoes = FXCollections.observableArrayList();
+
+                estacaoDAO.getEstacoes(estacoes);
+                estacaoComboBoxPlot.setItems(estacoes);
 
                 Alert alert = new Alert(AlertType.INFORMATION);
                 alert.setTitle("Atualização Concluída");
@@ -816,7 +826,7 @@ public class MainController {
     }
 
     @FXML
-    protected void selectFilesClick(ActionEvent event) {
+    protected void selectFilesClick(ActionEvent event) throws SQLException {
         FileChooser fileChooser = new FileChooser();
         ExtensionFilter extensionFilter = new ExtensionFilter("CSV files (*.csv)", "*.csv");
         fileChooser.setTitle("Escolha um arquivo");
@@ -839,10 +849,19 @@ public class MainController {
                 opcoes.add(cidadeSigla);
                 System.out.println("");
             }
+            ObservableList<String> cidades = FXCollections.observableArrayList();
+
+            cidadeDAO.getCidades(cidades);
+
 
             // Definir a lista de opções para o ComboBox
             cityComboBox.setItems(opcoes);
+            citySitComboBox.setItems(opcoes);
 
+            ObservableList<String> estacoes = FXCollections.observableArrayList();
+
+            estacaoDAO.getEstacoes(estacoes);
+            estacaoComboBoxPlot.setItems(estacoes);
             // Definir um valor padrão
             // cityComboBox.setValue(opcoes.getFirst());
 
