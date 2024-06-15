@@ -30,7 +30,7 @@ public class RegistroDAO {
                              WHERE ri.nome = 'tempIns'
                                AND ri.valor IS NOT NULL
                                AND ri.dado_suspeito = false
-                               AND a.cidade = ?
+                               AND a.estacao = ?
                                AND (r.data_hora BETWEEN ? AND ?)
                              GROUP BY r.arquivo, r.data_hora, r.tipo_arquivo
                          ) AS sub
@@ -46,7 +46,7 @@ public class RegistroDAO {
                              WHERE ri.nome = 'pressaoIns'
                                AND ri.valor IS NOT NULL
                                AND ri.dado_suspeito = false
-                               AND a.cidade = ?
+                               AND a.estacao = ?
                                AND (r.data_hora BETWEEN ? AND ?)
                              GROUP BY r.arquivo, r.data_hora, r.tipo_arquivo
                          ) AS sub
@@ -62,7 +62,7 @@ public class RegistroDAO {
                              WHERE ri.nome = 'velVento'
                                AND ri.valor IS NOT NULL
                                AND ri.dado_suspeito = false
-                               AND a.cidade = ?
+                               AND a.estacao = ?
                                AND (r.data_hora BETWEEN ? AND ?)
                              GROUP BY r.arquivo, r.data_hora, r.tipo_arquivo
                          ) AS sub
@@ -78,7 +78,7 @@ public class RegistroDAO {
                              WHERE ri.nome = 'chuva'
                                AND ri.valor IS NOT NULL
                                AND ri.dado_suspeito = false
-                               AND a.cidade = ?
+                               AND a.estacao = ?
                                AND (r.data_hora BETWEEN ? AND ?)
                              GROUP BY r.arquivo, r.data_hora, r.tipo_arquivo
                          ) AS sub
@@ -94,7 +94,7 @@ public class RegistroDAO {
                              WHERE ri.nome = 'ptoOrvalhoIns'
                                AND ri.valor IS NOT NULL
                                AND ri.dado_suspeito = false
-                               AND a.cidade = ?
+                               AND a.estacao = ?
                                AND (r.data_hora BETWEEN ? AND ?)
                              GROUP BY r.arquivo, r.data_hora, r.tipo_arquivo
                          ) AS sub
@@ -110,7 +110,7 @@ public class RegistroDAO {
                              WHERE ri.nome = 'umiIns'
                                AND ri.valor IS NOT NULL
                                AND ri.dado_suspeito = false
-                               AND a.cidade = ?
+                               AND a.estacao = ?
                                AND (r.data_hora BETWEEN ? AND ?)
                              GROUP BY r.arquivo, r.data_hora, r.tipo_arquivo
                          ) AS sub
@@ -126,7 +126,7 @@ public class RegistroDAO {
                              WHERE ri.nome = 'nebulosidade'
                                AND ri.valor IS NOT NULL
                                AND ri.dado_suspeito = false
-                               AND a.cidade = ?
+                               AND a.estacao = ?
                                AND (r.data_hora BETWEEN ? AND ?)
                              GROUP BY r.arquivo, r.data_hora, r.tipo_arquivo
                          ) AS sub
@@ -142,7 +142,7 @@ public class RegistroDAO {
                              WHERE ri.nome = 'radiacao'
                                AND ri.valor IS NOT NULL
                                AND ri.dado_suspeito = false
-                               AND a.cidade = ?
+                               AND a.estacao = ?
                                AND (r.data_hora BETWEEN ? AND ?)
                              GROUP BY r.arquivo, r.data_hora, r.tipo_arquivo
                          ) AS sub
@@ -158,7 +158,7 @@ public class RegistroDAO {
                              WHERE ri.nome = 'dirVento'
                                AND ri.valor IS NOT NULL
                                AND ri.dado_suspeito = false
-                               AND a.cidade = ?
+                               AND a.estacao = ?
                                AND (r.data_hora BETWEEN ? AND ?)
                              GROUP BY r.arquivo, r.data_hora, r.tipo_arquivo
                          ) AS sub
@@ -174,7 +174,7 @@ public class RegistroDAO {
                              WHERE ri.nome = 'insolacao'
                                AND ri.valor IS NOT NULL
                                AND ri.dado_suspeito = false
-                               AND a.cidade = ?
+                               AND a.estacao = ?
                                AND (r.data_hora BETWEEN ? AND ?)
                              GROUP BY r.arquivo, r.data_hora, r.tipo_arquivo
                          ) AS sub
@@ -190,7 +190,7 @@ public class RegistroDAO {
                              WHERE ri.nome = 'rajVento'
                                AND ri.valor IS NOT NULL
                                AND ri.dado_suspeito = false
-                               AND a.cidade = ?
+                               AND a.estacao = ?
                                AND (r.data_hora BETWEEN ? AND ?)
                              GROUP BY r.arquivo, r.data_hora, r.tipo_arquivo
                          ) AS sub
@@ -367,9 +367,9 @@ public class RegistroDAO {
             }
         }
     }
+   
 
-
-    public ArrayList<Double> getSpecificData(LocalDate dataInicio, LocalDate dataFim, String nomeTable, String cidadeSigla){
+    public ArrayList<Double> getSpecificData(LocalDate dataInicio, LocalDate dataFim, String nomeTable, String estacaoSigla){
         Connection con = null;
         ArrayList<Double> dados = new ArrayList<>();
         try{
@@ -383,7 +383,7 @@ public class RegistroDAO {
                 Timestamp tmstpInicio = Timestamp.valueOf(startDateTime.toLocalDateTime());
                 Timestamp tmstpFim = Timestamp.valueOf(endDateTime.toLocalDateTime());
 
-                ist.setString(1, cidadeSigla);
+                ist.setString(1, estacaoSigla);
                 ist.setString(2, String.valueOf(tmstpInicio));
                 ist.setString(3, String.valueOf(tmstpFim));
 

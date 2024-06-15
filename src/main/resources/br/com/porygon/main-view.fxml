@@ -126,7 +126,7 @@
                     </TableView>
                 </VBox>
             </Tab>
-            <Tab text="Relatório de Periocidade">
+            <Tab text="Relatório por Hora">
                 <content>
                     <VBox spacing="15.0" alignment="CENTER">
                     <!-- <TableView fx:id="tableRelatorio">
@@ -191,8 +191,8 @@
                             <DatePicker fx:id="startDatePickerBoxPlot" prefWidth="200" prefHeight="40" />
                             <Label text="Data final: " />
                             <DatePicker fx:id="endDatePickerBoxPlot" prefWidth="200" prefHeight="40" />
-                            <Label text="Escolha a cidade: " />
-                            <ComboBox fx:id="cityComboBoxBoxPlot" prefWidth="200" prefHeight="40" />
+                            <Label text="Escolha a estação: " />
+                            <ComboBox fx:id="estacaoComboBoxPlot" prefWidth="200" prefHeight="40" />
                         </HBox>
                         <HBox spacing="20.0" alignment="CENTER">
                             <Button  onAction="#gerarRelatorioBoxPlot" text="Gerar" prefWidth="100" prefHeight="80" />

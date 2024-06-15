@@ -76,7 +76,7 @@ public class ArquivoDAO {
 
     private static void addOrUpdateStation(String estacaoSigla, Connection con) throws SQLException {
         String getEstacaoSQL = "SELECT codigo FROM estacao WHERE codigo = ?";
-        String setEstacaoSQL = "INSERT INTO estacao (codigo) VALUES (?)";
+        String setEstacaoSQL = "INSERT INTO estacao (codigo, nome) VALUES (?, ?)";
 
         PreparedStatement selectStationStmt = con.prepareStatement(getEstacaoSQL);
         selectStationStmt.setString(1, estacaoSigla);
@@ -84,6 +84,8 @@ public class ArquivoDAO {
             if(!rsSelect.next()){
                 PreparedStatement insertStationStmt = con.prepareStatement(setEstacaoSQL);
                 insertStationStmt.setString(1, estacaoSigla);
+                insertStationStmt.setString(2, estacaoSigla);
+
                 insertStationStmt.executeUpdate();
             }
         }
