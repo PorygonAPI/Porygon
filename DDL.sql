@@ -13,6 +13,25 @@ create table atr_configuracao (
     primary key(id)
 );
 
+create table unidade_configuracao(
+    id bigint auto_increment,
+    nome varchar(100) not null unique,
+    valor varchar(100),
+    primary key (id)
+);
+
+insert into unidade_configuracao (nome, valor) VALUES ('temperatura', 'Temperatura');
+insert into unidade_configuracao (nome, valor) VALUES ('pressao', 'Pressão');
+insert into unidade_configuracao (nome, valor) VALUES ('velVento', 'Vel. Vento');
+insert into unidade_configuracao (nome, valor) VALUES ('chuva', 'Chuva');
+insert into unidade_configuracao (nome, valor) VALUES ('ptoOrvalho', 'Pto. Orvalho');
+insert into unidade_configuracao (nome, valor) VALUES ('umiIns', 'Umidade');
+insert into unidade_configuracao (nome, valor) VALUES ('nebulosidade', 'Nebulosidade');
+insert into unidade_configuracao (nome, valor) VALUES ('radiacao', 'Radiação');
+insert into unidade_configuracao (nome, valor) VALUES ('dirVento', 'Dir. Vento');
+insert into unidade_configuracao (nome, valor) VALUES ('insolacao', 'Insolação');
+insert into unidade_configuracao (nome, valor) VALUES ('rajVento', 'Raj. Vento');
+
 create table cidade (
     sigla varchar(10) primary key,
     nome varchar(20)
