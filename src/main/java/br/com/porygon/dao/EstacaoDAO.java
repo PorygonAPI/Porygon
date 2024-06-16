@@ -20,6 +20,33 @@ public class EstacaoDAO {
         return connection;
     }
 
+    public String resgatarCodigo(String nome) {
+        Connection con = null;
+        try {
+            con = getConnection();
+            String select_sql = "select * from estacao where nome = (?)";
+            PreparedStatement pst = con.prepareStatement(select_sql);
+            pst.setString(1, nome);
+            ResultSet rs = pst.executeQuery();
+            String valor = null;
+            while(rs.next()) {
+                valor = rs.getString("codigo");
+            }
+            return valor;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao resgatar atributo!", e);
+        } finally {
+            try {
+                if (con != null)
+                    con.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                throw new RuntimeException("Erro ao fechar conexão", e);
+            }
+        }
+    }
+
     public void getEstacoes(ObservableList<String> lista) throws SQLException {
         Connection con = null;
         try {

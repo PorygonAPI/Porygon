@@ -619,7 +619,13 @@ public class MainController {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        atualizarCidadeButton.setOnAction(event -> atualizarCidade());
+        atualizarCidadeButton.setOnAction(event -> {
+            try {
+                atualizarCidade();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        });
 
         estacaoDAO = new EstacaoDAO();
         estacaoList = FXCollections.observableArrayList();
@@ -642,35 +648,46 @@ public class MainController {
         atualizarValorButton.setOnAction(event -> atualizarValor());
     }
 
-    private void atualizarCidade() {
+    private void atualizarComboBoxes() throws SQLException {
+        ObservableList<String> cidades = FXCollections.observableArrayList();
+        ObservableList<String> estacoes = FXCollections.observableArrayList();
+
+        cidadeDAO.getCidades(cidades);
+        estacaoDAO.getEstacoes(estacoes);
+
+
+        // Definir a lista de opções para o ComboBox
+        cityComboBox.setItems(cidades);
+        citySitComboBox.setItems(cidades);
+        cidadeChoiceBox.setItems(cidades);
+
+
+        estacaoComboBoxPlot.setItems(estacoes);
+        estacaoChoiceBox.setItems(estacoes);
+
+
+
+        variavelChoiceBox.setItems(variavelList);
+
+    };
+
+    private void atualizarCidade() throws SQLException {
         String sigla = cidadeChoiceBox.getValue();
         String novoNome = atualizarCidadeTextField.getText();
 
         if (sigla != null && !novoNome.isEmpty()) {
-            try {
-                cidadeDAO.updateCidade(sigla, novoNome);
-                cidadeChoiceBox.getItems().clear();
-                cidadeDAO.getCidades(cidadeList);
-                cidadeChoiceBox.setItems(cidadeList);
-                atualizarCidadeTextField.clear();
-                ObservableList<String> cidades = FXCollections.observableArrayList();
-                cidadeDAO.getCidades(cidades);
+            String variavel = cidadeDAO.resgatarCodigo(sigla);
+            cidadeDAO.updateCidade(variavel, novoNome);
+            cidadeChoiceBox.getItems().clear();
+            atualizarComboBoxes();
+            atualizarCidadeTextField.clear();
+            ObservableList<String> cidades = FXCollections.observableArrayList();
 
-                estacaoComboBoxPlot.setItems(cidades);
-
-                Alert alert = new Alert(AlertType.INFORMATION);
-                alert.setTitle("Atualização Concluída");
-                alert.setHeaderText(null);
-                alert.setContentText("Cidade atualizada com sucesso!");
-                alert.showAndWait();
-            } catch (SQLException e) {
-                e.printStackTrace();
-                Alert alert = new Alert(AlertType.ERROR);
-                alert.setTitle("Erro ao Atualizar");
-                alert.setHeaderText(null);
-                alert.setContentText("Ocorreu um erro ao atualizar a cidade: " + e.getMessage());
-                alert.showAndWait();
-            }
+            Alert alert = new Alert(AlertType.INFORMATION);
+            alert.setTitle("Atualização Concluída");
+            alert.setHeaderText(null);
+            alert.setContentText("Cidade atualizada com sucesso!");
+            alert.showAndWait();
         } else {
             // Caso o novo valor seja vazio ou nulo
             Alert alert = new Alert(AlertType.WARNING);
@@ -687,15 +704,13 @@ public class MainController {
 
         if (codigo != null && !novoNome.isEmpty()) {
             try {
-                estacaoDAO.updateEstacao(codigo, novoNome);
+                String variavel = estacaoDAO.resgatarCodigo(codigo);
+                estacaoDAO.updateEstacao(variavel, novoNome);
                 estacaoChoiceBox.getItems().clear();
-                estacaoDAO.getEstacoes(estacaoList);
-                estacaoChoiceBox.setItems(estacaoList);
+                atualizarComboBoxes();
                 atualizarEstacaoTextField.clear();
                 ObservableList<String> estacoes = FXCollections.observableArrayList();
 
-                estacaoDAO.getEstacoes(estacoes);
-                estacaoComboBoxPlot.setItems(estacoes);
 
                 Alert alert = new Alert(AlertType.INFORMATION);
                 alert.setTitle("Atualização Concluída");
@@ -730,7 +745,7 @@ public class MainController {
                 configuracaoDAO.updateUnidade(variavel, novoValor);
                 variavelChoiceBox.getItems().clear();
                 configuracaoDAO.getUnidades(variavelList);
-                variavelChoiceBox.setItems(variavelList);
+                atualizarComboBoxes();
                 atualizarValorTextField.clear();
                 updateColumnName();
 
@@ -849,19 +864,11 @@ public class MainController {
                 opcoes.add(cidadeSigla);
                 System.out.println("");
             }
-            ObservableList<String> cidades = FXCollections.observableArrayList();
 
-            cidadeDAO.getCidades(cidades);
+            atualizarComboBoxes();
 
 
-            // Definir a lista de opções para o ComboBox
-            cityComboBox.setItems(opcoes);
-            citySitComboBox.setItems(opcoes);
 
-            ObservableList<String> estacoes = FXCollections.observableArrayList();
-
-            estacaoDAO.getEstacoes(estacoes);
-            estacaoComboBoxPlot.setItems(estacoes);
             // Definir um valor padrão
             // cityComboBox.setValue(opcoes.getFirst());
 

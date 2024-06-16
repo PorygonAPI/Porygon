@@ -48,6 +48,33 @@ public class CidadeDAO {
         }
     }
 
+    public String resgatarCodigo(String nome) {
+        Connection con = null;
+        try {
+            con = getConnection();
+            String select_sql = "select * from cidade where nome = (?)";
+            PreparedStatement pst = con.prepareStatement(select_sql);
+            pst.setString(1, nome);
+            ResultSet rs = pst.executeQuery();
+            String valor = null;
+            while(rs.next()) {
+                valor = rs.getString("sigla");
+            }
+            return valor;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao resgatar atributo!", e);
+        } finally {
+            try {
+                if (con != null)
+                    con.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                throw new RuntimeException("Erro ao fechar conexão", e);
+            }
+        }
+    }
+
     //     Realiza a inserção dos dados lidos no banco
     public void updateCidade(String sigla, String cidade) {
         Connection con = null;
