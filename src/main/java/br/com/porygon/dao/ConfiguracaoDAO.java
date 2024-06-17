@@ -1,6 +1,10 @@
 package br.com.porygon.dao;
 
+import javafx.collections.ObservableList;
+
 import java.sql.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ConfiguracaoDAO {
     private final String url = "jdbc:mysql://localhost:3306/porygon?useTimezone=true&serverTimezone=UTC";
@@ -47,6 +51,90 @@ public class ConfiguracaoDAO {
         }
     }
 
+    public  Map<String, String> getUnidadesAndUpdateColumn() throws SQLException {
+        Connection con = null;
+        try {
+            con = getConnection();
+
+            String getUnidadesSQL = "SELECT * FROM unidade_configuracao";
+            Map<String, String> row = new HashMap<>();
+
+            PreparedStatement selectStmt = con.prepareStatement(getUnidadesSQL);
+            try (ResultSet rsSelect = selectStmt.executeQuery()){
+                while(rsSelect.next()) {
+                    row.put(rsSelect.getString("nome"), rsSelect.getString("valor"));
+                }
+
+            }
+            return row;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao resgatar unidades!", e);
+        } finally {
+            try {
+                if (con != null)
+                    con.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                throw new RuntimeException("Erro ao fechar conexão", e);
+            }
+        }
+    }
+
+    public void getUnidades(ObservableList<String> lista) throws SQLException {
+        Connection con = null;
+        try {
+            con = getConnection();
+
+            String getUnidadesSQL = "SELECT * FROM unidade_configuracao";
+
+            PreparedStatement selectStmt = con.prepareStatement(getUnidadesSQL);
+            try (ResultSet rsSelect = selectStmt.executeQuery()){
+                while(rsSelect.next()) {
+                    lista.add(rsSelect.getString("valor"));
+                }
+
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao resgatar unidades!", e);
+        } finally {
+            try {
+                if (con != null)
+                    con.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                throw new RuntimeException("Erro ao fechar conexão", e);
+            }
+        }
+    }
+
+    public void updateUnidade(String nome, String valor) {
+        Connection con = null;
+        try {
+            con = getConnection();
+            String insert_sql = "INSERT INTO unidade_configuracao (nome, valor) VALUES (?, ?) on duplicate key update valor = VALUES(valor)";
+            PreparedStatement pst = con.prepareStatement(insert_sql);
+            pst.setString(1, nome);
+            pst.setString(2, valor);
+            pst.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao atualizar unidade!", e);
+        } finally {
+            try {
+                if (con != null)
+                    con.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                throw new RuntimeException("Erro ao fechar conexão", e);
+            }
+        }
+    }
+
+
     public void adicionarAtributo(String nome, double valor){
         Connection con = null;
         try {
@@ -60,6 +148,32 @@ public class ConfiguracaoDAO {
         } catch (SQLException e) {
             e.printStackTrace();
             throw new RuntimeException("Erro ao inserir novo atributo!", e);
+        } finally {
+            try {
+                if (con != null)
+                    con.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                throw new RuntimeException("Erro ao fechar conexão", e);
+            }
+        }
+    }
+    public String colunaVariavel(String nome) {
+        Connection con = null;
+        try {
+            con = getConnection();
+            String select_sql = "select * from unidade_configuracao where valor = (?)";
+            PreparedStatement pst = con.prepareStatement(select_sql);
+            pst.setString(1, nome);
+            ResultSet rs = pst.executeQuery();
+            String valor = null;
+            while(rs.next()) {
+                valor = rs.getString("nome");
+            }
+            return valor;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao resgatar atributo!", e);
         } finally {
             try {
                 if (con != null)

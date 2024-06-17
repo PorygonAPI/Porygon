@@ -1,28 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.collections.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<VBox prefHeight="561.0" prefWidth="1082.0" spacing="20.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.porygon.MainController">
+<VBox prefHeight="798.0" prefWidth="1125.0" spacing="20.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.porygon.MainController">
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>
-    <HBox spacing="10.0">
-        <Button onAction="#selectFilesClick" text="Insira um arquivo" />
+    <HBox alignment="CENTER">
+        <Label text="Meteorygon" style="-fx-text-fill: purple;">
+            <font>
+                <Font name="impact" size="50.0" />
+            </font>
+        </Label>
     </HBox>
-    <Label fx:id="selectedFilesLabel" />
-    <Button onAction="#updateLists" text="Atualizar registros" />
-    <TabPane prefHeight="400.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE">
+   <HBox alignment="CENTER" spacing="20.0">
+        <Button onAction="#selectFilesClick" prefHeight="26" prefWidth="120" text="Insira um arquivor" />
+
+        <Button onAction="#updateLists" prefHeight="26" prefWidth="120" text="Atualizar registros" />
+    </HBox>
+    <TabPane maxHeight="630.0" maxWidth="1086.0" minHeight="300.0" minWidth="700.0" prefHeight="575.0" prefWidth="1086.0" tabClosingPolicy="UNAVAILABLE" tabMaxHeight="500.0" tabMaxWidth="500.0">
         <tabs>
             <Tab text="Configurações">
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-                <VBox alignment="CENTER" spacing="10.0">
-                    <Label text="Defina os valores máximos e mínimos de cada variável climática para verificação dos registros." />
-                    <Label text="A definição ocorrerá apenas uma vez e os valores cadastrados serão armazenados e utilizados para as próximas consultas." />
-                    <Label text=" " />
+                    <VBox prefHeight="399.0" prefWidth="1042.0" spacing="10.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+                        <!-- Cabeçalho de informações -->
+                        <Label alignment="CENTER" contentDisplay="CENTER" graphicTextGap="0.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="26.0" prefWidth="1070.0" text="Insira abaixo os valores máximos e mínimos para cada variável climática" textAlignment="CENTER">
+                  <opaqueInsets>
+                     <Insets />
+                  </opaqueInsets>
+                  <font>
+                     <Font name="System Bold" size="16.0" />
+                  </font></Label>
+               <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="22.0" prefWidth="1069.0" text="Os valores já cadastrados podem ser alterados a qualquer momento. Altere a máxima e/ou a mínima da variável desejada e clique novamente em &quot;Cadastrar&quot;" textAlignment="CENTER">
+                  <font>
+                     <Font name="System Bold Italic" size="11.0" />
+                  </font>
+               </Label>
                     <!-- Temperatura e Umidade -->
                     <HBox spacing="10.0">
                         <Label alignment="CENTER_RIGHT" prefHeight="26.0" prefWidth="130.0" text="Temperatura Max:" />
@@ -78,7 +94,47 @@
                         <Label alignment="CENTER_RIGHT" prefHeight="26.0" prefWidth="130.0" text="Rajada Vento Min:" />
                         <TextField fx:id="rajVenMinField" prefHeight="26.0" prefWidth="120.0" promptText="Rajada Vento Min" />
                     </HBox>
-                    <Button onAction="#verificar" text="Cadastrar" />
+                    <HBox alignment="CENTER" prefHeight="25.0" prefWidth="739.0">
+                  <children>
+                           <Button contentDisplay="CENTER" onAction="#verificar" prefHeight="26.0" prefWidth="120.0" text="Cadastrar">
+                        <HBox.margin>
+                           <Insets bottom="10.0" top="15.0" />
+                        </HBox.margin>
+                     </Button>
+                  </children>
+                    </HBox>
+                        <Label alignment="CENTER" prefHeight="26.0" prefWidth="1073.0" text="Configure abaixo os nomes das estações metereológicas, cidades e variáveis climáticas" textAlignment="CENTER">
+                  <VBox.margin>
+                     <Insets bottom="10.0" />
+                  </VBox.margin>
+                  <font>
+                     <Font name="System Bold" size="16.0" />
+                  </font></Label>
+                    <HBox alignment="CENTER" spacing="10.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+                        <Label alignment="CENTER_RIGHT" prefHeight="26.0" prefWidth="128.0" text="Selecione uma Estação:" textAlignment="RIGHT" />
+                        <ChoiceBox fx:id="estacaoChoiceBox" prefHeight="26.0" prefWidth="200.0" />
+                        <TextField fx:id="atualizarEstacaoTextField" prefHeight="26.0" prefWidth="200.0" promptText="Atualize o nome da estação" />
+                        <Button fx:id="atualizarEstacaoButton" prefHeight="26.0" prefWidth="120.0" text="Atualizar Estação" />
+                    </HBox>
+                            
+                    <!-- Atualização da Cidade -->
+                    <HBox alignment="CENTER" spacing="10.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+                        <Label alignment="CENTER_RIGHT" prefHeight="26.0" prefWidth="128.0" text="Selecione uma Cidade:" />
+                        <ChoiceBox fx:id="cidadeChoiceBox" prefHeight="26.0" prefWidth="200.0" />
+                        <TextField fx:id="atualizarCidadeTextField" prefHeight="26.0" prefWidth="200.0" promptText="Atualize a cidade" />
+                        <Button fx:id="atualizarCidadeButton" prefHeight="26.0" prefWidth="120.0" text="Atualizar Cidade"/>
+                    </HBox>
+
+                    <!-- Atualização da Variável -->
+                    <HBox alignment="CENTER" spacing="10.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+                        <Label alignment="CENTER_RIGHT" prefHeight="26.0" prefWidth="128.0" text="Selecione uma Variável:" />
+                        <ChoiceBox fx:id="variavelChoiceBox" prefHeight="26.0" prefWidth="200.0" />
+                        <TextField fx:id="atualizarValorTextField" prefHeight="26.0" prefWidth="200.0" promptText="Atualize a variável" />
+                        <Button fx:id="atualizarValorButton" prefHeight="26.0" prefWidth="120.0" text="Atualizar Variável" />
+                    </HBox>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
                 </VBox>
             </Tab>
             <Tab text="Climas com dados apurados">
@@ -86,19 +142,19 @@
                 <VBox alignment="CENTER" spacing="15.0">
                     <TableView fx:id="tableViewApurado">
                         <columns>
-                            <TableColumn fx:id="dataHoraColumn" text="Data e Hora"/>
-                            <TableColumn fx:id="tipoArquivoColumn" text="Tipo Arquivo"/>
-                            <TableColumn fx:id="tempColumn" text="Temperatura"/>
-                            <TableColumn fx:id="pressaoColumn" text="Pressão"/>
-                            <TableColumn fx:id="velVentoColumn" text="Vel. Vento"/>
-                            <TableColumn fx:id="chuvaColumn" text="Chuva"/>
-                            <TableColumn fx:id="ptoOrvalhoColumn" text="Pto. Orvalho"/>
-                            <TableColumn fx:id="umiColumn" text="Umidade"/>
-                            <TableColumn fx:id="nebColumn" text="Nebulosidade"/>
-                            <TableColumn fx:id="radColumn" text="Radiação"/>
-                            <TableColumn fx:id="dirVentoColumn" text="Dir. Vento"/>
-                            <TableColumn fx:id="insolacaoColumn" text="Insolação"/>
-                            <TableColumn fx:id="rajVentoColumn" text="Raj. Vento"/>
+                            <TableColumn fx:id="dataHoraColumn" text="Data e Hora" />
+                            <TableColumn fx:id="tipoArquivoColumn" text="Tipo Arquivo" />
+                            <TableColumn fx:id="tempColumn" text="Temperatura" />
+                            <TableColumn fx:id="pressaoColumn" text="Pressão" />
+                            <TableColumn fx:id="velVentoColumn" text="Vel. Vento" />
+                            <TableColumn fx:id="chuvaColumn" text="Chuva" />
+                            <TableColumn fx:id="ptoOrvalhoColumn" text="Pto. Orvalho" />
+                            <TableColumn fx:id="umiColumn" text="Umidade" />
+                            <TableColumn fx:id="nebColumn" text="Nebulosidade" />
+                            <TableColumn fx:id="radColumn" text="Radiação" />
+                            <TableColumn fx:id="dirVentoColumn" text="Dir. Vento" />
+                            <TableColumn fx:id="insolacaoColumn" text="Insolação" />
+                            <TableColumn fx:id="rajVentoColumn" text="Raj. Vento" />
                         </columns>
                     </TableView>
                 </VBox>
@@ -108,27 +164,27 @@
                 <VBox alignment="CENTER" spacing="15.0">
                     <TableView fx:id="tableViewSuspeito">
                         <columns>
-                            <TableColumn fx:id="registroIdSusColumn" text="ID"/>
-                            <TableColumn fx:id="dataHoraSusColumn" text="Data e Hora"/>
-                            <TableColumn fx:id="tipoArquivoSusColumn" text="Tipo Arquivo"/>
-                            <TableColumn fx:id="tempSusColumn" text="Temperatura"/>
-                            <TableColumn fx:id="pressaoSusColumn" text="Pressão"/>
-                            <TableColumn fx:id="velVentoSusColumn" text="Vel. Vento"/>
-                            <TableColumn fx:id="chuvaSusColumn" text="Chuva"/>
-                            <TableColumn fx:id="ptoOrvalhoSusColumn" text="Pto. Orvalho"/>
-                            <TableColumn fx:id="umiSusColumn" text="Umidade"/>
-                            <TableColumn fx:id="nebSusColumn" text="Nebulosidade"/>
-                            <TableColumn fx:id="radSusColumn" text="Radiação"/>
-                            <TableColumn fx:id="dirVentoSusColumn" text="Dir. Vento"/>
-                            <TableColumn fx:id="insolacaoSusColumn" text="Insolação"/>
-                            <TableColumn fx:id="rajVentoSusColumn" text="Raj. Vento"/>
+                            <TableColumn fx:id="registroIdSusColumn" text="ID" />
+                            <TableColumn fx:id="dataHoraSusColumn" text="Data e Hora" />
+                            <TableColumn fx:id="tipoArquivoSusColumn" text="Tipo Arquivo" />
+                            <TableColumn fx:id="tempSusColumn" text="Temperatura" />
+                            <TableColumn fx:id="pressaoSusColumn" text="Pressão" />
+                            <TableColumn fx:id="velVentoSusColumn" text="Vel. Vento" />
+                            <TableColumn fx:id="chuvaSusColumn" text="Chuva" />
+                            <TableColumn fx:id="ptoOrvalhoSusColumn" text="Pto. Orvalho" />
+                            <TableColumn fx:id="umiSusColumn" text="Umidade" />
+                            <TableColumn fx:id="nebSusColumn" text="Nebulosidade" />
+                            <TableColumn fx:id="radSusColumn" text="Radiação" />
+                            <TableColumn fx:id="dirVentoSusColumn" text="Dir. Vento" />
+                            <TableColumn fx:id="insolacaoSusColumn" text="Insolação" />
+                            <TableColumn fx:id="rajVentoSusColumn" text="Raj. Vento" />
                         </columns>
                     </TableView>
                 </VBox>
             </Tab>
-            <Tab text="Relatório de Periocidade">
+            <Tab text="Relatório por Hora">
                 <content>
-                    <VBox spacing="15.0" alignment="CENTER">
+                    <VBox alignment="CENTER" spacing="10.0">
                     <!-- <TableView fx:id="tableRelatorio">
                         <columns>
                             <TableColumn text="Hora" fx:id="horaColumn" />
@@ -137,67 +193,96 @@
                     </TableView> -->
                         <TableView fx:id="tableViewRelatorio">
                             <columns>
-                                <TableColumn fx:id="dataHoraRelColumn" text="Data e Hora"/>
-                                <TableColumn fx:id="tipoArquivoRelColumn" text="Tipo Arquivo"/>
-                                <TableColumn fx:id="tempRelColumn" text="Temperatura"/>
-                                <TableColumn fx:id="pressaoRelColumn" text="Pressão"/>
-                                <TableColumn fx:id="velVentoRelColumn" text="Vel. Vento"/>
-                                <TableColumn fx:id="chuvaRelColumn" text="Chuva"/>
-                                <TableColumn fx:id="ptoOrvalhoRelColumn" text="Pto. Orvalho"/>
-                                <TableColumn fx:id="umiRelColumn" text="Umidade"/>
-                                <TableColumn fx:id="nebRelColumn" text="Nebulosidade"/>
-                                <TableColumn fx:id="radRelColumn" text="Radiação"/>
-                                <TableColumn fx:id="dirVentoRelColumn" text="Dir. Vento"/>
-                                <TableColumn fx:id="insolacaoRelColumn" text="Insolação"/>
-                                <TableColumn fx:id="rajVentoRelColumn" text="Raj. Vento"/>
+                                <TableColumn fx:id="dataHoraRelColumn" text="Data e Hora" />
+                                <TableColumn fx:id="tipoArquivoRelColumn" text="Tipo Arquivo" />
+                                <TableColumn fx:id="tempRelColumn" text="Temperatura" />
+                                <TableColumn fx:id="pressaoRelColumn" text="Pressão" />
+                                <TableColumn fx:id="velVentoRelColumn" text="Vel. Vento" />
+                                <TableColumn fx:id="chuvaRelColumn" text="Chuva" />
+                                <TableColumn fx:id="ptoOrvalhoRelColumn" text="Pto. Orvalho" />
+                                <TableColumn fx:id="umiRelColumn" text="Umidade" />
+                                <TableColumn fx:id="nebRelColumn" text="Nebulosidade" />
+                                <TableColumn fx:id="radRelColumn" text="Radiação" />
+                                <TableColumn fx:id="dirVentoRelColumn" text="Dir. Vento" />
+                                <TableColumn fx:id="insolacaoRelColumn" text="Insolação" />
+                                <TableColumn fx:id="rajVentoRelColumn" text="Raj. Vento" />
                             </columns>
                         </TableView>
 
-                        <HBox spacing="10.0" alignment="CENTER">
+                        <HBox alignment="CENTER" spacing="10.0">
                             <Label text="Data inicial: " />
-                            <DatePicker fx:id="startDatePicker" prefWidth="200" prefHeight="40" />
+                            <DatePicker fx:id="startDatePicker" prefHeight="26" prefWidth="150" />
                             <Label text="Data final: " />
-                            <DatePicker fx:id="endDatePicker" prefWidth="200" prefHeight="40" />
+                            <DatePicker fx:id="endDatePicker" prefHeight="26" prefWidth="150" />
                             <Label text="Escolha a cidade: " />
-                            <ComboBox fx:id="cityComboBox" prefWidth="200" prefHeight="40" />
+                            <ComboBox fx:id="cityComboBox" prefHeight="26" prefWidth="150" />
                         </HBox>
-                        <HBox spacing="20.0" alignment="CENTER">
-                            <Button onAction="#gerarrelatorioperiocidade" text="Gerar" prefWidth="100" prefHeight="80" />
+                        <HBox alignment="CENTER" spacing="10.0">
+                            <Button onAction="#gerarrelatorioperiocidade" prefHeight="26" prefWidth="100" text="Gerar" />
 
-                            <Button onAction="#exportarrelatorioperiocidade" text="Exportar" prefWidth="100" prefHeight="80" />
+                            <Button onAction="#exportarrelatorioperiocidade" prefHeight="26" prefWidth="100" text="Exportar" />
                         </HBox>
                     </VBox>
                 </content>
             </Tab>
-            <Tab text="BoxPlot">
+            <Tab text="Relatório BoxPlot">
                 <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
                     <VBox alignment="CENTER" spacing="10.0">
                         <TableView fx:id="tableViewBoxPlot">
                             <columns>
-                                <TableColumn fx:id="dadoBoxPlot" text="Dado"/>
-                                <TableColumn fx:id="q1BoxPlot" text="Primeiro quartil (Q1)"/>
-                                <TableColumn fx:id="q2BoxPlot" text="Mediana (Q2)"/>
-                                <TableColumn fx:id="q3BoxPlot" text="Terceiro quartil (Q3)"/>
-                                <TableColumn fx:id="liBoxPlot" text="Limite inferior"/>
-                                <TableColumn fx:id="lsBoxPlot" text="Limite superior"/>
-                                <TableColumn fx:id="outBoxPlot" text="Outliers"/>
+                                <TableColumn fx:id="dadoBoxPlot" text="Dado" />
+                                <TableColumn fx:id="q1BoxPlot" text="Primeiro quartil (Q1)" />
+                                <TableColumn fx:id="q2BoxPlot" text="Mediana (Q2)" />
+                                <TableColumn fx:id="q3BoxPlot" text="Terceiro quartil (Q3)" />
+                                <TableColumn fx:id="liBoxPlot" text="Limite inferior" />
+                                <TableColumn fx:id="lsBoxPlot" text="Limite superior" />
+                                <TableColumn fx:id="outBoxPlot" text="Outliers" />
 
                             </columns>
                         </TableView>
 
-                        <HBox spacing="10.0" alignment="CENTER">
+                        <HBox alignment="CENTER" spacing="10.0">
                             <Label text="Data inicial: " />
-                            <DatePicker fx:id="startDatePickerBoxPlot" prefWidth="200" prefHeight="40" />
+                            <DatePicker fx:id="startDatePickerBoxPlot" prefHeight="26" prefWidth="150" />
                             <Label text="Data final: " />
-                            <DatePicker fx:id="endDatePickerBoxPlot" prefWidth="200" prefHeight="40" />
-                            <Label text="Escolha a cidade: " />
-                            <ComboBox fx:id="cityComboBoxBoxPlot" prefWidth="200" prefHeight="40" />
+                            <DatePicker fx:id="endDatePickerBoxPlot" prefWidth="150" prefHeight="26" />
+                            <Label text="Escolha a estação: " />
+                            <ComboBox fx:id="estacaoComboBoxPlot" prefWidth="150" prefHeight="26" />
                         </HBox>
-                        <HBox spacing="20.0" alignment="CENTER">
-                            <Button  onAction="#gerarRelatorioBoxPlot" text="Gerar" prefWidth="100" prefHeight="80" />
+                        <HBox alignment="CENTER" spacing="10.0">
+                            <Button onAction="#gerarRelatorioBoxPlot" prefHeight="26" prefWidth="100" text="Gerar" />
 
-                            <Button onAction="#baixarRelatorioBoxPlot" text="Exportar" prefWidth="100" prefHeight="80" />
+                            <Button onAction="#baixarRelatorioBoxPlot" prefHeight="26" prefWidth="100" text="Exportar" />
+                        </HBox>
+                    </VBox>
+                </content>
+            </Tab>
+             <Tab text="Relatório Situacional">
+                <content>
+                    <VBox spacing="10.0" alignment="CENTER">
+                        <TableView fx:id="tableViewRelatorioSituacional">
+                            <columns>
+                                <TableColumn fx:id="dataHoraSitColumn" text="Data e Hora"/>
+                                <TableColumn fx:id="tempSitColumn" text="Temperatura"/>
+                                <TableColumn fx:id="pressaoSitColumn" text="Pressão"/>
+                                <TableColumn fx:id="velVentoSitColumn" text="Vel. Vento"/>
+                                <TableColumn fx:id="chuvaSitColumn" text="Chuva"/>
+                                <TableColumn fx:id="ptoOrvalhoSitColumn" text="Pto. Orvalho"/>
+                                <TableColumn fx:id="umiSitColumn" text="Umidade"/>
+                                <TableColumn fx:id="nebSitColumn" text="Nebulosidade"/>
+                                <TableColumn fx:id="radSitColumn" text="Radiação"/>
+                                <TableColumn fx:id="dirVentoSitColumn" text="Dir. Vento"/>
+                                <TableColumn fx:id="insolacaoSitColumn" text="Insolação"/>
+                                <TableColumn fx:id="rajVentoSitColumn" text="Raj. Vento"/>
+                            </columns>
+                        </TableView>
+
+                        <HBox spacing="10.0" alignment="CENTER">
+                            <Label text="Cidade: " />
+                            <ComboBox fx:id="citySitComboBox" prefWidth="150" prefHeight="26" />
+                            <Button onAction="#gerarRelatorio" text="Gerar" prefWidth="100" prefHeight="26" />
+                            <Button onAction="#baixarRelatorio" prefHeight="26" prefWidth="100" text="Exportar" />
                         </HBox>
                     </VBox>
                 </content>
