@@ -56,7 +56,7 @@
 > - [x] 25/03 a 14/04 - *Primeira Sprint*
 > - [x] 15/04 a 05/05 - *Segunda Sprint*
 > - [x] 06/05 a 26/05 - *Terceira Sprint*
-> - [ ] 27/05 a 16/06 - *Quarta Sprint*
+> - [x] 27/05 a 16/06 - *Quarta Sprint*
 > - [ ] 27/06 - *Feira de Soluções e Apresentação Final API*
 
 *****
@@ -94,16 +94,16 @@ instalação.
 
 ## Backlog do Produto
 
-  | USER STORY | PRIORIDADE | SPRINT |
-  |------------|------------|--------|
-  | Como pesquisador, quero poder carregar meus arquivos contendo variáveis climáticas para que possam ser manipulados e submetidos à análise para minha pesquisa.  |Essencial|1|
-  | Como pesquisador, quero que cada arquivo carregado, referente a uma estação específica, tenha seus registros armazenados separadamente por variável climática, para uma melhor organização e análise dos dados.  |Essencial|1|
-  | Como pesquisador, desejo que registros suspeitos nos arquivos sejam identificados durante o processo de carregamento e sejam armazenados separadamente dos registros regulares para facilitar a detecção e análise de anomalias nos dados durante o processo de carregamento.  |Essencial|1|
-  | Como pesquisador, desejo poder escolher um período específico para a geração do relatório de valor médio das variáveis climáticas por cidade, possibilitando uma análise detalhada das condições climáticas ao longo de um período determinado.  |Essencial|2|
-  | Como pesquisador, desejo um relatório de situação que exiba os últimos valores de temperatura, umidade e outras variáveis climáticas relevantes para cada cidade, possibilitando uma compreensão abrangente das condições climáticas. |Essencial|2|
-  | Como pesquisador, desejo poder alterar, restaurar e excluir dados irregulares quando necessário, garantindo a precisão, integridade e confiabilidade dos dados para minha pesquisa e assegurando a rastreabilidade dos registros no sistema.|Essencial|3|
-  |Como pesquisador, desejo um relatório que me permita calcular os elementos necessários para plotar um gráfico boxplot com base nos dados de uma estação em uma data específica. Isso me proporcionará uma visualização clara da distribuição e variabilidade dos dados climáticos, facilitando análises detalhadas em minha pesquisa.|Essencial|3|   
-  |Como pesquisador, desejo poder visualizar e alterar informações sobre as estações, cidades e unidades de medida para manter meus dados climáticos atualizados e precisos.|Essencial|4|
+  | USER STORY | PRIORIDADE | SPRINT | ORDEM | ESTIMATIVA |
+  |------------|------------|--------|-|-|
+  | Como pesquisador, quero poder carregar meus arquivos contendo variáveis climáticas para que possam ser manipulados e submetidos à análise para minha pesquisa.  |Essencial|1|1|6|
+  | Como pesquisador, quero que cada arquivo carregado, referente a uma estação específica, tenha seus registros armazenados separadamente por variável climática, para uma melhor organização e análise dos dados.  |Essencial|1|1|5|
+  | Como pesquisador, desejo que registros suspeitos nos arquivos sejam identificados durante o processo de carregamento e sejam armazenados separadamente dos registros regulares para facilitar a detecção e análise de anomalias nos dados durante o processo de carregamento.  |Essencial|1|1|5|
+  | Como pesquisador, desejo poder escolher um período específico para a geração do relatório de valor médio das variáveis climáticas por cidade, possibilitando uma análise detalhada das condições climáticas ao longo de um período determinado.  |Essencial|2|2|7|
+  | Como pesquisador, desejo um relatório de situação que exiba os últimos valores de temperatura, umidade e outras variáveis climáticas relevantes para cada cidade, possibilitando uma compreensão abrangente das condições climáticas. |Essencial|2|2|7|
+  | Como pesquisador, desejo poder alterar, restaurar e excluir dados irregulares quando necessário, garantindo a precisão, integridade e confiabilidade dos dados para minha pesquisa e assegurando a rastreabilidade dos registros no sistema.|Essencial|3|3|8|
+  |Como pesquisador, desejo um relatório que me permita calcular os elementos necessários para plotar um gráfico boxplot com base nos dados de uma estação em uma data específica. Isso me proporcionará uma visualização clara da distribuição e variabilidade dos dados climáticos, facilitando análises detalhadas em minha pesquisa.|Essencial|3|2|7|
+  |Como pesquisador, desejo poder visualizar e alterar informações sobre as estações, cidades e unidades de medida para manter meus dados climáticos atualizados e precisos.|Essencial|4|3|5|
 
 
 ## Backlog das Sprints
@@ -111,53 +111,29 @@ instalação.
 <details>
 <summary> SPRINT 1 </summary>
 
-
 * Criação de interface para utilização do pesquisador;
-* Carregamento de arquivos CSV;
+* Leitura e armazenamentos dos dados de arquivos CSV;
 * Organização de dados por estação climática e tipo de registro (automático ou manual);
-* Separação de dados por variáveis climáticas;
-* Criação de input para receber do pesquisador as temperaturas máxima e mínima consideradas válidas;
-* Verificação de dados e identificação de registros suspeitos;
-* Validação de registros que se enquadram na temperatura esperada;
-* Separação de registros considerados suspeitos;
+* Verificação de dados e identificação de dados suspeitos.
 
-![Porygon](https://github.com/Porygonn/Porygon/assets/111442399/0f90ad58-3cdf-4cdc-bf8f-a5ce625386cf)
-
- </details>
+</details>
 
 <details>
 <summary> SPRINT 2 </summary>
 
-* Criação de uma interface para cadastramento das variáveis climáticas
-* Integração com a fonte de dados climáticos
-* Definição dos campos do relatório climático
-* Formatação dos dados de resposta
-* Implementação da lógica de coleta de dados climáticos
-* Criação das Label de cabeçalho
-* Gerar CSV como relatório
-* Geração do Relatório de valor médio
-* Componente de data ( Início e Fim)
-* Criação das TextFields para cada variável climática
-* Implementação do Banco ao Código
+* Criação de uma interface para definição das variáveis climáticas;
+* Implementação do Relatório Situacional;
+* Implementaçào do Relatório por Hora (cidade e periodo);
+* Implementação do Banco de dados MySQL
 
  </details>
  
  <details>
 <summary> SPRINT 3 </summary>
 
-* Criando Tabelas no banco de dados
-* Salvar os dados do Nome do arquivo na tabela () - Salvar nome, estação e cidade.
-* Ler conteudo do arquivo CSV e salvar na tabela ()
-* Apresnetar dados na tela FXML - Dados Suspeitos e dados apurados.
-* Gerar relatorio de cidade com base nos dados da tabela ()
-* Gerar relatorio de periocidade com base nos dados da tabela ()
-* Criar o método excluir, onde deletará permanentemente o registro suspeito;
-* Criar um aviso "pop-up" dizendo que a ação será permanente e irreversível.
-* Caso o registro se mostre coeso, manda-lo para a lista de registro "normais";
-* Criar uma verificação da data e do horário para voltar o registro para o local correto na lista acima.
-* Não terá parâmetro para o pesquisador se basear, "o método matemático não importa para o sistema";
-* Alterar somente o dado "irregular";
-*  Criar uma verificação da data e do horário para voltar o registro para o local correto na lista.
+* Implementação dos Relatórios por Hora e Boxplot;
+* Aprimoramento do Banco de Dados;
+* Implementação do CRUD para os dados suspeitos, inclusão de alertas em POP-UP para o usuário.
 
 
  </details>
@@ -165,5 +141,6 @@ instalação.
   <details>
 <summary> SPRINT 4 </summary>
 
+* Implementação da função para editar as unidades de medida, nome das estações e cidades.
+
  </details>
-  

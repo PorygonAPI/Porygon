@@ -18,13 +18,10 @@
 
 ### Manual de Usuário
 
-![W1](https://github.com/Porygonn/Porygon/assets/142633184/427652ac-01cc-489b-bea0-ec928267a718)
-![W2](https://github.com/Porygonn/Porygon/assets/142633184/b035e1df-0c16-462a-834f-38afd726c61c)
-![W3](https://github.com/Porygonn/Porygon/assets/142633184/fe2e6b3f-5768-47ef-b99b-3cd783270826)
-![W4](https://github.com/Porygonn/Porygon/assets/142633184/eb8ce297-35a0-4fca-9620-ffc586167a40)
-![W5](https://github.com/Porygonn/Porygon/assets/142633184/2bb808c9-2b13-46a4-a5fe-45447f3b1d15)
-![W6](https://github.com/Porygonn/Porygon/assets/142633184/0406efc5-2a6e-4d6e-af3c-199075e9317e)
-![W7](https://github.com/Porygonn/Porygon/assets/142633184/7a4b2fad-a0f0-44f2-976d-7f7a0e379f25)
+Para uma compreensão detalhada das funcionalidades, por favor, consulte o manual do usuário disponível no link abaixo.
+
+[Manual do Usuario](..%2F..%2F..%2F..%2FDownloads%2FManual%20do%20Usuario_V3.pdf)
+
 
 
 </details>
@@ -66,10 +63,11 @@
 ![GB1](https://github.com/Porygonn/Porygon/assets/142633184/dda168d4-afc8-440f-a6a7-32eff9e83118)
 
 ### WireFrames
-![S1](https://github.com/Porygonn/Porygon/assets/142633184/daa55d71-990a-4b02-b795-5cfa634921a2)
-![S1](https://github.com/Porygonn/Porygon/assets/142633184/72f8286b-a31e-4b4b-b19d-29fd7792e513)
-![S1](https://github.com/Porygonn/Porygon/assets/142633184/ea6abf81-7183-49ab-9c75-6590076e354d)
-![S1](https://github.com/Porygonn/Porygon/assets/142633184/44ed82fb-37d8-4df1-8fed-3c60ecd9dd8c)
+
+![S1](https://github.com/Porygonn/Porygon/assets/142633184/6e6b6ce2-d081-4185-836e-756437bf27b8)
+![S1](https://github.com/Porygonn/Porygon/assets/142633184/4fef5dc1-550d-4978-9244-7882a0ee7a0b)
+![S1](https://github.com/Porygonn/Porygon/assets/142633184/ce9d2538-a724-4bc4-8cd4-f0afa5828f47)
+
 </details>
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -83,7 +81,7 @@
     - Essa user story visa fornecer ao pesquisador acesso a um relatório de médias climáticas por cidade, essa funcionalidade permite uma compreensão mais profunda das condições climáticas em diferentes regiões ao longo do tempo, facilitando análises e estudos mais aprofundados sobre o clima.
         - Cálculo das Médias: O relatório deve calcular as médias dos últimos valores das variáveis climáticas relevantes para cada cidade. Essas médias fornecerão uma visão geral das condições climáticas típicas em cada localidade.
 
-* Como pesquisador, desejo poder escolher um período específico para a geração do relatório de valor médio das variáveis climáticas por cidade, possibilitando uma análise detalhada das condições climáticas ao longo de um período determinado.
+* Como pesquisador, desejo poder escolher um período específico para a geração do relatório situacional das variáveis climáticas por cidade, possibilitando uma análise detalhada das condições climáticas ao longo de um período determinado.
 
     - Essa user story visa fornecer ao pesquisador a capacidade de escolher um período específico para a geração do relatório de médias climáticas por cidade, essa funcionalidade permite uma análise mais detalhada e personalizada das condições climáticas.
         - Seleção de Período Específico: O pesquisador deve ter a capacidade de selecionar um período específico de tempo para o qual deseja gerar o relatório de médias climáticas;
@@ -98,17 +96,19 @@
 
 ### Gráfico de BurnDown
 
-![GB2](https://github.com/Porygonn/Porygon/assets/142633184/82f2ecdb-7b07-4911-951f-8b6d30f572bc)
+![GB2](https://github.com/Porygonn/Porygon/assets/142633184/2f5b11d0-b215-4a4d-9edb-14e12927cda9)
 
 ### WireFrames
 
-![S2](https://github.com/Porygonn/Porygon/assets/142633184/225034ef-7b30-47cb-ac36-7409242d689f)
-![S2](https://github.com/Porygonn/Porygon/assets/142633184/0998c8cb-50c7-48c0-a347-657d7cc4de96)
-![S2](https://github.com/Porygonn/Porygon/assets/142633184/80fad055-9342-45ba-ae31-c47c0580ac93)
-![S2](https://github.com/Porygonn/Porygon/assets/142633184/62cf561c-907c-4c89-aa6b-cc60f9e3e016)
+![S2](https://github.com/Porygonn/Porygon/assets/142633184/dc4383a6-2d6c-4b08-b17d-4d84a23e3349)
+![S2](https://github.com/Porygonn/Porygon/assets/142633184/953b5dcd-1314-4cba-a67d-b8bfaf7f4adb)
+
 </details>
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------
+
+<details>
+<summary>Sprint 3</summary>
 
 ## Sprint 3
 
@@ -138,10 +138,15 @@
 - Seleção de Data: O pesquisador deve ser capaz de especificar a data desejada para análise dos dados climáticos.
 - Cálculo dos Elementos do Boxplot: O sistema deve calcular com precisão os elementos necessários (mínimo, primeiro quartil, mediana, terceiro quartil e máximo) para a construção do gráfico boxplot, fornecendo uma representação visual da distribuição dos dados.
 
+### Gráfico de BurnDown
+![GB3](https://github.com/Porygonn/Porygon/assets/142633184/86adbe65-f29c-444e-98ef-84f4482120e8)
+
 ### WireFrames
 
-![S3](https://github.com/Porygonn/Porygon/assets/142633184/cb13af3c-e777-48df-bd66-311fc551aea3)
-![S3](https://github.com/Porygonn/Porygon/assets/142633184/e6124ba3-8d93-4781-987f-571315a80c66)
+![S3](https://github.com/Porygonn/Porygon/assets/142633184/0be02075-68c9-4173-83c0-2fd5a7edda77)
+![S3](https://github.com/Porygonn/Porygon/assets/142633184/ff2aed48-a3ae-413f-b1aa-14e18d3bf5e1)
+
+</details>
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -164,15 +169,12 @@
 - Exclusão de informações: Deve ser possível excluir estações e cidades, removendo definitivamente todos os registros associados do sistema;
 - Atualização Dinâmica: As alterações feitas nas informações de estações, cidades e unidades de medida devem ser refletidas imediatamente no sistema.
 
+### Gráfico de BurnDown
+![GB4](https://github.com/Porygonn/Porygon/assets/142633184/309ec32e-f4e2-46bc-b3bd-73f623a2b1a3)
+
 ### WireFrames
 
-![W1](https://github.com/Porygonn/Porygon/assets/142633184/96658eac-840e-4eb3-9cea-aceae843fd70)
-![W2](https://github.com/Porygonn/Porygon/assets/142633184/feb6ac82-72e1-4346-9b92-d17607b150f2)
-![W3](https://github.com/Porygonn/Porygon/assets/142633184/c575bd92-24fa-42d1-9af4-b9473418de8e)
-![W4](https://github.com/Porygonn/Porygon/assets/142633184/ff1aaa69-2197-4ae1-8d93-5927ca2bbcc8)
-![W5](https://github.com/Porygonn/Porygon/assets/142633184/35b155c9-396c-462d-abeb-cc78af5289c4)
-![W6](https://github.com/Porygonn/Porygon/assets/142633184/168f3cf0-b2d5-4b83-8398-c14d9945f1c7)
-![W7](https://github.com/Porygonn/Porygon/assets/142633184/1b80d595-4e0d-4b9a-9109-28227b08c3b5)
+![S4](https://github.com/Porygonn/Porygon/assets/142633184/c8d7d775-85be-42f0-ae2a-d340db31d11e)
 -------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
