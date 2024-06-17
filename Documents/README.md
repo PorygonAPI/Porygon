@@ -150,6 +150,9 @@ Para uma compreensão detalhada das funcionalidades, por favor, consulte o manua
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------
 
+<details>
+<summary>Sprint 4</summary>
+    
 ## Sprint 4
 
 * Como pesquisador, desejo poder visualizar e alterar informações sobre as estações, cidades e unidades de medida para manter meus dados climáticos atualizados e precisos.
@@ -175,6 +178,9 @@ Para uma compreensão detalhada das funcionalidades, por favor, consulte o manua
 ### WireFrames
 
 ![S4](https://github.com/Porygonn/Porygon/assets/142633184/c8d7d775-85be-42f0-ae2a-d340db31d11e)
+
+</details>
+
 -------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
