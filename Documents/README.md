@@ -20,7 +20,7 @@
 
 Para uma compreensão detalhada das funcionalidades, por favor, consulte o manual do usuário disponível no link abaixo.
 
-[Manual do Usuario](..%2F..%2F..%2F..%2FDownloads%2FManual%20do%20Usuario_V3.pdf)
+[Manual do Usuario](meu_pe_de_laranja_lima.pdf)
 
 
 
